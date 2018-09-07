@@ -2,6 +2,7 @@
   "name": "goforeat_webmobile",
   "version": "0.1.0",
   "private": true,
+  "author": "Jack"
   "dependencies": {
     "antd-mobile": "^2.2.4",
     "autoprefixer": "7.1.6",
