@@ -2,8 +2,9 @@
   "name": "goforeat_webmobile",
   "version": "0.1.0",
   "private": true,
-  "author": "Jack"
+  "author": "Jack",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.3.1",
     "antd-mobile": "^2.2.4",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
@@ -30,6 +31,7 @@
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
+    "js-cookie": "^2.2.0",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
@@ -102,5 +104,12 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  }
+  },
+  "proxy": {
+    "/": {
+      "target": "http://api.goforeat.hk",
+      "changeOrigin": true
+    }
+  },
+  "homepage": "."
 }
