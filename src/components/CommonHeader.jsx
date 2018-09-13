@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import {NavBar,Icon} from 'antd-mobile';
 import './CommonHeader.less';
 
-const CommonHeader = ({canBack,rightContent,leftContent,children}) => (
+const CommonHeader = ({canBack,rightContent,leftContent,children,...rest}) => (
   <div className="nav-container">
     <NavBar
       mode="light" 
       icon={canBack?<Icon type="left"/>:leftContent} 
-      rightContent={rightContent}>
+      rightContent={rightContent} {...rest}>
       {children}
     </NavBar>
   </div>
