@@ -1,8 +1,8 @@
 import React,{PureComponent} from 'react';
-import { Menu, ActivityIndicator, List, WhiteSpace, Carousel, Stepper, TabBar, WingBlank, NoticeBar, Icon } from 'antd-mobile';
+import { Menu, ActivityIndicator, List, WhiteSpace, Carousel, Stepper, TabBar, WingBlank, NoticeBar, Drawer } from 'antd-mobile';
+import { Link } from 'react-router-dom';
 //style
 import './HomePage.less';
-
 //api
 import { getDailyFoods, foodPlaces, queryList } from '@/api/request';
 //components
@@ -42,7 +42,7 @@ export default class HomePage extends PureComponent {
       isWarningTipShow: true,
       isLoadingShow: true,
       isRefreshShow: false,
-      isTabBarShow: true
+      isTabBarShow: true,
     };
   }
 
@@ -56,6 +56,9 @@ export default class HomePage extends PureComponent {
   _getFoodPlaces() {
     foodPlaces().then(data => {
       if(data.ro.ok) {
+        const _Label_Node = (label) => (
+          <p style={{borderBottom: '1px solid #ccc'}}>{label}</p>
+        );
         data.data = data.data.map(v => ({
           value: v.id,
           label: v.name
@@ -154,11 +157,22 @@ export default class HomePage extends PureComponent {
   }
 
   _renderSidebarView() {
-    let _drawerList = ['我的訂單','支付方式','系統設置'];
+    let _drawerList = [
+      {name: '我的訂單', icon:(<img className="sidebar-icon" src={require('@/assets/order.png')}/>), path: '/myorder'}, 
+      {name: '支付方式',icon:(<img className="sidebar-icon" src={require('@/assets/payment.png')}/>), path: '/myorder'},
+      {name: '系統設置',icon: (<img className="sidebar-icon" src={require('@/assets/setting.png')}/>), path: '/myorder'}
+    ];
     return (
-      _drawerList.map((item, key) => (
-        <List.Item key={key}>{item}</List.Item>
-      ))
+      <div>
+        <div className="sidebar-top">
+          <img src={require("@/assets/logoTop.png")}/>
+        </div>
+        {_drawerList.map((item, key) => (
+          <Link to={item.path} key={key}>
+            <List.Item multipleLine thumb={item.icon}>{item.name}</List.Item>
+          </Link>
+        ))}
+      </div>
     )
   }
 
@@ -166,7 +180,7 @@ export default class HomePage extends PureComponent {
     let { warningTipsData } = this.state;
     if(warningTipsData.length == 0) return;
     return (
-      <NoticeBar marqueeProps={{ loop: true, style: { padding: '0 7.5px' } }} mode="closable" icon={<i class="fas fa-bell"></i>}>
+      <NoticeBar marqueeProps={{ loop: true, style: { padding: '0 7.5px' } }} mode="closable" icon={<i className="fas fa-bell"></i>}>
         {warningTipsData[0].title}
       </NoticeBar>
     )
@@ -188,23 +202,20 @@ export default class HomePage extends PureComponent {
   _renderCarouselView() {
     let { extralImage } = this.state.foodList[0];
     return (
-      <Carousel
-          autoplay={false}
-          infinite
-        >
+        <div className="carousel-container">
           {extralImage.map((val, idx) => (
               <img
                 key={idx}
                 src={val}
                 alt=""
                 style={{ width: '100%', verticalAlign: 'top' }}
-                onLoad={() => {
-                  // fire window resize event to change height
-                  window.dispatchEvent(new Event('resize'));
-                }}
+                // onLoad={() => {
+                //   // fire window resize event to change height
+                //   window.dispatchEvent(new Event('resize'));
+                // }}
               />
           ))}
-        </Carousel>
+        </div>
     )
   }
 
@@ -274,21 +285,9 @@ export default class HomePage extends PureComponent {
   }
 
   render() {
-    const {isPlaceMenuShow, placeList, foodList, currentPlace, warningTipsData} = this.state;
+    const {isPlaceMenuShow, placeList, foodList, currentPlace, isDrawerShow} = this.state;
     return (
       <div className="homepage-container">
-        {/*<Drawer
-          className="my-drawer"
-          style={{ minHeight: COMPONENT_HEIGHT }}
-          enableDragHandle
-          contentStyle={{ color: '#A6A6A6', textAlign: 'center'}}
-          sidebarStyle={{ border: '1px solid #ddd' }}
-          sidebar={this._renderSidebarView()}
-          docked={isDrawerShow}
-          touch={false}
-        >
-        </Drawer>*/}
-
         <TabBar
           unselectedTintColor="#333"
           tintColor="#d93a49"
@@ -298,8 +297,8 @@ export default class HomePage extends PureComponent {
           <TabBar.Item
             title="每日菜品"
             key="Daily"
-            icon={<i style={{color: '#333'}} className="fas fa-utensils"></i>}
-            selectedIcon={<i style={{color: '#ff5858'}} className="fas fa-utensils"></i>}
+            icon={<img className="tab-icon" src={require('@/assets/Shape_inactive.png')}/>}
+            selectedIcon={<img className="tab-icon" src={require('@/assets/Shape.png')}/>}
             selected={this.state.selectedTab === 'foodDetails'}
             onPress={() => {
               this.setState({
@@ -307,21 +306,32 @@ export default class HomePage extends PureComponent {
               });
             }}
           >
-            <CommonHeader leftContent={<i className="fas fa-bars"></i>} onLeftClick={this._toggleDrawer}>
-              <span onClick={this._showPlaceSelector}>{currentPlace.label}</span>
-              {!isPlaceMenuShow ? <i className="fas fa-angle-down icon-arrow"></i> :
-              <i className="fas fa-angle-up icon-arrow"></i>}
-            </CommonHeader>
-            {isPlaceMenuShow ? placeList.length > 0 ? this._renderMenuView() : this._renderLoadingMask() : null}
-            {this._renderNoticeView()}
-            { this._renderFoodDetailsView(foodList) }
+            <Drawer
+              className="my-drawer"
+              style={{ minHeight: COMPONENT_HEIGHT}}
+              enableDragHandle
+              contentStyle={{ color: '#A6A6A6', textAlign: 'center'}}
+              sidebarStyle={{ minWidth: '75%' }}
+              sidebar={this._renderSidebarView()}
+              open={isDrawerShow}
+              onOpenChange={this._toggleDrawer}
+              touch={false}
+            >
+              <CommonHeader leftContent={<img src={require('@/assets/menu.png')} style={{width: '2em', height: '1em'}}/>} onLeftClick={this._toggleDrawer}>
+                <span onClick={this._showPlaceSelector}>{currentPlace.label}</span>
+                {!isPlaceMenuShow ? <i className="fas fa-angle-down icon-arrow"></i> :
+                <i className="fas fa-angle-up icon-arrow"></i>}
+              </CommonHeader>
+              {isPlaceMenuShow ? placeList.length > 0 ? this._renderMenuView() : this._renderLoadingMask() : null}
+              {this._renderNoticeView()}
+              { this._renderFoodDetailsView(foodList) }
+            </Drawer>
           </TabBar.Item>
           <TabBar.Item
             title="本週菜單"
             key="Weekly"
-            icon={<i style={{color: '#333'}} className="fas fa-calendar-alt"></i>}
-            selectedIcon={<i style={{color: '#ff5858'}} className="fas fa-calendar-alt"></i>
-            }
+            icon={<img className="tab-icon" src={require('@/assets/date.png')}/>}
+            selectedIcon={<img className="tab-icon" src={require('@/assets/date_active.png')}/>}
             selected={this.state.selectedTab === 'foodList'}
             onPress={() => {
               this.setState({
