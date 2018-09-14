@@ -19,3 +19,10 @@ export const EXPLAIN_PAY_TYPE = {
   6: {zh:'信用卡支付',en: 'Credit Card'},
   7: {zh: '月票支付',en: 'Month Tikcet'}
 }
+
+export const BOTTOM_LOAD_STATUS = {
+  LOADING: 0,
+  LOAD_FAILED: 1,
+  LOAD_HAS_MORE: 2,
+  NO_MORE_DATA: 3
+};
