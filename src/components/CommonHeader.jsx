@@ -1,18 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {NavBar,Icon} from 'antd-mobile';
+import { withRouter } from 'react-router-dom';
+//styles
 import './CommonHeader.less';
 
-const CommonHeader = ({canBack,rightContent,leftContent,children,...rest}) => (
+// So your ...rest will never contain staticContext 
+const CommonHeader = ({canBack,rightContent,leftContent,children,staticContext, ...rest}) => {
+  let _leftClick = () => {
+    if(typeof rest.onLeftClick != 'undefined') {
+      rest.onLeftClick();
+    }else {
+      rest.history.goBack();
+    }
+  }
+  return (
   <div className="nav-container">
     <NavBar
       mode="light" 
+      className="nav-container"
       icon={canBack?<Icon type="left"/>:leftContent} 
-      rightContent={rightContent} {...rest}>
+      rightContent={rightContent} onLeftClick={_leftClick} {...rest}>
       {children}
     </NavBar>
   </div>
-) 
+)}
 
 CommonHeader.propsType = {
   canBack: PropTypes.bool,
@@ -26,4 +38,4 @@ CommonHeader.defaultProps = {
   leftContent: null
 }
 
-export default CommonHeader;
+export default withRouter(CommonHeader);
