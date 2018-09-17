@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { ListView, WingBlank } from 'antd-mobile';
+import { withRouter } from 'react-router-dom';
 //api
 import { getArticleList } from '@/api/request';
 //components
@@ -12,7 +13,7 @@ import { BOTTOM_LOAD_STATUS } from '@/utils/global_params';
 //style
 import './FoodsListPage.less';
 
-export default class FoodsListPage extends PureComponent {
+class FoodsListPage extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -63,7 +64,7 @@ export default class FoodsListPage extends PureComponent {
   render() {
     const row = (rowData, sectionID, rowID) => {
       return (
-        <div className="food-list-item" key={rowID}>
+        <div className="food-list-item" key={rowID} onClick={() => this.props.history.push('/content',{data: rowData})}>
             <img src={rowData.pic}/>
             <span>{rowData.title}</span>
         </div>
@@ -91,3 +92,5 @@ export default class FoodsListPage extends PureComponent {
     )
   }
 }
+
+export default withRouter(FoodsListPage);
