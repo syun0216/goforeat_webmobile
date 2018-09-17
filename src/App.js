@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Route from '@/router';
 import '@/styles/transition.less';
+import '@/styles/index.less';
 
 class App extends Component {
   render() {

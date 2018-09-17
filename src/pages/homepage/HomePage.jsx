@@ -7,6 +7,7 @@ import './HomePage.less';
 import { getDailyFoods, foodPlaces, queryList } from '@/api/request';
 //components
 import CommonHeader from '@/components/CommonHeader';
+import BottomOrder from '@/components/BottomOrder';
 //utils
 import { getWeekDay, formatDate, endDate } from '@/utils/common';
 import { loadingToast, hideToast } from '@/utils/loading';
@@ -21,7 +22,6 @@ const NO_MORE_FOODS = 2;
 const IS_INTERCEPT = 3;
 
 export default class HomePage extends PureComponent {
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -180,7 +180,7 @@ export default class HomePage extends PureComponent {
     let { warningTipsData } = this.state;
     if(warningTipsData.length == 0) return;
     return (
-      <NoticeBar marqueeProps={{ loop: true, style: { padding: '0 7.5px' } }} mode="closable" icon={<i className="fas fa-bell"></i>}>
+      <NoticeBar marqueeProps={{ loop: true, style: { padding: '0 7.5px' } }} mode="closable" icon={<i className="fas fa-bell"></i>} mode="link" onClick={() => this.props.history.push('/content', {data: warningTipsData[0]})}>
         {warningTipsData[0].title}
       </NoticeBar>
     )
@@ -289,6 +289,7 @@ export default class HomePage extends PureComponent {
     return (
       <div className="homepage-container">
         <TabBar
+          className="tabbar-container"
           unselectedTintColor="#333"
           tintColor="#d93a49"
           barTintColor="white"
@@ -325,6 +326,7 @@ export default class HomePage extends PureComponent {
               {isPlaceMenuShow ? placeList.length > 0 ? this._renderMenuView() : this._renderLoadingMask() : null}
               {this._renderNoticeView()}
               { this._renderFoodDetailsView(foodList) }
+              <BottomOrder />
             </Drawer>
           </TabBar.Item>
           <TabBar.Item
