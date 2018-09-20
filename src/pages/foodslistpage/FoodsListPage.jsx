@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ListView, WingBlank } from 'antd-mobile';
+import { ListView } from 'antd-mobile';
 import { withRouter } from 'react-router-dom';
 //api
 import { getArticleList } from '@/api/request';
@@ -8,7 +8,7 @@ import CommonHeader from '@/components/CommonHeader';
 import ListFooter from '@/components/ListFooter';
 import Divider from '@/components/Divider';
 //utils
-import { loadingToast, hideToast } from '@/utils/loading';
+// import { loadingToast, hideToast } from '@/utils/loading';
 import { BOTTOM_LOAD_STATUS } from '@/utils/global_params';
 //style
 import './FoodsListPage.less';
@@ -18,8 +18,9 @@ class FoodsListPage extends PureComponent {
   constructor(props) {
     super(props);
     this._offset = 0;
+    this.place = null;
     const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 != row2
+      rowHasChanged: (row1, row2) => row1 !== row2
     });
     this.state = {
       dataSource,
@@ -29,14 +30,30 @@ class FoodsListPage extends PureComponent {
     }
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   console.log('willreceive')
+  //   const { place: {value} } = nextProps;
+  //   this._getArticleList(value);
+  // }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log('should')
+  //   return true;
+  // };
+  
+  
+  
+  
+
   componentDidMount() {
-    // loadingToast();
-    this._getArticleList();
+    console.log('didmount');
+    const { place: {value} } = this.props;
+    this._getArticleList(value);
   }
 
   //api
-  _getArticleList() {
-    getArticleList(this._offset).then(data => {
+  _getArticleList(placeId) {
+    getArticleList(this._offset, placeId).then(data => {
       if(data.ro.ok) {
         // hideToast();
         this.setState({
@@ -65,7 +82,7 @@ class FoodsListPage extends PureComponent {
     const row = (rowData, sectionID, rowID) => {
       return (
         <div className="food-list-item" key={rowID} onClick={() => this.props.history.push('/content',{data: rowData})}>
-            <img src={rowData.pic}/>
+            <img src={rowData.pic} alt="food_pic"/>
             <span>{rowData.title}</span>
         </div>
       )

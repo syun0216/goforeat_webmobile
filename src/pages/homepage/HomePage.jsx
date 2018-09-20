@@ -1,5 +1,5 @@
 import React,{PureComponent} from 'react';
-import { Menu, ActivityIndicator, List, WhiteSpace, Carousel, Stepper, TabBar, WingBlank, NoticeBar, Drawer } from 'antd-mobile';
+import { Menu, ActivityIndicator, List, WhiteSpace, Stepper, TabBar, WingBlank, NoticeBar, Drawer } from 'antd-mobile';
 import { Link } from 'react-router-dom';
 //style
 import './HomePage.less';
@@ -56,9 +56,6 @@ export default class HomePage extends PureComponent {
   _getFoodPlaces() {
     foodPlaces().then(data => {
       if(data.ro.ok) {
-        const _Label_Node = (label) => (
-          <p style={{borderBottom: '1px solid #ccc'}}>{label}</p>
-        );
         data.data = data.data.map(v => ({
           value: v.id,
           label: v.name
@@ -158,14 +155,14 @@ export default class HomePage extends PureComponent {
 
   _renderSidebarView() {
     let _drawerList = [
-      {name: '我的訂單', icon:(<img className="sidebar-icon" src={require('@/assets/order.png')}/>), path: '/myorder'}, 
-      {name: '支付方式',icon:(<img className="sidebar-icon" src={require('@/assets/payment.png')}/>), path: '/myorder'},
-      {name: '系統設置',icon: (<img className="sidebar-icon" src={require('@/assets/setting.png')}/>), path: '/myorder'}
+      {name: '我的訂單', icon:(<img alt="order" className="sidebar-icon" src={require('@/assets/order.png')}/>), path: '/myorder'}, 
+      {name: '支付方式',icon:(<img alt="paytype" className="sidebar-icon" src={require('@/assets/payment.png')}/>), path: '/myorder'},
+      {name: '系統設置',icon: (<img alt="setting" className="sidebar-icon" src={require('@/assets/setting.png')}/>), path: '/myorder'}
     ];
     return (
       <div>
         <div className="sidebar-top">
-          <img src={require("@/assets/logoTop.png")}/>
+          <img alt="logo" src={require("@/assets/logoTop.png")}/>
         </div>
         {_drawerList.map((item, key) => (
           <Link to={item.path} key={key}>
@@ -178,9 +175,9 @@ export default class HomePage extends PureComponent {
 
   _renderNoticeView() {
     let { warningTipsData } = this.state;
-    if(warningTipsData.length == 0) return;
+    if(warningTipsData.length === 0) return;
     return (
-      <NoticeBar marqueeProps={{ loop: true, style: { padding: '0 7.5px' } }} mode="closable" icon={<i className="fas fa-bell"></i>} mode="link" onClick={() => this.props.history.push('/content', {data: warningTipsData[0]})}>
+      <NoticeBar marqueeProps={{ loop: true, style: { padding: '0 7.5px' } }} mode="closable" icon={<i className="fas fa-bell"></i>} onClick={() => this.props.history.push('/content', {data: warningTipsData[0]})}>
         {warningTipsData[0].title}
       </NoticeBar>
     )
@@ -207,7 +204,7 @@ export default class HomePage extends PureComponent {
               <img
                 key={idx}
                 src={val}
-                alt=""
+                alt="food"
                 style={{ width: '100%', verticalAlign: 'top' }}
                 // onLoad={() => {
                 //   // fire window resize event to change height
@@ -231,7 +228,7 @@ export default class HomePage extends PureComponent {
   }
 
   _renderAddOrRemoveView() {
-    let { soldStatus, foodList: {[0]:{price, originPrice }}} = this.state;
+    let { soldStatus, foodList: { 0:{price, originPrice }}} = this.state;
     return (
       <div className="add-remove-container">
         <div>
@@ -298,8 +295,8 @@ export default class HomePage extends PureComponent {
           <TabBar.Item
             title="每日菜品"
             key="Daily"
-            icon={<img className="tab-icon" src={require('@/assets/Shape_inactive.png')}/>}
-            selectedIcon={<img className="tab-icon" src={require('@/assets/Shape.png')}/>}
+            icon={<img alt="shape" className="tab-icon" src={require('@/assets/Shape_inactive.png')}/>}
+            selectedIcon={<img alt="shape" className="tab-icon" src={require('@/assets/Shape.png')}/>}
             selected={this.state.selectedTab === 'foodDetails'}
             onPress={() => {
               this.setState({
@@ -318,7 +315,7 @@ export default class HomePage extends PureComponent {
               onOpenChange={this._toggleDrawer}
               touch={false}
             >
-              <CommonHeader leftContent={<img src={require('@/assets/menu.png')} style={{width: '2em', height: '1em'}}/>} onLeftClick={this._toggleDrawer}>
+              <CommonHeader leftContent={<img alt="menu" src={require('@/assets/menu.png')} style={{width: '2em', height: '1em'}}/>} onLeftClick={this._toggleDrawer}>
                 <span onClick={this._showPlaceSelector}>{currentPlace.label}</span>
                 {!isPlaceMenuShow ? <i className="fas fa-angle-down icon-arrow"></i> :
                 <i className="fas fa-angle-up icon-arrow"></i>}
@@ -332,8 +329,8 @@ export default class HomePage extends PureComponent {
           <TabBar.Item
             title="本週菜單"
             key="Weekly"
-            icon={<img className="tab-icon" src={require('@/assets/date.png')}/>}
-            selectedIcon={<img className="tab-icon" src={require('@/assets/date_active.png')}/>}
+            icon={<img alt="order" className="tab-icon" src={require('@/assets/date.png')}/>}
+            selectedIcon={<img alt="order" className="tab-icon" src={require('@/assets/date_active.png')}/>}
             selected={this.state.selectedTab === 'foodList'}
             onPress={() => {
               this.setState({
@@ -341,7 +338,7 @@ export default class HomePage extends PureComponent {
               });
             }}
           >
-            <FoodsListPage/>
+            <FoodsListPage place={currentPlace}/>
           </TabBar.Item>
         </TabBar>
       </div>

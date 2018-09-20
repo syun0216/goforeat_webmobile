@@ -15,5 +15,6 @@ export function removeToken() {
 }
 
 export function isAuth() {
-  return typeof getToken() != "undefined";
+  console.log(typeof getToken() !== "undefined");
+  return typeof getToken() !== "undefined";
 }
