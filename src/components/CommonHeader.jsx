@@ -8,7 +8,7 @@ import './CommonHeader.less';
 // So your ...rest will never contain staticContext 
 const CommonHeader = ({canBack,rightContent,leftContent,children,staticContext, ...rest}) => {
   let _leftClick = () => {
-    if(typeof rest.onLeftClick != 'undefined') {
+    if(typeof rest.onLeftClick !== 'undefined') {
       rest.onLeftClick();
     }else {
       rest.history.goBack();

@@ -9,7 +9,7 @@ const ContentPage = ({history: {location: {state: {data: {title, url}}}}}) => {
   return (
     <div className="content-container">
       <CommonHeader canBack><span>{title}</span></CommonHeader>
-      <iframe src={url}/>
+      <iframe src={url} title="content"/>
     </div>
   )
 }
