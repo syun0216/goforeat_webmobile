@@ -8,7 +8,6 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
-<<<<<<< HEAD
 
 
 if (module.hot) {
@@ -20,5 +19,3 @@ if (module.hot) {
     )
   });
 }
-=======
->>>>>>> 41f2b9c670d3e83b365bb66d25077eff1d1dcda0
