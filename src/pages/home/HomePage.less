@@ -1,0 +1,127 @@
+@import "../../styles/app-variables.less";
+.menu-mask {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: @mask;
+  opacity: 0.4;
+  z-index: 89;
+}
+
+.single-foo-menu {
+  position: absolute;
+  z-index: 1000 !important;
+  width: 100%;
+}
+
+.icon-arrow{
+  margin-left: 1em
+}
+
+.tab-icon {
+  width: 1.5em;
+  height: 1.3em;
+}
+
+.sidebar-icon {
+  &:extend(.tab-icon);
+}
+
+.homepage-container {
+  // padding: 10px;
+  position: fixed; height: 100%; width: 100%; top: 0;
+  background: @bg_white;
+  .menu-icon{
+    width: 2em;
+    height: 1em;
+  }
+  .dropdown-menu {
+    .dropdown-item {
+      display: flex;
+      padding: 1em;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      color: #666;
+    }
+    .uncheck-icon{
+      width: 1.1em;
+      height: 1.1em;
+    }
+    .check-icon{
+      width: 1.1em;
+      height: 1.1em;
+    }
+  }
+  .common-title-container{
+    text-align: left;
+    h3{
+      padding: 0;
+      margin: 0;
+      font-size: 1.5em;
+      color: @default_font;
+    }
+    span {
+      color: @default_font;
+    }
+    p{
+      text-align: justify;
+      line-height: 1.5em;
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .carousel-container {
+    box-shadow: 0 5px 5px @img_shadow;
+    border-radius: 10px;
+    img{
+      width: 100%;
+      border-radius: 10px;
+    }
+  }
+  .add-remove-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .unit {
+      color: @focus_font;
+      display: inline-block;
+      margin-right: 0.5em;
+    }
+    .price{
+      font-size: 1.5em;
+      color: @default_font;
+    }
+  }
+  .deadline{
+    color: #ccc;
+    text-align: left;
+    margin: 0;
+  }
+  .sidebar-top {
+    background: @linear;
+    height: 10em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .sidebar-top-img{
+      width: 15em;
+    }
+  }
+}
+
+.my-drawer {
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  .am-drawer-sidebar {
+    background-color: #fff;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    .am-list {
+      width: 300px;
+      padding: 0;
+    }
+  }
+}
