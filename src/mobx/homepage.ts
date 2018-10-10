@@ -43,6 +43,7 @@ export default class HomePageMobx {
   public changePlace(item: IPlaceList):void {
     this.values.currentPlace = item;
     this.togglePlaceMenu();
+    this.getDailyFoods(item.id);
   }
 
   //api

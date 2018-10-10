@@ -6,14 +6,14 @@ import { isAuth } from '../utils/auth';
 //views
 const HOME = asyncComponent(() => import("../pages/home/HomePage"));
 const LOGIN = asyncComponent(() => import("../pages/login/Login"));
-const MYORDER = asyncComponent(() => import("../pages/myorder/MyOrder"));
+const MYORDER = asyncComponent(() => import("../pages/myOrder/MyOrder"));
 
 interface Props {
   Component: typeof Component,
   rest: object
 }
 
-// const privateRoute = ({Component, ...rest}: Props) => (
+// const privateRoute = ({Component, ...rest}: any) => (
 //   <Route 
 //     {...rest}
 //     render={props => isAuth() ? <Component {...props}/> : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
