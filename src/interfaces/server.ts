@@ -24,3 +24,16 @@ export interface IDailyFoodItem {
   price: number,
   star: number
 }
+
+export interface IQueryList {
+  title: string,
+  url: string
+}
+
+export interface IFoodListItem {
+  brief: string,
+  time: string,
+  pic: string,
+  title: string,
+  url: string
+}
