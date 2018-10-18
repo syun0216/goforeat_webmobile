@@ -1,5 +1,5 @@
 import { HomePageMobx } from '../mobx/rootStore';
-
+import { FoodListMobx } from '../mobx/rootStore';
 
 
 /**
@@ -9,4 +9,8 @@ import { HomePageMobx } from '../mobx/rootStore';
 //homepage
 export interface IHomePage {
   homePageMobx: HomePageMobx
+}
+
+export interface IFoodList {
+  foodListMobx: FoodListMobx
 }
