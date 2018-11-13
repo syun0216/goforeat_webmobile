@@ -4,7 +4,8 @@ import asyncComponent from './asyncComponent';
 //utils
 import { isAuth } from '../utils/auth';
 //views
-const HOME = asyncComponent(() => import("../pages/home/HomePage"));
+const FOODDETAILS = asyncComponent(() => import("../pages/fooddetails/FoodDetails"));
+const FOODLIST = asyncComponent(() => import("../pages/foodslist/FoodList"))
 const LOGIN = asyncComponent(() => import("../pages/login/Login"));
 const MYORDER = asyncComponent(() => import("../pages/myOrder/MyOrder"));
 
@@ -26,8 +27,10 @@ export default class RouteConfig extends Component {
       <BrowserRouter>
         <Route render={() => (
           <Switch>
-            <Route path="/" exact component={HOME} />
+            <Route path="/" exact component={FOODLIST} />
+            <Route path="/foodDetails/:dateFoodId" component={FOODDETAILS} />
             <Route path="/login" component={LOGIN} />
+            <Route path="/myOrder" component={MYORDER}/>
           </Switch>
           )
         }/>

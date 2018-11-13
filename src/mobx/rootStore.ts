@@ -1,11 +1,16 @@
-import HomePageMobx from './homepage';
+import FoodDetailsMobx from './fooddetails';
+import FoodListMobx from './foodlist';
+import BasicMobx from './basic';
 
 export {
-  HomePageMobx
+  FoodDetailsMobx,
+  FoodListMobx
 }
 
 const rootStore = {
-  homePageMobx: new HomePageMobx()
+  basicMobx: new BasicMobx(),
+  foodDetailsMobx: new FoodDetailsMobx(),
+  foodListMobx: new FoodListMobx()
 }
 
 export default rootStore;

@@ -1,0 +1,130 @@
+@import '../../styles/app-variables.less';
+.placeInputBg{
+  background: #fff;
+  opacity: 0.2;
+  flex: 1;
+  border-radius: 100px;
+}
+.tab-icon {
+  width: 1.5em;
+  height: 1.3em;
+}
+
+.sidebar-icon {
+  &:extend(.tab-icon);
+}
+.food-list-container {
+  background: @bg_white;
+  .menu-icon{
+    width: 2em;
+    height: 1em;
+  }
+  .sidebar-top {
+    background: @linear;
+    height: 10em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .sidebar-top-img{
+      width: 15em;
+    }
+  }
+  .dropdown-menu {
+    position: fixed;
+    background: white;
+    width: 100%;
+    z-index: 10;
+    .dropdown-item {
+      display: flex;
+      padding: 1em;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      color: #666;
+    }
+    .uncheck-icon{
+      width: 1.1em;
+      height: 1.1em;
+    }
+    .check-icon{
+      width: 1.1em;
+      height: 1.1em;
+    }
+  }
+  .food-list-view {
+    background: transparent;
+    margin:10px;
+  }
+  .food-list-item{
+    background: @bg_white;
+    box-shadow: 0 4px 20px 0 #EDEDEB;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    height: 160px;
+    display: flex;
+    flex-direction: row;
+    .item-thumbnail {
+      width: 140px;
+      object-fit: cover;
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+    }
+    .item-details {
+      display: flex;
+      flex: 1;
+      padding: 8px;
+      flex-direction: column;
+    }
+    .item-container{
+      display: flex;
+      justify-content: space-around;
+      .item-foodname {
+        font-size: 16px;
+        color: #111111;
+        white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        width: 80px; 
+      }
+      .item-date {
+        font-size: 13px;
+        color: #666666;
+      }
+      .item-price {
+        font-size: 14px;
+        color: #666666;
+      }
+      .item-btn {
+        color: #ff5858;
+      }
+    }
+    .item-brief { 
+      font-size: 8px;
+      color: #999999;
+      overflow: hidden;
+      letter-spacing: -0.15em;
+      display:-webkit-box;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:3;
+      overflow:hidden;
+      text-align: justify;
+      text-overflow: ellipsis;
+    }
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+}
+
+.my-drawer {
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  .am-drawer-sidebar {
+    background-color: #fff;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    .am-list {
+      width: 300px;
+      padding: 0;
+    }
+  }
+}

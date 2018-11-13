@@ -5,6 +5,8 @@ interface IDivider{
   bgColor: string
 }
 
-const Divider = ({height, bgColor}:IDivider) => (
-  <div style={{height:height,backgroundColor:bgColor}} />
+const divider = ({height, bgColor}:IDivider) => (
+  <div style={{height,backgroundColor:bgColor}} />
 )
+
+export default divider;
