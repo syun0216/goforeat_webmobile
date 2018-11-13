@@ -4,11 +4,18 @@ export interface IPlaceList {
 }
 
 export interface IDailyFood {
-  endTimestamp: number,
-  foodList: IDailyFoodItem[],
+  canteenAddress: string | null,
+  canteenName: string,
+  dateFoodId: number,
+  extralImage: string[],
+  foodBrief: string,
+  foodId: number,
+  foodName: string,
+  like: number,
+  likeCount: number,
+  price: number,
   status: number,
   subTitle: string,
-  timestamp: string,
   title: string
 }
 
@@ -32,8 +39,20 @@ export interface IQueryList {
 
 export interface IFoodListItem {
   brief: string,
-  time: string,
-  pic: string,
-  title: string,
-  url: string
+  canteenAddress: string,
+  date: string,
+  dateFoodId: number,
+  foodId: number,
+  name: string,
+  price: string,
+  thumbnail: string,
+}
+
+export interface IUser {
+  id: number,
+  account: string,
+  email: string,
+  nick_name: string,
+  profile_img: string,
+  gender: string,
 }
