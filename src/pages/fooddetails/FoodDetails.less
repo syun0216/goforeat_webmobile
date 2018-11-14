@@ -28,6 +28,9 @@
       margin: 0;
       font-size: 1.3em;
       color: @default_font;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     span {
       color: @default_font;
@@ -65,5 +68,13 @@
     color: #ccc;
     text-align: left;
     margin: 0;
+  }
+  .footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    background: #fff;
   }
 }

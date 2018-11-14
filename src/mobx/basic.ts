@@ -4,11 +4,20 @@ import { IUser } from "../interfaces/server";
 
 export default class Basic {
   @observable
-  public loading: boolean;
-  @observable
   public bottomLoadingStatus: boolean;
   @observable
   public user: IUser;
+  @observable 
+  public values: {
+    pageLoading: true,
+    postRequesting: false
+  }
+  
+
+  @action.bound
+  public errorHandler(err: any) {
+    console.log(err);
+  }
 
   /**
    *

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import {Switch,Route,BrowserRouter,Redirect} from 'react-router-dom';
 import asyncComponent from './asyncComponent';
+//hoc
+import BasicHOC from '../components/HOC/BasicHOC';
 //utils
 import { isAuth } from '../utils/auth';
-//views
+//pages
 const FOODDETAILS = asyncComponent(() => import("../pages/fooddetails/FoodDetails"));
 const FOODLIST = asyncComponent(() => import("../pages/foodslist/FoodList"))
 const LOGIN = asyncComponent(() => import("../pages/login/Login"));
 const MYORDER = asyncComponent(() => import("../pages/myOrder/MyOrder"));
+
 
 interface Props {
   Component: typeof Component,
@@ -27,10 +30,10 @@ export default class RouteConfig extends Component {
       <BrowserRouter>
         <Route render={() => (
           <Switch>
-            <Route path="/" exact component={FOODLIST} />
-            <Route path="/foodDetails/:dateFoodId" component={FOODDETAILS} />
-            <Route path="/login" component={LOGIN} />
-            <Route path="/myOrder" component={MYORDER}/>
+            <Route path="/" exact component={BasicHOC(FOODLIST)} />
+            <Route path="/foodDetails/:dateFoodId" component={BasicHOC(FOODDETAILS)} />
+            <Route path="/login" component={BasicHOC(LOGIN)} />
+            <Route path="/myOrder" component={BasicHOC(MYORDER)}/>
           </Switch>
           )
         }/>

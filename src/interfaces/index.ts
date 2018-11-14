@@ -1,10 +1,23 @@
-import { FoodDetailsMobx } from '../mobx/rootStore';
-import { FoodListMobx } from '../mobx/rootStore';
-
+import { FoodDetailsMobx } from "../mobx/rootStore";
+import { FoodListMobx } from "../mobx/rootStore";
 
 /**
  * 模块页面props接口 -----------------------------------------------------
  */
+
+/**
+ * 基础接口
+ *
+ * @interface IBasic
+ */
+interface IBasic {
+  hideLoading: () => {};
+  showRequesting: () => {};
+  hideRequesting: () => {};
+  history: any,
+  location: any,
+  match: any
+}
 
 /**
  * foodlist 接口
@@ -12,8 +25,8 @@ import { FoodListMobx } from '../mobx/rootStore';
  * @export
  * @interface IFoodList
  */
-export interface IFoodList {
-  foodListMobx: FoodListMobx
+export interface IFoodList extends IBasic {
+  foodListMobx: FoodListMobx;
 }
 
 /**
@@ -22,6 +35,6 @@ export interface IFoodList {
  * @export
  * @interface IFoodDetails
  */
-export interface IFoodDetails {
-  foodDetailsMobx: FoodDetailsMobx
+export interface IFoodDetails extends IBasic {
+  foodDetailsMobx: FoodDetailsMobx;
 }
