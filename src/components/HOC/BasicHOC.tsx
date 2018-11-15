@@ -64,6 +64,8 @@ class extends Component<any, any> {
           <MyLoader />  
           <MyLoader />  
           <MyLoader />  
+          <MyLoader />  
+          <MyLoader />  
         </div>
       </div>
     )
