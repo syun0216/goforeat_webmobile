@@ -146,10 +146,11 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   private _renderBottomConfirm() {
     return (
       <div className="footer">
-        <Flex justify="between">
-          <span>HKD 123</span>
-          <Button type="warning" inline size="small" style={{ borderRadius: '15px',background: '#d93a49' }}>立即下單</Button>
-        </Flex>
+        <div>
+          <span>HKD</span>
+          <span>123</span>
+        </div>
+        <Button type="warning" inline size="small" style={{ borderRadius: '15px',background: '#d93a49' }}>立即下單</Button>
       </div>
     )
   }
