@@ -31,7 +31,7 @@ public loginToken: string = ''
 @action.bound
 public async getCode() {
     try {
-        const result = await getCode(this.mobile, this.type);
+        const result = await getCode(this.mobile, this.type + 1);
         console.log(result)
         this.loginToken = result.data.token;
         localStorage.setItem('login-token', result.data.token);
