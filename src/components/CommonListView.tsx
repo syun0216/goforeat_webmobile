@@ -12,5 +12,5 @@ interface ICommonListView {
 }
 
 export default class CommonListView extends React.Component<ICommonListView,{}> {
-
+  
 }
