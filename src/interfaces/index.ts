@@ -1,5 +1,4 @@
-import { FoodDetailsMobx } from "../mobx/rootStore";
-import { FoodListMobx } from "../mobx/rootStore";
+import { FoodDetailsMobx, FoodListMobx, CommonListViewMobx } from "../mobx/rootStore";
 
 /**
  * 模块页面props接口 -----------------------------------------------------
@@ -37,4 +36,8 @@ export interface IFoodList extends IBasic {
  */
 export interface IFoodDetails extends IBasic {
   foodDetailsMobx: FoodDetailsMobx;
+}
+
+export interface ICommonListView extends IBasic {
+  commonListViewMobx: CommonListViewMobx
 }

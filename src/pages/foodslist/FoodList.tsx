@@ -49,7 +49,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     } = this.props.foodListMobx;
     return (
       <div className="food-list-container">
-        <Drawer
+        {/* <Drawer
           className="my-drawer"
           style={{ minHeight: COMPONENT_HEIGHT }}
           enableDragHandle
@@ -60,11 +60,11 @@ export default class FoodList extends React.Component<IFoodList, {}> {
           onOpenChange={toggleDrawer}
           touch={false}
         >
-          {this._renderHeader()}
-          {isQueryListShow ? this._renderQueryListView() : null}
-          {isPlaceMenuShow ? this._renderMenuView() : null}
-          {this._renderFoodListView()}
-        </Drawer>
+        </Drawer> */}
+        {this._renderHeader()}
+        {isQueryListShow ? this._renderQueryListView() : null}
+        {isPlaceMenuShow ? this._renderMenuView() : null}
+        {this._renderFoodListView()}
       </div>
     );
   }
@@ -158,9 +158,9 @@ export default class FoodList extends React.Component<IFoodList, {}> {
           style: { padding: "0 7.5px" },
           text: queryList[0].title
         }}
-        mode="closable"
+        // mode="closable"
         icon={<i className="fas fa-bell" />}
-        onClick={() => console.log(123)}
+        onClick={() => this.props.history.push('/content', {data: queryList[0]})}
       >
         {queryList[0].title}
       </NoticeBar>
@@ -203,8 +203,14 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         dataSource={foodList}
         pageSize={5}
         useBodyScroll
-        scrollEventThrottle={500}
+        onScroll={() => { console.log('scroll'); }}
+        renderHeader={() => (<span>精选菜单</span> )}
         renderRow={this._renderFoodListItem}
+        renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
+          Loading...
+        </div>)}
+        onEndReachedThreshold={10}
+        onEndReached={() => console.log(123)}
         renderSeparator={(sectionID, rowID) => (
           <Divider key={rowID} bgColor="transparent" height="10px" />
         )}
