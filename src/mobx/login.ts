@@ -22,17 +22,17 @@ export default class LoginMobx {
 @observable public type: number = this.BUTTONS.indexOf('HK +852')
 // type 手机类型 HK: 1 CHN: 2
 
-@observable public mobile: string
-
-@observable public loginInfo: ILoginInfo = {
-    phoneNumer: 0,
-    validateCode: 0
-}
+@observable public mobile: string = ''
 
 @action.bound
-public async getCode(mobile: string, type: number) {
-    const code = await getCode(mobile, type);
-    console.log(code)
+public async getCode() {
+    console.log(this.mobile)
+    try {
+        const code = await getCode(this.mobile, this.type);
+        console.log(code)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 @action.bound
@@ -43,8 +43,13 @@ public showActionSheet = () => {
         message: '選擇電話類型',
         maskClosable: true,
     }, buttonIndex => {
-        this.type = buttonIndex + 1
+        this.type = buttonIndex
     })
+}
+
+@action.bound
+public setMobile(mobile: string) {
+    this.mobile = mobile
 }
 
 

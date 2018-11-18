@@ -24,19 +24,22 @@ const styles = {
 }
 @inject("basicMobx")
 @inject("LoginMobx")
-@observer
-export default class Login extends React.PureComponent<ILogin, {}> {
+@observer 
+export default class Login extends React.Component<ILogin, {}> {
 
   constructor(props: ILogin) {
     super(props)
   }
 
-  // public async componentDidMount() {
-  //   const { getCode } = this.props.LoginMobx;
+  
+
+  // public inputOnChange(e: any):void {
+  //   const { setMobile } = this.props.LoginMobx;
+  //   setMobile(e.target.value)
   // }
 
   public render() {
-    const { getCode, showActionSheet, type, mobile, BUTTONS } = this.props.LoginMobx;
+    const { getCode, showActionSheet, type, mobile, BUTTONS, setMobile } = this.props.LoginMobx;
     return (
       <div>
         <div className="title" style={styles.title}>
@@ -50,16 +53,16 @@ export default class Login extends React.PureComponent<ILogin, {}> {
             <div className="main-container-input-group">
               <div className="main-container-input">
                 {GenerateIcon(phone, 'phone', 'main-container-icon')}
-                <span className="main-container-input-text" onClick={() => showActionSheet}>
+                <span className="main-container-input-text" onClick={() => showActionSheet()}>
                   {BUTTONS[type]}
                 </span>
                 <i className="fas fa-angle-down main-container-arrow" />
-                <input type="text" placeholder="請輸入手機號" className="main-container-transparent" value={mobile}/>
+                <input type="text" placeholder="請輸入手機號" className="main-container-transparent" defaultValue={mobile} onChange={e => {setMobile(e.target.value)}}/>
               </div>
               <div className="main-container-input">
                 {GenerateIcon(password, 'phone', 'main-container-icon')}
                 <input type="text" placeholder="請輸入驗證碼" className="main-container-transparent"/>
-                <div className="validate-code" onClick={() => getCode(mobile, type)}>
+                <div className="validate-code" onClick={() => getCode()}>
                   <span>
                     點擊發送
                   </span>
