@@ -32,7 +32,9 @@ export default class Login extends React.Component<ILogin, {}> {
     super(props)
   }
 
-  
+  public componentDidMount() {
+    this.props.hideLoading();
+  }
 
   // public inputOnChange(e: any):void {
   //   const { setMobile } = this.props.LoginMobx;
@@ -40,7 +42,7 @@ export default class Login extends React.Component<ILogin, {}> {
   // }
 
   public render() {
-    const { getCode, showActionSheet, type, mobile, BUTTONS, setMobile, login, code, setCode } = this.props.LoginMobx;
+    const { getCode, showActionSheet, type, mobile, BUTTONS, setMobile, login, code, setCode, sendCode } = this.props.LoginMobx;
     return (
       <div>
         <div className="title" style={styles.title}>
@@ -68,7 +70,7 @@ export default class Login extends React.Component<ILogin, {}> {
                 <input type="text" placeholder="請輸入驗證碼" className="main-container-transparent" defaultValue={code} onChange={e => {setCode(e.target.value)}}/>
                 <div className="validate-code" onClick={() => getCode()}>
                   <span>
-                    點擊發送
+                    {sendCode}
                   </span>
                 </div>
               </div>

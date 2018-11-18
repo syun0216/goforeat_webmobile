@@ -47,6 +47,6 @@ export interface IFoodDetails extends IBasic {
  * @export
  * @interface ILogin
  */
-export interface ILogin {
+export interface ILogin extends IBasic {
   LoginMobx: LoginMobx
 }

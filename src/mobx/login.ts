@@ -2,18 +2,9 @@ import { observable, action, computed } from 'mobx';
 //api
 import { getCode, checkCode } from '../api/request';
 //api interface
-import { ILoginInfo } from '../interfaces/server';
+
 // antd-mobile
-import { ActionSheet } from 'antd-mobile';
-
-const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent);
-let wrapProps;
-if (isIPhone) {
-  wrapProps = {
-    onTouchStart: (e: any) => e.preventDefault(),
-  };
-}
-
+import { ActionSheet, Toast } from 'antd-mobile';
 
 export default class LoginMobx {
 
@@ -26,17 +17,33 @@ export default class LoginMobx {
 
 @observable public code: string = ''
 
-public loginToken: string = ''
+@observable public n: number = 60; //倒計時的秒數
+
+private loginToken: string = ''
+
+private interval: any;
 
 @action.bound
 public async getCode() {
     try {
         const result = await getCode(this.mobile, this.type + 1);
-        console.log(result)
-        this.loginToken = result.data.token;
-        localStorage.setItem('login-token', result.data.token);
+        if(result.data!.token) {
+            Toast.info('驗證碼發送成功', 1);
+            this.loginToken = result.data.token;
+            localStorage.setItem('login-token', result.data.token);
+            this.interval = setInterval(() => {
+                this.n = this.n - 1
+                if(this.n === 0) {
+                    clearInterval(this.interval)
+                    this.n = 60
+                }
+            }, 1000)
+        } else {
+            Toast.info('驗證碼發送失敗', 1);
+        }
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        Toast.info('驗證碼發送失敗', 1);
     }
 }
 
@@ -49,9 +56,15 @@ public async login() {
             this.loginToken,
             this.code
         )
-        console.log(result)
+        if(result.data!) {
+            localStorage.setItem('userInfo', result.data)
+            Toast.info('登錄成功', 1);
+        } else {
+            Toast.info('登錄失敗，請稍後再試', 1);
+        }
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        Toast.info('登錄失敗，請稍後再試', 1);
     }
 }
 
@@ -75,6 +88,15 @@ public setMobile(mobile: string) {
 @action.bound
 public setCode(code: string) {
     this.code = code
+}
+
+@computed
+public get sendCode(): string {
+    if(this.n === 60) {
+        return '點擊發送'
+    } else {
+        return `${this.n}秒后重新發送`
+    }
 }
 
 }
