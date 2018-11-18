@@ -56,3 +56,8 @@ export interface IUser {
   profile_img: string,
   gender: string,
 }
+
+export interface ILoginInfo {
+  phoneNumer: number,
+  validateCode: number
+}
