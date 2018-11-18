@@ -23,8 +23,9 @@ const order = require("@/assets/order.png");
 const paytype = require("@/assets/payment.png");
 const setting = require("@/assets/setting.png");
 const topLogo = require("@/assets/logoTop.png");
+const avatar = require("@/assets/avatar.png");
 
-const COMPONENT_HEIGHT: number = document.documentElement.clientHeight;
+const COMPONENT_HEIGHT: number = document.documentElement!.clientHeight;
 
 @inject("foodListMobx")
 @observer
@@ -135,7 +136,20 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     return (
       <div>
         <div className="sidebar-top">
-          {GenerateIcon(topLogo, "topLogo", "sidebar-top-img")}
+          {GenerateIcon(avatar, "avatar", "sidebar-top-img")}
+          <div className="sidebar-top-text-container">
+            <span className="sidebar-top-text biggerFont">
+              日日有得食
+            </span>
+            <Link to="/login">
+              <span className="sidebar-top-text">
+                立即登錄
+              </span>
+            </Link>
+          </div>
+          <div className="sidebar-top-login">
+            <i className="fas fa-angle-right sidebar-top-login-arrow" />
+          </div>
         </div>
         {_drawerList.map((item, key) => (
           <List.Item key={key} multipleLine thumb={item.icon}>
