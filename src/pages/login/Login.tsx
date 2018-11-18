@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 //style
 import "./Login.less"
 
@@ -39,11 +40,14 @@ export default class Login extends React.Component<ILogin, {}> {
   // }
 
   public render() {
-    const { getCode, showActionSheet, type, mobile, BUTTONS, setMobile } = this.props.LoginMobx;
+    const { getCode, showActionSheet, type, mobile, BUTTONS, setMobile, login, code, setCode } = this.props.LoginMobx;
     return (
       <div>
         <div className="title" style={styles.title}>
-          {GenerateIcon(logoTop, 'logoTop', 'title-logo-top')}          
+          <Link to="/">
+            <i className="fas fa-angle-left title-top-left fa-2x" />
+          </Link>
+          {GenerateIcon(logoTop, 'logoTop', 'title-logo-top')}
         </div>
         <div className="main">
           <div className="main-container">
@@ -61,7 +65,7 @@ export default class Login extends React.Component<ILogin, {}> {
               </div>
               <div className="main-container-input">
                 {GenerateIcon(password, 'phone', 'main-container-icon')}
-                <input type="text" placeholder="請輸入驗證碼" className="main-container-transparent"/>
+                <input type="text" placeholder="請輸入驗證碼" className="main-container-transparent" defaultValue={code} onChange={e => {setCode(e.target.value)}}/>
                 <div className="validate-code" onClick={() => getCode()}>
                   <span>
                     點擊發送
@@ -72,7 +76,7 @@ export default class Login extends React.Component<ILogin, {}> {
           </div>
           <div className="main-button-area">
               <div className="main-button">
-                <span className="main-button-text">登入/註冊</span>
+                <span className="main-button-text" onClick={login}>登入/註冊</span>
               </div>
           </div>
         </div>
