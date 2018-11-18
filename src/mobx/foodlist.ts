@@ -25,7 +25,6 @@ export default class FoodListMobx {
 
   @action.bound
   public toggleDrawer():void {
-    console.log(this);
     this.values.isDrawerShow = !this.values.isDrawerShow;
   }
 
@@ -49,7 +48,6 @@ export default class FoodListMobx {
       this.getFoodList(0, data[0].id);
     }catch(e) {
       console.log(e);
-      throw e;
     }
   }
 
