@@ -8,13 +8,27 @@ import { LoginMobx }  from '../mobx/rootStore'
  */
 
 /**
+ * 基础接口
+ *
+ * @interface IBasic
+ */
+interface IBasic {
+  hideLoading: () => {};
+  showRequesting: () => {};
+  hideRequesting: () => {};
+  history: any,
+  location: any,
+  match: any
+}
+
+/**
  * foodlist 接口
  *
  * @export
  * @interface IFoodList
  */
-export interface IFoodList {
-  foodListMobx: FoodListMobx
+export interface IFoodList extends IBasic {
+  foodListMobx: FoodListMobx;
 }
 
 /**
@@ -23,12 +37,12 @@ export interface IFoodList {
  * @export
  * @interface IFoodDetails
  */
-export interface IFoodDetails {
+export interface IFoodDetails extends IBasic {
   foodDetailsMobx: FoodDetailsMobx
 }
 
 /**
- * fooddetails 接口
+ * login 接口
  *
  * @export
  * @interface ILogin

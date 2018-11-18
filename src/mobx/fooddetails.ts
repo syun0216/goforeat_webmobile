@@ -1,28 +1,20 @@
 import { observable, action, computed } from 'mobx';
 //api
-import { getDailyFoods, queryList } from '../api/request';
+import { getDailyFoods } from '../api/request';
 //api interface
-import { IDailyFood, IQueryList } from '../interfaces/server'; 
+import { IDailyFood } from '../interfaces/server'; 
 
 
 export default class FoodDetailsMobx {
   @observable public foodDetails: IDailyFood;
-  
-  @observable public queryList: IQueryList[];
   @observable public values = {
     selectedTab: 'Daily',
-    foodCount: 1,
-    isQueryListShow: false
+    foodCount: 1
   }
 
   @action.bound 
   public setTab(tab: string) {
     this.values.selectedTab = tab;
-  }
-
-  @action.bound
-  public closeQueryList():void {
-    this.values.isQueryListShow = false;
   }
 
   @action.bound
@@ -41,15 +33,6 @@ export default class FoodDetailsMobx {
     }
   }
 
-  @action.bound
-  public async getQueryList() {
-    try {
-      const {data} = await queryList();
-      this.queryList = data;
-      this.values.isQueryListShow = true;
-    }catch(e) {
-      console.log(e);
-    }
-  }
+  
 
 }

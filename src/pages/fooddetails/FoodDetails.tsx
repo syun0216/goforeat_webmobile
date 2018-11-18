@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Menu,
-  ActivityIndicator,
-  WhiteSpace,
-  Stepper,
-  WingBlank,
-  NoticeBar,
-} from "antd-mobile";
+import { WhiteSpace, Stepper, WingBlank, Flex, Button } from "antd-mobile";
 //style
 import "./FoodDetails.less";
 //mobx
@@ -18,7 +11,7 @@ import { IDailyFood } from "../../interfaces/server";
 import CommonHeader from "../../components/CommonHeader";
 import GenerateIcon from "../../components/GenerateIcon";
 //utils
-import { isEmpty, endDate } from "../../utils/common";
+import { isEmpty } from "../../utils/common";
 
 const HAS_FOODS: number = 1;
 const NO_MORE_FOODS: number = 2;
@@ -27,24 +20,24 @@ const IS_INTERCEPT: number = 3;
 @inject("basicMobx")
 @inject("foodDetailsMobx")
 @observer
-export default class FoodDetails extends React.Component<any, {}> {
-  constructor(props: any) {
+export default class FoodDetails extends React.Component<IFoodDetails, {}> {
+  constructor(props: IFoodDetails) {
     super(props);
     console.log(props);
   }
 
   public async componentDidMount() {
     const { getDailyFoods } = this.props.foodDetailsMobx;
-    const {dateFoodId} = this.props.match.params;
+    const { dateFoodId } = this.props.match.params;
     await getDailyFoods(dateFoodId);
+    this.props.hideLoading();
   }
-
 
   public render() {
     return (
-      <div className="app homepage-container">
-        { this._renderHeader() }
-        { this._renderContentView() }
+      <div className="homepage-container">
+        {this._renderHeader()}
+        {this._renderContentView()}
       </div>
     );
   }
@@ -74,31 +67,10 @@ export default class FoodDetails extends React.Component<any, {}> {
           <WhiteSpace />
           {this._renderAddOrRemoveView(foodDetails)}
           <WhiteSpace />
-          {this._renderDeadlineView(foodDetails)}
+          {this._renderBottomConfirm()}
           <WhiteSpace />
         </div>
       </WingBlank>
-    );
-  }
-
-  private _renderQueryListView() {
-    const { queryList } = this.props.homePageMobx;
-    if (isEmpty(queryList)) {
-      return null;
-    }
-    return (
-      <NoticeBar
-        marqueeProps={{
-          loop: true,
-          style: { padding: "0 7.5px" },
-          text: queryList[0].title
-        }}
-        mode="closable"
-        icon={<i className="fas fa-bell" />}
-        onClick={() => console.log(123)}
-      >
-        {queryList[0].title}
-      </NoticeBar>
     );
   }
 
@@ -142,10 +114,7 @@ export default class FoodDetails extends React.Component<any, {}> {
   }
 
   private _renderAddOrRemoveView(data: IDailyFood) {
-    const {
-      status,
-      price
-    } = data;
+    const { status, price } = data;
     const {
       values: { foodCount },
       addOrRemove
@@ -174,8 +143,15 @@ export default class FoodDetails extends React.Component<any, {}> {
     );
   }
 
-  private _renderDeadlineView(data: IDailyFood) {
-    const {subTitle} = data;
-    return <p className="deadline">{subTitle}</p>;
+  private _renderBottomConfirm() {
+    return (
+      <div className="footer">
+        <div>
+          <span>HKD</span>
+          <span>123</span>
+        </div>
+        <Button type="warning" inline size="small" style={{ borderRadius: '15px',background: '#d93a49' }}>立即下單</Button>
+      </div>
+    )
   }
 }

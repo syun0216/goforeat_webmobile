@@ -20,10 +20,6 @@
     "no-var-requires": false,
     "object-shorthand": [false],
     "interface-name": [false, "never-prefix"],
-    "variable-name":[true,
-      "check-format",
-      "allow-leading-underscore",
-      "allow-trailing-underscore",
-      "ban-keywords"]
+    "variable-name":[false]
   }
 }
