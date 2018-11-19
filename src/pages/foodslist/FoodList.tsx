@@ -70,6 +70,50 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     );
   }
 
+  private _renderHeaderBeforeLogin() {
+    return (
+      <div className="sidebar-top">
+          {GenerateIcon(avatar, "avatar", "sidebar-top-img")}
+          <div className="sidebar-top-text-container">
+            <span className="sidebar-top-text biggerFont">
+              日日有得食
+            </span>
+            <Link to="/login">
+              <span className="sidebar-top-text">
+                立即登錄
+              </span>
+            </Link>
+          </div>
+          <div className="sidebar-top-login">
+            <i className="fas fa-angle-right sidebar-top-login-arrow" />
+          </div>
+        </div>
+    )
+  }
+
+  private _readerHeaderAfterLogin() {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo')!);
+    const { account, nickName, profileImg} = userInfo;
+    return (
+      <div className="sidebar-top">
+          {GenerateIcon(profileImg, "avatar", "sidebar-top-img-round")}
+          <div className="sidebar-top-text-container close">
+            <span className="sidebar-top-text">
+              {account}
+            </span>
+            <span className="sidebar-top-text">
+              {nickName}
+            </span>
+            <span className="sidebar-top-text yellow" onClick={() => {
+              this.props.history.push('/editInfo')
+            }}>
+              去更改
+            </span>
+          </div>
+        </div>
+    )
+  }
+
   private _renderHeader() {
     const {
       toggleDrawer,
@@ -116,6 +160,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
   }
 
   private _renderSidebarView() {
+    const infoFlag = localStorage.getItem('userInfo')!; //判断localStorage有没有userInfo
     const _drawerList = [
       {
         name: "我的訂單",
@@ -135,22 +180,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     ];
     return (
       <div>
-        <div className="sidebar-top">
-          {GenerateIcon(avatar, "avatar", "sidebar-top-img")}
-          <div className="sidebar-top-text-container">
-            <span className="sidebar-top-text biggerFont">
-              日日有得食
-            </span>
-            <Link to="/login">
-              <span className="sidebar-top-text">
-                立即登錄
-              </span>
-            </Link>
-          </div>
-          <div className="sidebar-top-login">
-            <i className="fas fa-angle-right sidebar-top-login-arrow" />
-          </div>
-        </div>
+        {infoFlag ? this._readerHeaderAfterLogin() : this._renderHeaderBeforeLogin()}
         {_drawerList.map((item, key) => (
           <List.Item key={key} multipleLine thumb={item.icon}>
             {item.name}

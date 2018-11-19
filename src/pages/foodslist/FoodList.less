@@ -30,6 +30,11 @@
     .sidebar-top-img{
       width: 6em;
     }
+    .sidebar-top-img-round{
+      width: 6em;
+      height: 6em;
+      border-radius: 3em;
+    }
     .sidebar-top-text-container {
       display: flex;
       flex-direction: column;
@@ -37,14 +42,20 @@
       height: 6em;
       padding-left: .1em;
       flex: 1.2;
+      &.close {
+        height: 4em;
+        padding-left: .5em
+      } 
       .sidebar-top-text {
         color: #FFFFFF;
         display: block;
         &.biggerFont {
           font-size: 1.5em;
         }
+        &.yellow {
+          color: yellow
+        }
       }
-      
     }
     .sidebar-top-login {
       flex-direction: row;

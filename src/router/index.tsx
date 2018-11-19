@@ -10,6 +10,8 @@ const FOODDETAILS = asyncComponent(() => import("../pages/fooddetails/FoodDetail
 const FOODLIST = asyncComponent(() => import("../pages/foodslist/FoodList"))
 const LOGIN = asyncComponent(() => import("../pages/login/Login"));
 const MYORDER = asyncComponent(() => import("../pages/myOrder/MyOrder"));
+const EDITINFO = asyncComponent(() => import("../pages/editInfo/EditInfo"));
+
 
 
 interface Props {
@@ -34,6 +36,7 @@ export default class RouteConfig extends Component {
             <Route path="/foodDetails/:dateFoodId" component={BasicHOC(FOODDETAILS)} />
             <Route path="/login" component={BasicHOC(LOGIN)} />
             <Route path="/myOrder" component={BasicHOC(MYORDER)}/>
+            <Route path="/editInfo" component={BasicHOC(EDITINFO)}/>
           </Switch>
           )
         }/>
