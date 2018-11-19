@@ -15,7 +15,7 @@ const rootStore = {
   basicMobx: new BasicMobx(),
   foodDetailsMobx: new FoodDetailsMobx(),
   foodListMobx: new FoodListMobx(),
-  CommonListViewMobx: new CommonListViewMobx(),
+  commonListViewMobx: new CommonListViewMobx(),
   LoginMobx: new LoginMobx()
 }
 
