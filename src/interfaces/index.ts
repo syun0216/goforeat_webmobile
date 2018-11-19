@@ -49,6 +49,6 @@ export interface ILogin extends IBasic{
   LoginMobx: LoginMobx
 }
 
-export interface ICommonListView extends IBasic {
-  commonListViewMobx: CommonListViewMobx
+export interface ICommonListView {
+  commonListViewMobx?: CommonListViewMobx
 }
