@@ -48,7 +48,7 @@ public async getCode() {
 }
 
 @action.bound
-public async login() {
+public async login(callback: any) {
     try {
         const result = await checkCode(
             this.mobile,
@@ -57,8 +57,9 @@ public async login() {
             this.code
         )
         if(result.data!) {
-            localStorage.setItem('userInfo', result.data)
+            localStorage.setItem('userInfo', JSON.stringify(result.data))
             Toast.info('登錄成功', 1);
+            callback()
         } else {
             Toast.info('登錄失敗，請稍後再試', 1);
         }

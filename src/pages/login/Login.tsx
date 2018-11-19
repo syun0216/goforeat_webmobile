@@ -78,7 +78,11 @@ export default class Login extends React.Component<ILogin, {}> {
           </div>
           <div className="main-button-area">
               <div className="main-button">
-                <span className="main-button-text" onClick={login}>登入/註冊</span>
+                <span className="main-button-text" onClick={() => {
+                  login(() => {
+                    this.props.history.push('/') // 回调函数，返回到首页
+                  })
+                }}>登入/註冊</span>
               </div>
           </div>
         </div>
