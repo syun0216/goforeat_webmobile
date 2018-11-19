@@ -61,6 +61,7 @@
     background: white;
     width: 100%;
     z-index: 10;
+    top: 48px;
     .dropdown-item {
       display: flex;
       padding: 1em;
@@ -81,6 +82,8 @@
   .food-list-view {
     background: transparent;
     margin:10px;
+    // position: absolute;
+    // top: 48px;
   }
   .food-list-item{
     background: @bg_white;
@@ -99,13 +102,13 @@
     .item-details {
       display: flex;
       flex: 1;
-      padding: 8px;
+      padding: 10px;
       flex-direction: column;
       justify-content: space-around;
     }
     .item-container{
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       .item-foodname {
         font-size: 16px;
         color: #111111;

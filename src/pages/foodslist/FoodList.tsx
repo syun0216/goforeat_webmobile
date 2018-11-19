@@ -1,6 +1,8 @@
 import React from "react";
 import { Drawer, List, ListView, NoticeBar } from "antd-mobile";
 import { Link } from "react-router-dom";
+//api
+import { getFoodList } from '../../api/request';
 //style
 import "./FoodList.less";
 //interface
@@ -11,6 +13,7 @@ import { observer, inject } from "mobx-react";
 //components
 import CommonHeader from "../../components/CommonHeader";
 import GenerateIcon from "../../components/GenerateIcon";
+import CommonListView from "../../components/CommonListView";
 import Divider from "../../components/Divider";
 //utils
 import { isEmpty } from "../../utils/common";
@@ -28,6 +31,7 @@ const avatar = require("@/assets/avatar.png");
 const COMPONENT_HEIGHT: number = document.documentElement!.clientHeight;
 
 @inject("foodListMobx")
+@inject("commonListViewMobx")
 @observer
 export default class FoodList extends React.Component<IFoodList, {}> {
   private offset: number = 0;
@@ -61,6 +65,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
           onOpenChange={toggleDrawer}
           touch={false}
         >
+          123
         </Drawer> */}
         {this._renderHeader()}
         {isQueryListShow ? this._renderQueryListView() : null}
@@ -189,7 +194,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     const { thumbnail, name, brief, price, date, dateFoodId } = rowData;
     const _brief = brief.split("").join(" ");
     return (
-      <Link to={`/foodDetails/${dateFoodId}`}>
+      <Link key={rowID} to={`/foodDetails/${dateFoodId}`}>
         <div className="food-list-item">
           {GenerateIcon(thumbnail, "thumbnail", "item-thumbnail")}
           <div className="item-details">
@@ -209,26 +214,11 @@ export default class FoodList extends React.Component<IFoodList, {}> {
   }
 
   private _renderFoodListView() {
-    const { foodList } = this.props.foodListMobx;
-    return (
-      <ListView
-        ref={el => (this._listView = el)}
-        className="food-list-view"
-        dataSource={foodList}
-        pageSize={5}
-        useBodyScroll
-        onScroll={() => { console.log('scroll'); }}
-        renderHeader={() => (<span>精选菜单</span> )}
-        renderRow={this._renderFoodListItem}
-        renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-          Loading...
-        </div>)}
-        onEndReachedThreshold={10}
-        onEndReached={() => console.log(123)}
-        renderSeparator={(sectionID, rowID) => (
-          <Divider key={rowID} bgColor="transparent" height="10px" />
-        )}
-      />
-    );
+    const { values: { currentPlace } } = this.props.foodListMobx;
+    if(currentPlace.id === 1) {
+      return null;
+    }
+    const Header = (<span style={{display:'inline-block',padding:'5px 0 10px'}}>精選菜單</span>);
+    return <CommonListView requestFunc={getFoodList} renderHeader={() => Header} renderItem={this._renderFoodListItem} isItemSeparatorShow extraParams={{placeId: currentPlace.id}}/>
   }
 }

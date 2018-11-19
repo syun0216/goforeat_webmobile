@@ -32,7 +32,9 @@ export default class Login extends React.Component<ILogin, {}> {
     super(props)
   }
 
-  
+  public componentDidMount() {
+    this.props.hideLoading();
+  }
 
   // public inputOnChange(e: any):void {
   //   const { setMobile } = this.props.LoginMobx;
