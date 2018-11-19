@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action } from 'mobx';
 //api
 import { getFoodList, foodPlaces, queryList } from '../api/request';
 //api interface
@@ -8,14 +8,11 @@ import { ListView } from 'antd-mobile';
 
 
 export default class FoodListMobx {
-  @observable public foodList = new ListView.DataSource({
-    rowHasChanged: (row1:IFoodListItem, row2:IFoodListItem) => row1 !== row2
-  });
   @observable public placeList: IPlaceList[];
   @observable public queryList: IQueryList[];
   @observable public values = {
     currentPlace: {
-      id: 10,
+      id: 1,
       name: '未选择'
     },
     isDrawerShow: false,
@@ -25,7 +22,6 @@ export default class FoodListMobx {
 
   @action.bound
   public toggleDrawer():void {
-    console.log(this);
     this.values.isDrawerShow = !this.values.isDrawerShow;
   }
 
@@ -46,10 +42,8 @@ export default class FoodListMobx {
       const {data} = await foodPlaces();
       this.placeList = data;
       this.values.currentPlace = data[0];
-      this.getFoodList(0, data[0].id);
     }catch(e) {
       console.log(e);
-      throw e;
     }
   }
 
@@ -68,17 +62,5 @@ export default class FoodListMobx {
   public changePlace(item: IPlaceList):void {
     this.values.currentPlace = item;
     this.togglePlaceMenu();
-    this.getFoodList(0, item.id);
-  }
-
-  @action.bound
-  public async getFoodList(offset: number=0, placeId: number) {
-    try {
-      const {data} = await getFoodList(offset, placeId);
-      this.foodList = this.foodList.cloneWithRows(data.list)
-    } catch(e) {
-      console.log(e);
-      throw e;
-    }
   }
 }

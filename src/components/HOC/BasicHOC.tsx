@@ -19,7 +19,7 @@ class extends Component<any, any> {
   }
 
   public componentDidMount() {
-    console.log(999, this.props);
+    // console.log(999, this.props);
   }
 
   public render() {
@@ -33,6 +33,12 @@ class extends Component<any, any> {
   }
 
   //logic functions
+  private showLoading = () => {
+    this.setState({
+      pageLoading: true
+    })
+  }
+
   private hidePageLoading = () => {
     this.setState({
       pageLoading: false
@@ -72,7 +78,8 @@ class extends Component<any, any> {
   }
 
   private _renderEnhancePropsWarppedComponent() {
-    return <WarppedComponent hideLoading={this.hidePageLoading} showRequesting={this.showRequesting} hideRequesting={this.hideReqesting} {...this.props}/>
+    return <WarppedComponent hideLoading={this.hidePageLoading}
+    showLoading={this.showLoading} showRequesting={this.showRequesting} hideRequesting={this.hideReqesting} {...this.props}/>
   }
 }
 
