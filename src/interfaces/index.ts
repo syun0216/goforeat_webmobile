@@ -1,4 +1,4 @@
-import { FoodDetailsMobx, FoodListMobx, CommonListViewMobx } from "../mobx/rootStore";
+import { FoodDetailsMobx, FoodListMobx, CommonListViewMobx, LoginMobx } from "../mobx/rootStore";
 
 /**
  * 模块页面props接口 -----------------------------------------------------
@@ -10,9 +10,10 @@ import { FoodDetailsMobx, FoodListMobx, CommonListViewMobx } from "../mobx/rootS
  * @interface IBasic
  */
 interface IBasic {
-  hideLoading: () => {};
-  showRequesting: () => {};
-  hideRequesting: () => {};
+  showLoading: () => void;
+  hideLoading: () => void;
+  showRequesting: () => void;
+  hideRequesting: () => void;
   history: any,
   location: any,
   match: any
@@ -35,7 +36,17 @@ export interface IFoodList extends IBasic {
  * @interface IFoodDetails
  */
 export interface IFoodDetails extends IBasic {
-  foodDetailsMobx: FoodDetailsMobx;
+  foodDetailsMobx: FoodDetailsMobx
+}
+
+/**
+ * login 接口
+ *
+ * @export
+ * @interface ILogin
+ */
+export interface ILogin extends IBasic{
+  LoginMobx: LoginMobx
 }
 
 export interface ICommonListView extends IBasic {

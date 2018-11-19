@@ -21,13 +21,40 @@
   }
   .sidebar-top {
     background: @linear;
-    height: 10em;
+    height: 8em;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
+    padding: 1em;
     .sidebar-top-img{
-      width: 15em;
+      width: 6em;
     }
+    .sidebar-top-text-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 6em;
+      padding-left: .1em;
+      flex: 1.2;
+      .sidebar-top-text {
+        color: #FFFFFF;
+        display: block;
+        &.biggerFont {
+          font-size: 1.5em;
+        }
+      }
+      
+    }
+    .sidebar-top-login {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      .sidebar-top-login-arrow {
+        color: #FFFFFF;
+      }
+    }
+    
   }
   .dropdown-menu {
     position: fixed;
