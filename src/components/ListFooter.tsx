@@ -9,31 +9,32 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    background: 'transparent'
   }
 }
 
 interface IListFooter{
   loadingStatus: number,
-  errorToDo: () => {}
+  errorToDo: () => void
 }
 
 const listFooter = ({loadingStatus, errorToDo}: IListFooter) => {
   switch(loadingStatus) {
     case BOTTOM_LOAD_STATUS.LOADING: 
       return (
-        <div className="list-footer-container">
+        <div style={styles.listFooterContainer}>
           <ActivityIndicator text="Loading..."/>
         </div>
       )
     case BOTTOM_LOAD_STATUS.LOAD_FAILED: 
       return (
-        <Button className="list-footer-container" onClick={errorToDo}>
+        <Button style={styles.listFooterContainer} onClick={errorToDo}>
           加載失敗,請點擊重試...
         </Button>
       )
     case BOTTOM_LOAD_STATUS.NO_MORE_DATA: 
       return (
-        <div className="list-footer-container">
+        <div style={styles.listFooterContainer}>
           已全部加載完畢
         </div>
       )
