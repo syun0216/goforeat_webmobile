@@ -42,6 +42,7 @@ export default class CommonListView extends React.Component<ICList, {}> {
 
   constructor(props: ICList) {
     super(props);
+    this.init();
   }
 
   public componentDidMount() {
