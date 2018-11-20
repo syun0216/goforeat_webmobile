@@ -11,6 +11,7 @@ const FOODLIST = asyncComponent(() => import("../pages/foodslist/FoodList"))
 const LOGIN = asyncComponent(() => import("../pages/login/Login"));
 const MYORDER = asyncComponent(() => import("../pages/myOrder/MyOrder"));
 const EDITINFO = asyncComponent(() => import("../pages/editInfo/EditInfo"));
+const CONFIRMORDER = asyncComponent(() => import("../pages/confirmOrder/ConfirmOrder"));
 
 
 
@@ -37,6 +38,7 @@ export default class RouteConfig extends Component {
             <Route path="/login" component={BasicHOC(LOGIN)} />
             <Route path="/myOrder" component={BasicHOC(MYORDER)}/>
             <Route path="/editInfo" component={BasicHOC(EDITINFO)}/>
+            <Route path="/confirmOrder/:dateFoodId" component={BasicHOC(CONFIRMORDER)}/>
           </Switch>
           )
         }/>

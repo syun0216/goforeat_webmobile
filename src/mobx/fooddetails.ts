@@ -33,6 +33,10 @@ export default class FoodDetailsMobx {
     }
   }
 
+  @computed get sum() {
+    return this.values.foodCount * this.foodDetails.price
+  }
+
   
 
 }

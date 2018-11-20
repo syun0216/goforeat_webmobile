@@ -1,4 +1,4 @@
-import { FoodDetailsMobx, FoodListMobx, LoginMobx, EditInfoMobx } from '../mobx/rootStore';
+import { FoodDetailsMobx, FoodListMobx, LoginMobx, EditInfoMobx, ConfirmOrderMobx } from '../mobx/rootStore';
 // import { FoodListMobx } from '../mobx/rootStore';
 // import { LoginMobx }  from '../mobx/rootStore'
 
@@ -53,4 +53,8 @@ export interface ILogin extends IBasic {
 
 export interface IEditInfo extends IBasic {
   EditInfoMobx: EditInfoMobx
+}
+
+export interface IConfirmOrder extends IBasic {
+  ConfirmOrderMobx: ConfirmOrderMobx
 }

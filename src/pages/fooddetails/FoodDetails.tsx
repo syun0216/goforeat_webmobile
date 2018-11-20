@@ -12,6 +12,7 @@ import CommonHeader from "../../components/CommonHeader";
 import GenerateIcon from "../../components/GenerateIcon";
 //utils
 import { isEmpty } from "../../utils/common";
+import { Link } from "react-router-dom";
 
 const HAS_FOODS: number = 1;
 const NO_MORE_FOODS: number = 2;
@@ -144,13 +145,16 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   }
 
   private _renderBottomConfirm() {
+    const { sum, foodDetails } = this.props.foodDetailsMobx
     return (
       <div className="footer">
         <div>
           <span>HKD</span>
-          <span>123</span>
+          <span>&nbsp;{sum}</span>
         </div>
-        <Button type="warning" inline size="small" style={{ borderRadius: '15px',background: '#d93a49' }}>立即下單</Button>
+        <Link to={`/confirmOrder/${foodDetails.dateFoodId}`}>
+          <Button type="warning" inline size="small" style={{ borderRadius: '15px',background: '#d93a49' }}>立即下單</Button>
+        </Link>
       </div>
     )
   }

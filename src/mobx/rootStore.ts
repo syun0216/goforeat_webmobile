@@ -2,13 +2,15 @@ import FoodDetailsMobx from './fooddetails';
 import FoodListMobx from './foodlist';
 import LoginMobx from './login';
 import EditInfoMobx from './editInfo'
+import ConfirmOrderMobx from './confirmOrder'
 import BasicMobx from './basic';
 
 export {
   FoodDetailsMobx,
   FoodListMobx,
   LoginMobx,
-  EditInfoMobx
+  EditInfoMobx,
+  ConfirmOrderMobx
 }
 
 const rootStore = {
@@ -16,7 +18,8 @@ const rootStore = {
   foodDetailsMobx: new FoodDetailsMobx(),
   foodListMobx: new FoodListMobx(),
   LoginMobx: new LoginMobx(),
-  EditInfo: new EditInfoMobx()
+  EditInfoMobx: new EditInfoMobx(),
+  ConfirmOrderMobx: new ConfirmOrderMobx()
 }
 
 export default rootStore;
