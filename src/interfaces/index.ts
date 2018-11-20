@@ -10,10 +10,12 @@ import { FoodDetailsMobx, FoodListMobx, CommonListViewMobx, LoginMobx } from "..
  * @interface IBasic
  */
 interface IBasic {
-  showLoading: () => void;
-  hideLoading: () => void;
-  showRequesting: () => void;
-  hideRequesting: () => void;
+  showLoading: () => void,
+  hideLoading: () => void,
+  showRequesting: () => void,
+  hideRequesting: () => void,
+  showToast: () => void,
+  toggleModal: (val?:boolean, callback?:() => void) => void,
   history: any,
   location: any,
   match: any
