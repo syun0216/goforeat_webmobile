@@ -86,7 +86,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         leftContent={<img className="menu-icon" src={menuIcon} alt="menu" />}
         onLeftClick={toggleDrawer}
       >
-        <span onClick={togglePlaceMenu}>{currentPlace.name}</span>
+        <span onClick={() => {togglePlaceMenu();this.props.toggleModal(true)}}>{currentPlace.name}</span>
         {isPlaceMenuShow ? (
           <i className="fas fa-angle-up icon-arrow" />
         ) : (

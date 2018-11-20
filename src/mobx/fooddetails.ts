@@ -1,28 +1,32 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, decorate } from 'mobx';
 //api
 import { getDailyFoods } from '../api/request';
 //api interface
 import { IDailyFood } from '../interfaces/server'; 
 
 
-export default class FoodDetailsMobx {
-  @observable public foodDetails: IDailyFood;
-  @observable public values = {
+class FoodDetailsMobx {
+  public foodDetails: IDailyFood;
+  public values = {
     selectedTab: 'Daily',
     foodCount: 1
   }
-
-  @action.bound 
+ 
   public setTab(tab: string) {
     this.values.selectedTab = tab;
   }
 
-  @action.bound
-  public addOrRemove(count: number):void {
-    this.values.foodCount = count;
+  public addOrRemove(status: string):void {
+    if(status === 'add') {
+      this.values.foodCount ++ ;
+    } else {
+      if(this.values.foodCount === 1) {
+        return;
+      }
+      this.values.foodCount --;
+    }
   }
 
-  @action.bound
   public async getDailyFoods(dateFoodId: number) {
     try{
       const {data} = await getDailyFoods(dateFoodId);
@@ -32,7 +36,14 @@ export default class FoodDetailsMobx {
       console.log(e);
     }
   }
-
-  
-
 }
+
+decorate(FoodDetailsMobx, {
+  foodDetails: observable,
+  values: observable,
+  setTab: action.bound,
+  addOrRemove: action.bound,
+  getDailyFoods: action.bound 
+});
+
+export default FoodDetailsMobx;
