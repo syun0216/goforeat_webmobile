@@ -16,6 +16,7 @@ const basicHOC = (WarppedComponent: typeof Component) =>
 class extends Component<any, any> {
   public state = {
     pageLoading: true,
+    showModal: false,
   }
 
   public componentDidMount() {
@@ -23,9 +24,10 @@ class extends Component<any, any> {
   }
 
   public render() {
-    const { pageLoading } = this.state;
+    const { pageLoading, showModal } = this.state;
     return (
-      <div className="app">
+      <div className="app" style={showModal? {overflow: 'hidden',height:'92vh'}:{overflow:'auto'}}>
+        { showModal ? this._renderShadeModal() : null }
         { pageLoading ? this._renderIndicator() : null}
         { this._renderEnhancePropsWarppedComponent() }
       </div>
@@ -46,14 +48,21 @@ class extends Component<any, any> {
   }
 
   private showRequesting = () => {
-    this.setState({
-      postRequesting: true
-    })
+    Toast.loading('requesting',0)
   }
 
   private hideReqesting = () => {
+    Toast.hide();
+  }
+
+  private showToast = (type:string = 'info', content='Goforeat') => {
+    const duration = 3;
+    Toast[type](content, duration);
+  }
+
+  private toggleModal = (status:boolean = true) => {
     this.setState({
-      postRequesting: false
+      showModal: status
     })
   }
 
@@ -77,9 +86,20 @@ class extends Component<any, any> {
     )
   }
 
+  private _renderShadeModal() {
+    return (
+      <div className="am-drawer-overlay" onClick={() => this.toggleModal(false)} style={{opacity: 0.4,zIndex: 10,visibility:'visible'}}/>
+    )
+  }
+
   private _renderEnhancePropsWarppedComponent() {
-    return <WarppedComponent hideLoading={this.hidePageLoading}
-    showLoading={this.showLoading} showRequesting={this.showRequesting} hideRequesting={this.hideReqesting} {...this.props}/>
+    return (<WarppedComponent 
+    hideLoading={this.hidePageLoading}
+    showLoading={this.showLoading} 
+    showRequesting={this.showRequesting}
+    hideRequesting={this.hideReqesting} 
+    showToast={this.showToast}
+    toggleModal={this.toggleModal} {...this.props}/>)
   }
 }
 
