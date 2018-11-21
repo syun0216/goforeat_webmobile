@@ -77,7 +77,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
           <WhiteSpace />
           {this._renderAddOrRemoveView(foodDetails)}
           <WhiteSpace />
-          {this._renderBottomConfirm()}
+          {this._renderBottomConfirm(foodDetails)}
           <WhiteSpace />
         </div>
       </WingBlank>
@@ -157,18 +157,19 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
     );
   }
 
-  private _renderBottomConfirm() {
+  private _renderBottomConfirm(data: IDailyFood) {
+    const { values: {foodCount} } = this.props.foodDetailsMobx;
+    const { price } = data;
     return (
       <div className="footer">
         <div>
           <span>HKD</span>
-          <span>123</span>
+          <span className="price">{price*foodCount}</span>
         </div>
         <Button
-          type="warning"
           inline
           size="small"
-          style={{ borderRadius: "15px", background: "#d93a49" }}
+          className="btn"
         >
           立即下單
         </Button>

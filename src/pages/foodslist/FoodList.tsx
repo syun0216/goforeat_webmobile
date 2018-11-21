@@ -14,7 +14,7 @@ import { observer, inject } from "mobx-react";
 import CommonHeader from "../../components/CommonHeader";
 import GenerateIcon from "../../components/GenerateIcon";
 import CommonListView from "../../components/CommonListView";
-import Divider from "../../components/Divider";
+import CommonModal from "../../components/CommonModal";
 //utils
 import { isEmpty } from "../../utils/common";
 //header
@@ -34,8 +34,6 @@ const COMPONENT_HEIGHT: number = document.documentElement!.clientHeight;
 @inject("commonListViewMobx")
 @observer
 export default class FoodList extends React.Component<IFoodList, {}> {
-  private offset: number = 0;
-  private _listView: any;
   constructor(props: IFoodList) {
     super(props);
   }
@@ -86,7 +84,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         leftContent={<img className="menu-icon" src={menuIcon} alt="menu" />}
         onLeftClick={toggleDrawer}
       >
-        <span onClick={() => {togglePlaceMenu();this.props.toggleModal(true)}}>{currentPlace.name}</span>
+        <span onClick={togglePlaceMenu}>{currentPlace.name}</span>
         {isPlaceMenuShow ? (
           <i className="fas fa-angle-up icon-arrow" />
         ) : (
@@ -101,22 +99,25 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     const {
       placeList,
       changePlace,
+      togglePlaceMenu,
       values: { currentPlace }
     } = this.props.foodListMobx;
     if (placeList.length === 0) {
       return null;
     }
     return (
-      <ul className="dropdown-menu">
-        {placeList.map((v, i) => (
-          <li className="dropdown-item" key={i} onClick={() => changePlace(v)}>
-            {v.name}
-            {v.name === currentPlace.name
-              ? GenerateIcon(checkedIcon, "check", "check-icon")
-              : GenerateIcon(uncheckedIcon, "uncheck", "uncheck-icon")}
-          </li>
-        ))}
-      </ul>
+      <CommonModal clickOutSide={() => togglePlaceMenu()}>
+        <ul className="dropdown-menu">
+          {placeList.map((v, i) => (
+            <li className="dropdown-item" key={i} onClick={() => changePlace(v)}>
+              {v.name}
+              {v.name === currentPlace.name
+                ? GenerateIcon(checkedIcon, "check", "check-icon")
+                : GenerateIcon(uncheckedIcon, "uncheck", "uncheck-icon")}
+            </li>
+          ))}
+        </ul>
+      </CommonModal>
     );
   }
 

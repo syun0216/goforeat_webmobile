@@ -84,13 +84,23 @@
   }
   .footer {
     position: fixed;
-    width: 96%;
+    width: -webkit-fill-available;
     bottom: 0;
     left: 0;
-    padding: 2%;
+    padding: 8px 15px;
     background: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .price {
+      font-size: 1.5em;
+      color: @font_red;
+      margin-left: 8px;
+    }
+    .btn {
+      color: @bg_white;
+      border-radius: 15px;
+      background-color: @font_red;
+    }
   }
 }
