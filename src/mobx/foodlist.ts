@@ -1,10 +1,8 @@
 import { observable, action, runInAction, decorate, configure } from 'mobx';
 //api
-import { getFoodList, foodPlaces, queryList } from '../api/request';
+import { foodPlaces, queryList } from '../api/request';
 //api interface
-import { IFoodListItem, IPlaceList, IQueryList } from '../interfaces/server';
-//antd
-import { ListView } from 'antd-mobile';
+import { IPlaceList, IQueryList } from '../interfaces/server';
 
 // configure({enforceActions: "observed"})
 class FoodListMobx {
