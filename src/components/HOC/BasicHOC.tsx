@@ -17,10 +17,16 @@ class extends Component<any, any> {
   public state = {
     pageLoading: true,
     showModal: false,
+    error: null
   }
 
   public componentDidMount() {
     // console.log(999, this.props);
+  }
+
+  public componentDidCatch(error:Error, info:any) {
+    this.setState({error});
+    console.log(123,error);
   }
 
   public render() {

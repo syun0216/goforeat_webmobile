@@ -1,4 +1,4 @@
-import { observable, action, decorate } from 'mobx';
+import { observable, action, decorate, computed } from 'mobx';
 //api
 import { getDailyFoods } from '../api/request';
 //api interface
