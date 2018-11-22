@@ -12,12 +12,18 @@ const basicStyles = {
   }
 };
 
+const hasNoCommonHeader = ['/login'];
+
 const basicHOC = (WarppedComponent: typeof Component) => 
 class extends Component<any, any> {
   public state = {
     pageLoading: true,
     showModal: false,
     error: null
+  }
+
+  public componentDidMount() {
+    console.log(this.props);
   }
 
   public componentDidCatch(error:Error, info:any) {
@@ -27,8 +33,9 @@ class extends Component<any, any> {
 
   public render() {
     const { pageLoading, showModal } = this.state;
+    const { location: { pathname } } = this.props;
     return (
-      <div className="app">
+      <div className={`${hasNoCommonHeader.indexOf(pathname) === -1 ? 'app' : null}`}>
         { showModal ? this._renderShadeModal() : null }
         { pageLoading ? this._renderIndicator() : null}
         { this._renderEnhancePropsWarppedComponent() }
