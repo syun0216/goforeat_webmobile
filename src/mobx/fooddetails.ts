@@ -4,22 +4,20 @@ import { getDailyFoods } from '../api/request';
 //api interface
 import { IDailyFood } from '../interfaces/server'; 
 
+import Basic from './basic'
 
-export default class FoodDetailsMobx {
+
+export default class FoodDetailsMobx extends Basic{
   @observable public foodDetails: IDailyFood;
-  @observable public values = {
-    selectedTab: 'Daily',
-    foodCount: 1
-  }
 
   @action.bound 
   public setTab(tab: string) {
-    this.values.selectedTab = tab;
+    this.foodDetailValues.selectedTab = tab;
   }
 
   @action.bound
   public addOrRemove(count: number):void {
-    this.values.foodCount = count;
+    this.foodDetailValues.foodCount = count;
   }
 
   @action.bound
@@ -34,7 +32,7 @@ export default class FoodDetailsMobx {
   }
 
   @computed get sum() {
-    return this.values.foodCount * this.foodDetails.price
+    return this.foodDetailValues.foodCount * this.foodDetails.price
   }
 
   

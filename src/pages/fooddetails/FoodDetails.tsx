@@ -117,7 +117,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   private _renderAddOrRemoveView(data: IDailyFood) {
     const { status, price } = data;
     const {
-      values: { foodCount },
+      foodDetailValues: { foodCount },
       addOrRemove
     } = this.props.foodDetailsMobx;
     return (

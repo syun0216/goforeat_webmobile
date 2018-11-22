@@ -12,6 +12,11 @@ export default class Basic {
     pageLoading: true,
     postRequesting: false
   }
+
+  @observable public foodDetailValues = {
+    selectedTab: 'Daily',
+    foodCount: 1
+  }
   
 
   @action.bound
