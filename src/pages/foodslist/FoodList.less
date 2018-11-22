@@ -19,6 +19,21 @@
     width: 2em;
     height: 1em;
   }
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 250px;
+    z-index: 999;
+    background: #fff;
+    transition: all .5s;
+    transform: translateX(-250px);
+  }
+  .sidebar-active {
+    transform: translateX(0px);
+  }
   .sidebar-top {
     background: @linear;
     height: 8em;
@@ -28,14 +43,14 @@
     align-items: center;
     padding: 1em;
     .sidebar-top-img{
-      width: 6em;
+      width: 4em;
     }
     .sidebar-top-text-container {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 6em;
-      padding-left: .1em;
+      height: 4em;
+      padding-left: .5em;
       flex: 1.2;
       .sidebar-top-text {
         color: #FFFFFF;

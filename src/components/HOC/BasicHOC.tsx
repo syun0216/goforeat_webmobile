@@ -20,10 +20,6 @@ class extends Component<any, any> {
     error: null
   }
 
-  public componentDidMount() {
-    // console.log(999, this.props);
-  }
-
   public componentDidCatch(error:Error, info:any) {
     this.setState({error});
     console.log(123,error);
@@ -32,7 +28,7 @@ class extends Component<any, any> {
   public render() {
     const { pageLoading, showModal } = this.state;
     return (
-      <div className="app" style={showModal? {overflow: 'hidden',height:'92vh'}:{overflow:'auto'}}>
+      <div className="app">
         { showModal ? this._renderShadeModal() : null }
         { pageLoading ? this._renderIndicator() : null}
         { this._renderEnhancePropsWarppedComponent() }
