@@ -2,7 +2,7 @@ import React from "react";
 import { Drawer, List, ListView, NoticeBar } from "antd-mobile";
 import { Link } from "react-router-dom";
 //api
-import { getFoodList } from '../../api/request';
+import { getFoodList } from "../../api/request";
 //style
 import "./FoodList.less";
 //interface
@@ -48,24 +48,24 @@ export default class FoodList extends React.Component<IFoodList, {}> {
   public render() {
     const {
       values: { isDrawerShow, isPlaceMenuShow, isQueryListShow },
-      toggleDrawer
+      toggleDrawer,
+      togglePlaceMenu
     } = this.props.foodListMobx;
+    const _showModal = isPlaceMenuShow || isDrawerShow;
     return (
-      <div className="food-list-container">
-        {/* <Drawer
-          className="my-drawer"
-          style={{ minHeight: COMPONENT_HEIGHT }}
-          enableDragHandle
-          contentStyle={{ color: "#A6A6A6", textAlign: "center" }}
-          sidebarStyle={{ width: "75%" }}
-          sidebar={this._renderSidebarView()}
-          open={isDrawerShow}
-          onOpenChange={toggleDrawer}
-          touch={false}
-        >
-          123
-        </Drawer> */}
+      <div className={`food-list-container ${_showModal ? 'noScroll' : 'canScroll'}`}>
+        <CommonModal
+          isShow={_showModal}
+          clickOutSide={() =>
+            isDrawerShow
+              ? toggleDrawer()
+              : isPlaceMenuShow
+              ? togglePlaceMenu()
+              : {}
+          }
+        />
         {this._renderHeader()}
+        {this._renderSidebarView()}
         {isQueryListShow ? this._renderQueryListView() : null}
         {isPlaceMenuShow ? this._renderMenuView() : null}
         {this._renderFoodListView()}
@@ -106,22 +106,23 @@ export default class FoodList extends React.Component<IFoodList, {}> {
       return null;
     }
     return (
-      <CommonModal clickOutSide={() => togglePlaceMenu()}>
-        <ul className="dropdown-menu">
-          {placeList.map((v, i) => (
-            <li className="dropdown-item" key={i} onClick={() => changePlace(v)}>
-              {v.name}
-              {v.name === currentPlace.name
-                ? GenerateIcon(checkedIcon, "check", "check-icon")
-                : GenerateIcon(uncheckedIcon, "uncheck", "uncheck-icon")}
-            </li>
-          ))}
-        </ul>
-      </CommonModal>
+      <ul className="dropdown-menu">
+        {placeList.map((v, i) => (
+          <li className="dropdown-item" key={i} onClick={() => changePlace(v)}>
+            {v.name}
+            {v.name === currentPlace.name
+              ? GenerateIcon(checkedIcon, "check", "check-icon")
+              : GenerateIcon(uncheckedIcon, "uncheck", "uncheck-icon")}
+          </li>
+        ))}
+      </ul>
     );
   }
 
   private _renderSidebarView() {
+    const {
+      values: { isDrawerShow }
+    } = this.props.foodListMobx;
     const _drawerList = [
       {
         name: "我的訂單",
@@ -140,17 +141,17 @@ export default class FoodList extends React.Component<IFoodList, {}> {
       }
     ];
     return (
-      <div>
+      <div
+        className={`sidebar-container ${
+          isDrawerShow ? "sidebar-active" : null
+        }`}
+      >
         <div className="sidebar-top">
           {GenerateIcon(avatar, "avatar", "sidebar-top-img")}
           <div className="sidebar-top-text-container">
-            <span className="sidebar-top-text biggerFont">
-              日日有得食
-            </span>
+            <span className="sidebar-top-text biggerFont">日日有得食</span>
             <Link to="/login">
-              <span className="sidebar-top-text">
-                立即登錄
-              </span>
+              <span className="sidebar-top-text">立即登錄</span>
             </Link>
           </div>
           <div className="sidebar-top-login">
@@ -180,7 +181,9 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         }}
         // mode="closable"
         icon={<i className="fas fa-bell" />}
-        onClick={() => this.props.history.push('/content', {data: queryList[0]})}
+        onClick={() =>
+          this.props.history.push("/content", { data: queryList[0] })
+        }
       >
         {queryList[0].title}
       </NoticeBar>
@@ -215,11 +218,25 @@ export default class FoodList extends React.Component<IFoodList, {}> {
   }
 
   private _renderFoodListView() {
-    const { values: { currentPlace } } = this.props.foodListMobx;
-    if(currentPlace.id === 1) {
+    const {
+      values: { currentPlace }
+    } = this.props.foodListMobx;
+    if (currentPlace.id === 1) {
       return null;
     }
-    const Header = (<span style={{display:'inline-block',padding:'5px 0 10px'}}>精選菜單</span>);
-    return <CommonListView requestFunc={getFoodList} renderHeader={() => Header} renderItem={this._renderFoodListItem} isItemSeparatorShow extraParams={{placeId: currentPlace.id}}/>
+    const Header = (
+      <span style={{ display: "inline-block", padding: "5px 0 10px" }}>
+        精選菜單
+      </span>
+    );
+    return (
+      <CommonListView
+        requestFunc={getFoodList}
+        renderHeader={() => Header}
+        renderItem={this._renderFoodListItem}
+        isItemSeparatorShow
+        extraParams={{ placeId: currentPlace.id }}
+      />
+    );
   }
 }
