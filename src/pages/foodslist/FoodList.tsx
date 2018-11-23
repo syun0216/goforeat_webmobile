@@ -31,7 +31,7 @@ const avatar = require("@/assets/avatar.png");
 const COMPONENT_HEIGHT: number = document.documentElement!.clientHeight;
 
 @inject("foodListMobx")
-@inject("commonListViewMobx")
+// @inject("commonListViewMobx")
 @observer
 export default class FoodList extends React.Component<IFoodList, {}> {
   constructor(props: IFoodList) {
@@ -129,16 +129,16 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         icon: GenerateIcon(order, "order", "sidebar-icon"),
         path: "/myorder"
       },
-      {
-        name: "支付方式",
-        icon: GenerateIcon(paytype, "paytype", "sidebar-icon"),
-        path: "/myorder"
-      },
-      {
-        name: "系統設置",
-        icon: GenerateIcon(setting, "setting", "sidebar-icon"),
-        path: "/myorder"
-      }
+      // {
+      //   name: "支付方式",
+      //   icon: GenerateIcon(paytype, "paytype", "sidebar-icon"),
+      //   path: "/myorder"
+      // },
+      // {
+      //   name: "系統設置",
+      //   icon: GenerateIcon(setting, "setting", "sidebar-icon"),
+      //   path: "/myorder"
+      // }
     ];
     return (
       <div
@@ -159,9 +159,11 @@ export default class FoodList extends React.Component<IFoodList, {}> {
           </div>
         </div>
         {_drawerList.map((item, key) => (
-          <List.Item key={key} multipleLine thumb={item.icon}>
-            {item.name}
-          </List.Item>
+          <Link to={item.path} key={key}>
+            <List.Item key={key} multipleLine thumb={item.icon}>
+              {item.name}
+            </List.Item>
+          </Link>
         ))}
       </div>
     );
