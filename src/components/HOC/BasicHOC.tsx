@@ -14,20 +14,22 @@ const basicStyles = {
   }
 };
 
-const hasNoCommonHeader = ['/login'];
+const hasNoCommonHeader = ['/login','/content'];
 
 const basicHOC = (WarppedComponent: typeof Component) => 
 class extends Component<any, any> {
   public state = {
-    pageLoading: true,
+    pageLoading: false,
     showModal: false,
     showDownload: true,
     error: null
   }
 
   public componentDidMount() {
+    const { pathname } = this.props.location;
     this.setState({
-      showDownload: hasNoCommonHeader.indexOf(this.props.location.pathname) === -1 && !sessionStorage.getItem('GFEdownload')
+      showDownload: hasNoCommonHeader.indexOf(pathname) === -1 && !sessionStorage.getItem('GFEdownload'),
+      pageLoading: hasNoCommonHeader.indexOf(pathname) === -1
     })
   }
 

@@ -184,7 +184,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         // mode="closable"
         icon={<i className="fas fa-bell" />}
         onClick={() =>
-          this.props.history.push("/content", { data: queryList[0] })
+          this.props.history.push("/content", { url: queryList[0].url,title: queryList[0].title })
         }
       >
         {queryList[0].title}

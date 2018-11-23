@@ -3,13 +3,17 @@ import React from 'react';
 import CommonHeader from '../../components/CommonHeader';
 //styles
 import './content.less';
+//utils
+import { isEmpty } from '../../utils/common';
 
-const ContentPage = ({history: {location: {state: {data: {title, url}}}}}: any) => {
+const ContentPage = (props: any) => {
   // console.log(data);
+  console.log(123,props);
+  const {url, title} = props.location.state;
   return (
     <div className="content-container">
       <CommonHeader canBack><span>{title}</span></CommonHeader>
-      <iframe src={url} title="content"/>
+      { !isEmpty(url) ? <iframe src={url} title="content"/> : null }
     </div>
   )
 }
