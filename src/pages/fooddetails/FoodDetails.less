@@ -21,6 +21,7 @@
 
 .homepage-container {
   background: @bg_white;
+  margin-bottom: 48px;
   .common-title-container{
     text-align: left;
     h3{
@@ -63,6 +64,19 @@
       font-size: 1.5em;
       color: @default_font;
     }
+    .removeicon {
+      width: 1.5em;
+      height: 1.5em;
+    }
+    .addicon {
+      width: 2em;
+      height: 2em;
+      margin-top: 0.393em;
+    }
+    .amount {
+      font-size: 1.5em;
+      margin-left: .2em;
+    }
   }
   .deadline{
     color: #ccc;
@@ -71,13 +85,24 @@
   }
   .footer {
     position: fixed;
-    width: 96%;
+    // width: -webkit-fill-available;
     bottom: 0;
     left: 0;
-    padding: 2%;
+    right: 0;
+    padding: 8px 15px;
     background: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .price {
+      font-size: 1.5em;
+      color: @font_red;
+      margin-left: 8px;
+    }
+    .btn {
+      color: @bg_white;
+      border-radius: 15px;
+      background-color: @font_red;
+    }
   }
 }

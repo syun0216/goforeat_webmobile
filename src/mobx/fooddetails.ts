@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, decorate, computed } from 'mobx';
 //api
 import { getDailyFoods } from '../api/request';
 //api interface
@@ -15,12 +15,17 @@ export default class FoodDetailsMobx extends Basic{
     this.foodDetailValues.selectedTab = tab;
   }
 
-  @action.bound
-  public addOrRemove(count: number):void {
-    this.foodDetailValues.foodCount = count;
+  public addOrRemove(status: string):void {
+    if(status === 'add') {
+      this.foodDetailValues.foodCount ++ ;
+    } else {
+      if(this.foodDetailValues.foodCount === 1) {
+        return;
+      }
+      this.foodDetailValues.foodCount --;
+    }
   }
 
-  @action.bound
   public async getDailyFoods(dateFoodId: number) {
     try{
       const {data} = await getDailyFoods(dateFoodId);
@@ -31,10 +36,17 @@ export default class FoodDetailsMobx extends Basic{
     }
   }
 
+
   @computed get sum() {
     return this.foodDetailValues.foodCount * this.foodDetails.price
   }
 
   
-
+// decorate(FoodDetailsMobx, {
+//   foodDetails: observable,
+//   values: observable,
+//   setTab: action.bound,
+//   addOrRemove: action.bound,
+//   getDailyFoods: action.bound 
+// });
 }

@@ -2,10 +2,36 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-color: #fff !important;
 }
 
 .app {
   margin-top: 48px;
-  height: 100vh;
+  background: #fff;
+  font-size: 16px;
+}
+
+.noScroll {
   overflow: hidden;
+  height: 92vh;
+}
+
+.canScroll {
+  overflow: auto
+}
+
+
+.am-list-header,.am-list-footer{
+  padding: 0 !important;
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  /* height: 100vh; */
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #fff;
 }

@@ -1,5 +1,12 @@
 import React from "react";
-import { WhiteSpace, Stepper, WingBlank, Flex, Button } from "antd-mobile";
+import {
+  WhiteSpace,
+  Stepper,
+  WingBlank,
+  Flex,
+  Button,
+  Carousel
+} from "antd-mobile";
 //style
 import "./FoodDetails.less";
 //mobx
@@ -18,7 +25,9 @@ const HAS_FOODS: number = 1;
 const NO_MORE_FOODS: number = 2;
 const IS_INTERCEPT: number = 3;
 
-@inject("basicMobx")
+const add_png = require('@/assets/add.png');
+const remove_png = require('@/assets/remove.png');
+
 @inject("foodDetailsMobx")
 @observer
 export default class FoodDetails extends React.Component<IFoodDetails, {}> {
@@ -30,6 +39,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   public async componentDidMount() {
     const { getDailyFoods } = this.props.foodDetailsMobx;
     const { dateFoodId } = this.props.match.params;
+    console.log(dateFoodId);
     await getDailyFoods(dateFoodId);
     this.props.hideLoading();
   }
@@ -68,7 +78,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
           <WhiteSpace />
           {this._renderAddOrRemoveView(foodDetails)}
           <WhiteSpace />
-          {this._renderBottomConfirm()}
+          {this._renderBottomConfirm(foodDetails)}
           <WhiteSpace />
         </div>
       </WingBlank>
@@ -91,14 +101,19 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
     const { extralImage } = data;
     return (
       <div className="carousel-container">
-        {extralImage.map((val, idx) => (
-          <img
-            key={idx}
-            src={val}
-            alt="food"
-            style={{ width: "100%", verticalAlign: "top" }}
-          />
-        ))}
+        <Carousel
+          autoplay={false}
+          infinite
+        >
+          {extralImage.map((val, idx) => (
+            <img
+              key={idx}
+              src={val}
+              alt="food"
+              style={{ width: '100%',height: '230px', verticalAlign: "top",objectFit:'cover' }}
+            />
+          ))}
+        </Carousel>
       </div>
     );
   }
@@ -128,12 +143,11 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
         </div>
         <div>
           {status === HAS_FOODS ? (
-            <Stepper
-              showNumber
-              min={1}
-              value={foodCount}
-              onChange={addOrRemove}
-            />
+            <Flex justify="around" align="center" style={{width: '100px'}}>
+              <Flex.Item><div onClick={() => addOrRemove('remove')}>{GenerateIcon(remove_png,'remove','removeicon')}</div></Flex.Item>
+              <Flex.Item><div className="amount">{foodCount}</div></Flex.Item>
+              <Flex.Item><div onClick={() => addOrRemove('add')}>{GenerateIcon(add_png, 'add', 'addicon')}</div></Flex.Item>
+            </Flex>
           ) : status === NO_MORE_FOODS ? (
             <span>已售完</span>
           ) : status === IS_INTERCEPT ? (
@@ -144,18 +158,23 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
     );
   }
 
-  private _renderBottomConfirm() {
-    const { sum, foodDetails } = this.props.foodDetailsMobx
+  private _renderBottomConfirm(data: IDailyFood) {
+    const { foodDetailValues: {foodCount} } = this.props.foodDetailsMobx;
+    const { price } = data;
     return (
       <div className="footer">
         <div>
           <span>HKD</span>
-          <span>&nbsp;{sum}</span>
+          <span className="price">{price*foodCount}</span>
         </div>
-        <Link to={`/confirmOrder/${foodDetails.dateFoodId}`}>
-          <Button type="warning" inline size="small" style={{ borderRadius: '15px',background: '#d93a49' }}>立即下單</Button>
-        </Link>
+        <Button
+          inline
+          size="small"
+          className="btn"
+        >
+          立即下單
+        </Button>
       </div>
-    )
+    );
   }
 }

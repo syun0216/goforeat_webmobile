@@ -1,6 +1,8 @@
 import React from "react";
 import { Drawer, List, ListView, NoticeBar } from "antd-mobile";
 import { Link } from "react-router-dom";
+//api
+import { getFoodList } from "../../api/request";
 //style
 import "./FoodList.less";
 //interface
@@ -11,7 +13,8 @@ import { observer, inject } from "mobx-react";
 //components
 import CommonHeader from "../../components/CommonHeader";
 import GenerateIcon from "../../components/GenerateIcon";
-import Divider from "../../components/Divider";
+import CommonListView from "../../components/CommonListView";
+import CommonModal from "../../components/CommonModal";
 //utils
 import { isEmpty } from "../../utils/common";
 //header
@@ -28,10 +31,9 @@ const avatar = require("@/assets/avatar.png");
 const COMPONENT_HEIGHT: number = document.documentElement!.clientHeight;
 
 @inject("foodListMobx")
+// @inject("commonListViewMobx")
 @observer
 export default class FoodList extends React.Component<IFoodList, {}> {
-  private offset: number = 0;
-  private _listView: any;
   constructor(props: IFoodList) {
     super(props);
   }
@@ -46,26 +48,27 @@ export default class FoodList extends React.Component<IFoodList, {}> {
   public render() {
     const {
       values: { isDrawerShow, isPlaceMenuShow, isQueryListShow },
-      toggleDrawer
+      toggleDrawer,
+      togglePlaceMenu
     } = this.props.foodListMobx;
+    const _showModal = isPlaceMenuShow || isDrawerShow;
     return (
-      <div className="food-list-container">
-        <Drawer
-          className="my-drawer"
-          style={{ minHeight: COMPONENT_HEIGHT }}
-          enableDragHandle
-          contentStyle={{ color: "#A6A6A6", textAlign: "center" }}
-          sidebarStyle={{ width: "75%" }}
-          sidebar={this._renderSidebarView()}
-          open={isDrawerShow}
-          onOpenChange={toggleDrawer}
-          touch={false}
-        >
-          {this._renderHeader()}
-          {isQueryListShow ? this._renderQueryListView() : null}
-          {isPlaceMenuShow ? this._renderMenuView() : null}
-          {this._renderFoodListView()}
-        </Drawer>
+      <div className={`food-list-container ${_showModal ? 'noScroll' : 'canScroll'}`}>
+        <CommonModal
+          isShow={_showModal}
+          clickOutSide={() =>
+            isDrawerShow
+              ? toggleDrawer()
+              : isPlaceMenuShow
+              ? togglePlaceMenu()
+              : {}
+          }
+        />
+        {this._renderHeader()}
+        {this._renderSidebarView()}
+        {isQueryListShow ? this._renderQueryListView() : null}
+        {isPlaceMenuShow ? this._renderMenuView() : null}
+        {this._renderFoodListView()}
       </div>
     );
   }
@@ -140,6 +143,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     const {
       placeList,
       changePlace,
+      togglePlaceMenu,
       values: { currentPlace }
     } = this.props.foodListMobx;
     if (placeList.length === 0) {
@@ -161,30 +165,35 @@ export default class FoodList extends React.Component<IFoodList, {}> {
 
   private _renderSidebarView() {
     const infoFlag = localStorage.getItem('userInfo')!; //判断localStorage有没有userInfo
+    const {
+      values: { isDrawerShow }
+    } = this.props.foodListMobx;
     const _drawerList = [
       {
         name: "我的訂單",
         icon: GenerateIcon(order, "order", "sidebar-icon"),
         path: "/myorder"
       },
-      {
-        name: "支付方式",
-        icon: GenerateIcon(paytype, "paytype", "sidebar-icon"),
-        path: "/myorder"
-      },
-      {
-        name: "系統設置",
-        icon: GenerateIcon(setting, "setting", "sidebar-icon"),
-        path: "/myorder"
-      }
+      // {
+      //   name: "支付方式",
+      //   icon: GenerateIcon(paytype, "paytype", "sidebar-icon"),
+      //   path: "/myorder"
+      // },
+      // {
+      //   name: "系統設置",
+      //   icon: GenerateIcon(setting, "setting", "sidebar-icon"),
+      //   path: "/myorder"
+      // }
     ];
     return (
       <div>
         {infoFlag ? this._readerHeaderAfterLogin() : this._renderHeaderBeforeLogin()}
         {_drawerList.map((item, key) => (
-          <List.Item key={key} multipleLine thumb={item.icon}>
-            {item.name}
-          </List.Item>
+          <Link to={item.path} key={key}>
+            <List.Item key={key} multipleLine thumb={item.icon}>
+              {item.name}
+            </List.Item>
+          </Link>
         ))}
       </div>
     );
@@ -202,9 +211,11 @@ export default class FoodList extends React.Component<IFoodList, {}> {
           style: { padding: "0 7.5px" },
           text: queryList[0].title
         }}
-        mode="closable"
+        // mode="closable"
         icon={<i className="fas fa-bell" />}
-        onClick={() => console.log(123)}
+        onClick={() =>
+          this.props.history.push("/content", { url: queryList[0].url,title: queryList[0].title })
+        }
       >
         {queryList[0].title}
       </NoticeBar>
@@ -219,7 +230,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     const { thumbnail, name, brief, price, date, dateFoodId } = rowData;
     const _brief = brief.split("").join(" ");
     return (
-      <Link to={`/foodDetails/${dateFoodId}`}>
+      <Link key={rowID} to={`/foodDetails/${dateFoodId}`}>
         <div className="food-list-item">
           {GenerateIcon(thumbnail, "thumbnail", "item-thumbnail")}
           <div className="item-details">
@@ -239,19 +250,24 @@ export default class FoodList extends React.Component<IFoodList, {}> {
   }
 
   private _renderFoodListView() {
-    const { foodList } = this.props.foodListMobx;
+    const {
+      values: { currentPlace }
+    } = this.props.foodListMobx;
+    if (currentPlace.id === 1) {
+      return null;
+    }
+    const Header = (
+      <span style={{ display: "inline-block", padding: "5px 0 10px" }}>
+        精選菜單
+      </span>
+    );
     return (
-      <ListView
-        ref={el => (this._listView = el)}
-        className="food-list-view"
-        dataSource={foodList}
-        pageSize={5}
-        useBodyScroll
-        scrollEventThrottle={500}
-        renderRow={this._renderFoodListItem}
-        renderSeparator={(sectionID, rowID) => (
-          <Divider key={rowID} bgColor="transparent" height="10px" />
-        )}
+      <CommonListView
+        requestFunc={getFoodList}
+        renderHeader={() => Header}
+        renderItem={this._renderFoodListItem}
+        isItemSeparatorShow
+        extraParams={{ placeId: currentPlace.id }}
       />
     );
   }

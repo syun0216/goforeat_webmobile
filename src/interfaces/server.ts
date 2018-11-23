@@ -61,3 +61,19 @@ export interface ILoginInfo {
   phoneNumer: number,
   validateCode: number
 }
+
+export interface IMyOrderItem {
+  takeTimeNew: string,
+  amount: number,
+  orderId:number,
+  takeTime: string,
+  totalMoney: number,
+  picture:string,
+  orderTime: string,
+  takeAddressDetail:string,
+  payment:number,
+  takeAddress:string,
+  takeDate: string,
+  status: number,
+  orderName: string
+}
