@@ -7,3 +7,10 @@ export const BOTTOM_LOAD_STATUS = {
   NO_MORE_DATA: 3,
   NO_DATA: 4
 };
+
+export const ORDER_STATUS = {
+  ORDER_CANCEL: -1,
+  ORDER_DELIVERING: 1,
+  ORDER_FINISHED: 2,
+  ORDER_ALL: null
+}
