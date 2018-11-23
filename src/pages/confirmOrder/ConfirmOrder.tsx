@@ -109,8 +109,11 @@ export default class ConfirmOrder extends React.Component<IConfirmOrder, {}> {
     }
 
     private _renderButton() {
+        const {createOrder, dateFoodId, foodDetailValues: {foodCount}} = this.props.ConfirmOrderMobx
         return (
-            <div className="button">
+            <div className="button" onClick={() => createOrder(dateFoodId, foodCount, () => {
+                this.props.history.push('/login')
+            })}>
                 <span>立即下單</span>
             </div>
         )

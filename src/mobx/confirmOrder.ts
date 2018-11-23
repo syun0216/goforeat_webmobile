@@ -1,7 +1,9 @@
 import { observable, action, computed } from 'mobx';
 
-import { getDailyFoods } from '../api/request';
+import { getDailyFoods, createOrder } from '../api/request';
 import Basic from './basic'
+
+import { Toast } from 'antd-mobile';
 
 import { IDailyFood } from '../interfaces/server'; 
 
@@ -19,6 +21,22 @@ public async getDailyFoods(dateFoodId: number) {
   }catch(e) {
     console.log(e);
   }
+}
+
+public async createOrder(dateFoodId: number, amount: number, callback: any) {
+    try {
+        const {data, ro} = await createOrder(dateFoodId, amount)
+        if(ro.ok !== true) {
+            Toast.info(ro.respMsg)
+            if(ro.respCode === '10006') {
+                callback()
+            }
+        } else {
+            console.log(data);
+        }
+    } catch (error) {
+        console.error(error)
+    }
 }
 
 }
