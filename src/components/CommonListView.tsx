@@ -81,7 +81,7 @@ export default class CommonListView extends React.Component<ICList, {}> {
     requestFunc({..._requestParams}).then(
       (data: any) => {
         if (data.ro.ok) {
-          successCallback(data.data.list);
+          successCallback(data.data.list || []);
         } else {
           if (data.ro.respCode === "10006" || data.ro.respCode === "10007") {
             console.log("fail");
