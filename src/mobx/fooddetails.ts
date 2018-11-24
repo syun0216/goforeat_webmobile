@@ -4,25 +4,26 @@ import { getDailyFoods } from '../api/request';
 //api interface
 import { IDailyFood } from '../interfaces/server'; 
 
-import Basic from './basic'
 
-
-export default class FoodDetailsMobx extends Basic{
-  @observable public foodDetails: IDailyFood;
-
-  @action.bound 
+class FoodDetailsMobx {
+  public foodDetails: IDailyFood;
+  public values = {
+    selectedTab: 'Daily',
+    foodCount: 1
+  }
+ 
   public setTab(tab: string) {
-    this.foodDetailValues.selectedTab = tab;
+    this.values.selectedTab = tab;
   }
 
   public addOrRemove(status: string):void {
     if(status === 'add') {
-      this.foodDetailValues.foodCount ++ ;
+      this.values.foodCount ++ ;
     } else {
-      if(this.foodDetailValues.foodCount === 1) {
+      if(this.values.foodCount === 1) {
         return;
       }
-      this.foodDetailValues.foodCount --;
+      this.values.foodCount --;
     }
   }
 
@@ -30,23 +31,19 @@ export default class FoodDetailsMobx extends Basic{
     try{
       const {data} = await getDailyFoods(dateFoodId);
       this.foodDetails = data;
-      console.log(123, data);
+      // console.log(123, data);
     }catch(e) {
-      console.log(e);
+      // console.log(e);
     }
   }
-
-
-  @computed get sum() {
-    return this.foodDetailValues.foodCount * this.foodDetails.price
-  }
-
-  
-// decorate(FoodDetailsMobx, {
-//   foodDetails: observable,
-//   values: observable,
-//   setTab: action.bound,
-//   addOrRemove: action.bound,
-//   getDailyFoods: action.bound 
-// });
 }
+
+decorate(FoodDetailsMobx, {
+  foodDetails: observable,
+  values: observable,
+  setTab: action.bound,
+  addOrRemove: action.bound,
+  getDailyFoods: action.bound 
+});
+
+export default FoodDetailsMobx;

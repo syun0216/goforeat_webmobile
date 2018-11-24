@@ -7,6 +7,7 @@ import {
   Button,
   Carousel
 } from "antd-mobile";
+import { Link } from "react-router-dom";
 //style
 import "./FoodDetails.less";
 //mobx
@@ -19,7 +20,6 @@ import CommonHeader from "../../components/CommonHeader";
 import GenerateIcon from "../../components/GenerateIcon";
 //utils
 import { isEmpty } from "../../utils/common";
-import { Link } from "react-router-dom";
 
 const HAS_FOODS: number = 1;
 const NO_MORE_FOODS: number = 2;
@@ -33,13 +33,11 @@ const remove_png = require('@/assets/remove.png');
 export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   constructor(props: IFoodDetails) {
     super(props);
-    console.log(props);
   }
 
   public async componentDidMount() {
     const { getDailyFoods } = this.props.foodDetailsMobx;
     const { dateFoodId } = this.props.match.params;
-    console.log(dateFoodId);
     await getDailyFoods(dateFoodId);
     this.props.hideLoading();
   }
@@ -53,6 +51,17 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
     );
   }
 
+  //logic
+  private createOrder = () => {
+    const { dateFoodId } = this.props.match.params;
+    if(!dateFoodId) {
+      this.props.showToast('fail', '無效的url參數');
+      return;
+    }
+    this.props.history.push('/confirmorder',{params: dateFoodId});
+  }
+
+  //render
   private _renderHeader() {
     return (
       <CommonHeader canBack>
@@ -132,7 +141,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   private _renderAddOrRemoveView(data: IDailyFood) {
     const { status, price } = data;
     const {
-      foodDetailValues: { foodCount },
+      values: { foodCount },
       addOrRemove
     } = this.props.foodDetailsMobx;
     return (
@@ -159,7 +168,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   }
 
   private _renderBottomConfirm(data: IDailyFood) {
-    const { foodDetailValues: {foodCount} } = this.props.foodDetailsMobx;
+    const { values: {foodCount} } = this.props.foodDetailsMobx;
     const { price } = data;
     return (
       <div className="footer">
@@ -171,8 +180,9 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
           inline
           size="small"
           className="btn"
+          onClick={this.createOrder}
         >
-          立即下單
+          立即預訂
         </Button>
       </div>
     );

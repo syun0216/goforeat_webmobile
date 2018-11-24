@@ -5,6 +5,7 @@ import { observer, inject } from "mobx-react";
 //components
 import Divider from "./Divider";
 import ListFooter from "./ListFooter";
+import BlankPage from "./BlankPage";
 //utils
 import { BOTTOM_LOAD_STATUS } from "../utils/global_params";
 import { isEmpty } from "../utils/common";
@@ -57,7 +58,10 @@ export default class CommonListView extends React.Component<ICList, {}> {
   }
 
   public render() {
-    return this._renderCommonListView();
+    const { listDataRawArr, listFooterStatus }: any = this.props.commonListViewMobx;
+    return (
+      listDataRawArr.length === 0 && listFooterStatus === NO_DATA ?  <BlankPage message="暫無數據"/> : this._renderCommonListView()
+    );
   }
 
   //public
@@ -84,7 +88,7 @@ export default class CommonListView extends React.Component<ICList, {}> {
           successCallback(data.data.list || []);
         } else {
           if (data.ro.respCode === "10006" || data.ro.respCode === "10007") {
-            console.log("fail");
+            // console.log("fail");
           }
         }
       },
@@ -96,8 +100,9 @@ export default class CommonListView extends React.Component<ICList, {}> {
     );
   }
 
-  public outsideRefresh() {
+  public outsideRefresh = () => {
     this.init();
+    this._requestFirstPage();
   }
 
   //private
@@ -137,9 +142,9 @@ export default class CommonListView extends React.Component<ICList, {}> {
         dataSource={listData}
         pageSize={5}
         useBodyScroll
-        onScroll={() => {
-          console.log("scroll");
-        }}
+        // onScroll={() => {
+        //   console.log("scroll");
+        // }}
         renderHeader={this._renderHeader}
         renderRow={this._renderCommonListItemView}
         renderFooter={() => (
@@ -172,7 +177,7 @@ export default class CommonListView extends React.Component<ICList, {}> {
         setListData(data);
       },
       () => {
-        console.log("err");
+        // console.log("err");
       }
     );
   }

@@ -80,7 +80,9 @@ export default class Login extends React.Component<ILogin, {}> {
               <div className="main-button">
                 <span className="main-button-text" onClick={() => {
                   login(() => {
-                    this.props.history.push('/') // 回调函数，返回到首页
+                    const { history,history: {location: {state}} } = this.props;
+                    state.from ? history.replace(state.from.pathname,{params: state.from.state.params || null}) :
+                    history.push('/'); // 回调函数，返回到首页
                   })
                 }}>登入/註冊</span>
               </div>

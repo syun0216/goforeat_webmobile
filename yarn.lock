@@ -90,6 +90,13 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/react-router@^4.4.1":
+  version "4.4.1"
+  resolved "https://registry.npmjs.org/@types/react-router/-/react-router-4.4.1.tgz#c875dfd0b6fe00efa463eb8e5de8b5f74644b3f5"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+
 "@types/react-sticky@^6.0.2":
   version "6.0.2"
   resolved "https://registry.npmjs.org/@types/react-sticky/-/react-sticky-6.0.2.tgz#73004422e7b186729f439c229a83b1934cd0fb0d"

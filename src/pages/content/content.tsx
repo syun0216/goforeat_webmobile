@@ -8,7 +8,6 @@ import { isEmpty } from '../../utils/common';
 
 const ContentPage = (props: any) => {
   // console.log(data);
-  console.log(123,props);
   const {url, title} = props.location.state;
   return (
     <div className="content-container">
