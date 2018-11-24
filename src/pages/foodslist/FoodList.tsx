@@ -251,7 +251,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     rowID: number
   ) {
     const { thumbnail, name, brief, price, date, dateFoodId } = rowData;
-    const _brief = brief.split("").join(" ");
+    const _brief = brief && brief.split("").join(" ");
     return (
       <Link key={rowID} to={`/foodDetails/${dateFoodId}`}>
         <div className="food-list-item">
