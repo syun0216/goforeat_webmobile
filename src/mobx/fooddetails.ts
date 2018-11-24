@@ -4,26 +4,25 @@ import { getDailyFoods } from '../api/request';
 //api interface
 import { IDailyFood } from '../interfaces/server'; 
 
+import Basic from './basic'
 
-class FoodDetailsMobx {
-  public foodDetails: IDailyFood;
-  public values = {
-    selectedTab: 'Daily',
-    foodCount: 1
-  }
- 
+
+export default class FoodDetailsMobx extends Basic{
+  @observable public foodDetails: IDailyFood;
+
+  @action.bound 
   public setTab(tab: string) {
-    this.values.selectedTab = tab;
+    this.foodDetailValues.selectedTab = tab;
   }
 
   public addOrRemove(status: string):void {
     if(status === 'add') {
-      this.values.foodCount ++ ;
+      this.foodDetailValues.foodCount ++ ;
     } else {
-      if(this.values.foodCount === 1) {
+      if(this.foodDetailValues.foodCount === 1) {
         return;
       }
-      this.values.foodCount --;
+      this.foodDetailValues.foodCount --;
     }
   }
 
@@ -36,14 +35,18 @@ class FoodDetailsMobx {
       console.log(e);
     }
   }
+
+
+  @computed get sum() {
+    return this.foodDetailValues.foodCount * this.foodDetails.price
+  }
+
+  
+// decorate(FoodDetailsMobx, {
+//   foodDetails: observable,
+//   values: observable,
+//   setTab: action.bound,
+//   addOrRemove: action.bound,
+//   getDailyFoods: action.bound 
+// });
 }
-
-decorate(FoodDetailsMobx, {
-  foodDetails: observable,
-  values: observable,
-  setTab: action.bound,
-  addOrRemove: action.bound,
-  getDailyFoods: action.bound 
-});
-
-export default FoodDetailsMobx;

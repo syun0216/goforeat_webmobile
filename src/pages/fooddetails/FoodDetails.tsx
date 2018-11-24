@@ -19,6 +19,7 @@ import CommonHeader from "../../components/CommonHeader";
 import GenerateIcon from "../../components/GenerateIcon";
 //utils
 import { isEmpty } from "../../utils/common";
+import { Link } from "react-router-dom";
 
 const HAS_FOODS: number = 1;
 const NO_MORE_FOODS: number = 2;
@@ -131,7 +132,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   private _renderAddOrRemoveView(data: IDailyFood) {
     const { status, price } = data;
     const {
-      values: { foodCount },
+      foodDetailValues: { foodCount },
       addOrRemove
     } = this.props.foodDetailsMobx;
     return (
@@ -158,7 +159,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   }
 
   private _renderBottomConfirm(data: IDailyFood) {
-    const { values: {foodCount} } = this.props.foodDetailsMobx;
+    const { foodDetailValues: {foodCount} } = this.props.foodDetailsMobx;
     const { price } = data;
     return (
       <div className="footer">
