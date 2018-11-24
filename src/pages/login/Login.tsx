@@ -7,6 +7,8 @@ import {ILogin} from '../../interfaces';
 import GenerateIcon from '../../components/GenerateIcon';
 // mobx
 import { observer, inject } from 'mobx-react';
+//utils
+import { isEmpty } from '../../utils/common';
 
 
 // import images
@@ -81,7 +83,7 @@ export default class Login extends React.Component<ILogin, {}> {
                 <span className="main-button-text" onClick={() => {
                   login(() => {
                     const { history,history: {location: {state}} } = this.props;
-                    state.from ? history.replace(state.from.pathname,{params: state.from.state.params || null}) :
+                    state.from ? history.replace(state.from.pathname,{params: isEmpty(state.from.state) ? null : state.from.state.params || null}) :
                     history.push('/'); // 回调函数，返回到首页
                   })
                 }}>登入/註冊</span>

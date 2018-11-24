@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
+import { Switch, Route, BrowserRouter, Redirect, HashRouter } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import asyncComponent from "./asyncComponent";
 //hoc
 import BasicHOC from "../components/HOC/BasicHOC";
 //utils
 import { isAuth } from "../utils/auth";
+import { isEmpty } from "../utils/common";
 //styles
 import "../styles/transitions.less";
 //pages
@@ -31,7 +32,7 @@ const privateRoute = ({ PComponent, ...rest }: any) => {
   return isAuth() ? (
     <Route {...rest} component={PComponent} />
   ) : (
-    <Redirect to={{ pathname: "/login", state: { from: rest.location,params: rest.location.state.params || null }}} />
+    <Redirect to={{ pathname: "/login", state: { from: rest.location,params: isEmpty(rest.location.state) ? null : rest.location.state.params || null }}} />
   );
 };
 
