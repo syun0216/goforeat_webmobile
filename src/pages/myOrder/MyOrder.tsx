@@ -30,7 +30,7 @@ export default class MyOrder extends Component<IMyOrder, {}> {
     return (
       <div className="myOrder-container">
         {this._renderHeader()}
-        {this._renderTabView()}
+        {this._renderCommonListView()}
       </div>
     )
   }

@@ -22,8 +22,13 @@ export default class ConfirmOrder extends React.Component<IConfirmOrder, {}> {
 
     public async componentWillMount() {
         const { getDailyFoods } = this.props.ConfirmOrderMobx;
-        this.props.ConfirmOrderMobx.dateFoodId = this.props.match.params.dateFoodId;
-        await getDailyFoods(this.props.ConfirmOrderMobx.dateFoodId)
+        const { state } = this.props.history.location;
+        if(!state.params) {
+            this.props.showToast('fail', '參數有誤');
+            return;
+        }
+        this.props.ConfirmOrderMobx.dateFoodId = state.params;
+        await getDailyFoods(state.params)
         this.props.hideLoading();
     }
 
