@@ -7,6 +7,10 @@ import CommonHeader from "../CommonHeader";
 import BlankPage from "../BlankPage";
 //styles
 import "./BasicHOC.less";
+//utils
+import { getDeviceInfo } from "../../utils/common";
+//router
+import { CRI } from '../../router/customRouteInterceptors';
 
 const basicStyles = {
   loadingItem: {
@@ -14,7 +18,7 @@ const basicStyles = {
   }
 };
 
-const hasNoCommonHeader = ["/login", "/content"];
+const hasNoCommonHeader = ["/login", "/content", "/confirmorder","/editInfo"];
 
 const basicHOC = (WarppedComponent: typeof Component) =>
   class extends Component<any, any> {
@@ -27,6 +31,10 @@ const basicHOC = (WarppedComponent: typeof Component) =>
 
     public componentDidMount() {
       const { pathname } = this.props.location;
+      //自定義路由攔截器
+      CRI(this.props.history);
+      //--------
+      this.goSchema();
       this.setState({
         showDownload:
           hasNoCommonHeader.indexOf(pathname) === -1 &&
@@ -37,8 +45,8 @@ const basicHOC = (WarppedComponent: typeof Component) =>
 
     public componentDidCatch(error: Error, info: any) {
       this.setState({ error });
-      this.showToast("danger", "出错了...");
-      console.log(123, error);
+      this.showToast("fail", "出错了...");
+      // console.log(123, error);
     }
 
     public render() {
@@ -61,38 +69,50 @@ const basicHOC = (WarppedComponent: typeof Component) =>
     }
 
     //logic functions
-    private showLoading = () => {
+    public goSchema = () => {
+      if(sessionStorage.getItem('GFEschema')) {
+        return;
+      }
+      if(getDeviceInfo() === 'ios') {
+        window.location.href = "fb2036279879923166://" || "goforeat://";
+      } else if(getDeviceInfo() === 'android') {
+        return ;
+      }
+      sessionStorage.setItem("GFEschema", "1");
+    }
+
+    public showLoading = () => {
       this.setState({
         pageLoading: true
       });
     };
 
-    private hidePageLoading = () => {
+    public hidePageLoading = () => {
       this.setState({
         pageLoading: false
       });
     };
 
-    private showRequesting = () => {
+    public showRequesting = () => {
       Toast.loading("requesting", 0);
     };
 
-    private hideReqesting = () => {
+    public hideReqesting = () => {
       Toast.hide();
     };
 
-    private showToast = (type: string = "info", content = "Goforeat") => {
+    public showToast = (type: string = "info", content = "Goforeat") => {
       const duration = 3;
       Toast[type](content, duration);
     };
 
-    private toggleModal = (status: boolean = true) => {
+    public toggleModal = (status: boolean = true) => {
       this.setState({
         showModal: status
       });
     };
 
-    private closeDownload = () => {
+    public closeDownload = () => {
       this.setState(
         {
           showDownload: false
