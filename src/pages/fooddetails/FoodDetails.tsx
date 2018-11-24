@@ -171,7 +171,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
           size="small"
           className="btn"
         >
-          立即下單
+          立即預訂
         </Button>
       </div>
     );
