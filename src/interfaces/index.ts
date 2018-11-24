@@ -14,7 +14,7 @@ interface IBasic {
   hideLoading: () => void,
   showRequesting: () => void,
   hideRequesting: () => void,
-  showToast: () => void,
+  showToast: (val1:string, val2:string) => void,
   toggleModal: (val?:boolean, callback?:() => void) => void,
   history: any,
   location: any,
