@@ -16,7 +16,9 @@ const FOODLIST = asyncComponent(() => import("../pages/foodslist/FoodList"));
 const LOGIN = asyncComponent(() => import("../pages/login/Login"));
 const MYORDER = asyncComponent(() => import("../pages/myOrder/MyOrder"));
 const EDITINFO = asyncComponent(() => import("../pages/editInfo/EditInfo"));
-const CONFIRMORDER = asyncComponent(() => import("../pages/confirmOrder/ConfirmOrder"));
+const CONFIRMORDER = asyncComponent(() =>
+  import("../pages/confirmOrder/ConfirmOrder")
+);
 const CONTENT = asyncComponent(() => import("../pages/content/content"));
 
 interface Props {
@@ -24,22 +26,25 @@ interface Props {
   rest: object;
 }
 
-// const privateRoute = ({Component, ...rest}: any) => (
-//   <Route
-//     {...rest}
-//     render={props => isAuth() ? <Component {...props}/> : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
-//   />
-// )
+const privateRoute = ({ PComponent, ...rest }: any) => {
+  // console.log({ rest });
+  return isAuth() ? (
+    <Route {...rest} component={PComponent} />
+  ) : (
+    <Redirect to={{ pathname: "/login", state: { from: rest.location,params: rest.location.state.params || null }}} />
+  );
+};
 
 export default class RouteConfig extends Component {
   public render() {
+    const PRoute = privateRoute;
     return (
       <BrowserRouter>
         <Route
-          render={({ location }) => (
+          render={props => (
             <TransitionGroup>
               <CSSTransition
-                key={location.key}
+                key={props.location.key}
                 timeout={1000}
                 classNames={{
                   enter: "animated",
@@ -58,9 +63,18 @@ export default class RouteConfig extends Component {
                   />
                   <Route path="/content" component={BasicHOC(CONTENT)} />
                   <Route path="/login" component={BasicHOC(LOGIN)} />
-                  <Route path="/myOrder" component={BasicHOC(MYORDER)} />
-                  <Route path="/editInfo" component={BasicHOC(EDITINFO)}/>
-                  <Route path="/confirmOrder/:dateFoodId" component={BasicHOC(CONFIRMORDER)}/>
+                  <PRoute
+                    path="/myOrder"
+                    PComponent={BasicHOC(MYORDER)}
+                    {...props}
+                  />
+                  <Route path="/editInfo" component={BasicHOC(EDITINFO)} />
+                  <PRoute
+                    path="/confirmOrder"
+                    PComponent={BasicHOC(CONFIRMORDER)}
+                    {...props}
+                  />
+                  {/* <Route path="/confirmOrder/:dateFoodId" component={BasicHOC(CONFIRMORDER)}/> */}
                 </Switch>
               </CSSTransition>
             </TransitionGroup>
