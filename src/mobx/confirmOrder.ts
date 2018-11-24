@@ -25,7 +25,7 @@ public async getDailyFoods(dateFoodId: number) {
 
 public async createOrder(dateFoodId: number, amount: number, callback: any) {
     try {
-        const {data, ro} = await createOrder(dateFoodId, amount)
+        const {data, ro}:any = await createOrder(dateFoodId, amount)
         if(ro.ok !== true) {
             Toast.info(ro.respMsg)
             if(ro.respCode === '10006') {

@@ -21,7 +21,7 @@ export default class Basic {
 
   @action.bound
   public errorHandler(err: any) {
-    console.log(err);
+    // console.log(err);
   }
 
   /**

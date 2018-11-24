@@ -5,6 +5,8 @@ import { getCode, checkCode } from '../api/request';
 
 // antd-mobile
 import { ActionSheet, Toast } from 'antd-mobile';
+//auth
+import { setToken,setCustomCookie } from '../utils/auth'; 
 
 export default class LoginMobx {
 
@@ -30,7 +32,7 @@ public async getCode() {
         if(result.data!.token) {
             Toast.info('驗證碼發送成功', 1);
             this.loginToken = result.data.token;
-            localStorage.setItem('login-token', result.data.token);
+            setCustomCookie('login-token', result.data.token);
             this.interval = setInterval(() => {
                 this.n = this.n - 1
                 if(this.n === 0) {
@@ -56,8 +58,9 @@ public async login(callback: any) {
             this.loginToken,
             this.code
         )
-        if(result.data!) {
-            localStorage.setItem('userInfo', JSON.stringify(result.data))
+        if(result.data) {
+            setCustomCookie('userInfo', JSON.stringify(result.data));
+            setToken(result.data.sid);
             Toast.info('登錄成功', 1);
             callback()
         } else {
