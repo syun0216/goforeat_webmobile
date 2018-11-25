@@ -1,48 +1,59 @@
-import { observable, action } from "mobx";
+import { observable, action, decorate } from "mobx";
 import { Toast } from "antd-mobile";
 import { IUser } from "../interfaces/server";
 
-export default class Basic {
-  @observable
-  public bottomLoadingStatus: boolean;
-  @observable
-  public user: IUser;
-  @observable 
-  public values: {
-    pageLoading: true,
-    postRequesting: false
+class BasicMobx {
+  public userInfo = {};
+  public pageLoading: boolean = false;
+  public showModal: boolean = false;
+  public showDownload: boolean = true;
+
+  public setLoading = (status: boolean) => {
+    this.pageLoading = status;
   }
 
-  @observable public foodDetailValues = {
-    selectedTab: 'Daily',
-    foodCount: 1
-  }
-  
+  public showLoading = () => {
+    this.pageLoading = true;
+  };
 
-  @action.bound
-  public errorHandler(err: any) {
-    // console.log(err);
-  }
+  public hidePageLoading = () => {
+    this.pageLoading = false;
+  };
 
-  /**
-   *
-   *
-   * @param {string} [message='hello']
-   * @param {string} [type="info"] "success" "fail" "offline" "loading"
-   * @param {number} [duration=2]
-   * @memberof Basic
-   */
-  @action
-  public showToast(
-    message: string = "hello",
-    type: string = "info",
-    duration: number = 2
-  ) {
-    Toast[type](message, duration);
+  public setDownload = (status: boolean) => {
+    this.showDownload = status;
   }
 
-  @action
-  public hideToast() {
+  public closeDownload = () => {
+    this.showDownload = false;
+    sessionStorage.setItem("GFEdownload", "1");
+  };
+
+  public showRequesting = () => {
+    Toast.loading("requesting", 0);
+  };
+
+  public hideReqesting = () => {
     Toast.hide();
-  }
+  };
+
+  public showToast = (type: string = "info", content = "Goforeat") => {
+    const duration = 3;
+    Toast[type](content, duration);
+  };
+
 }
+
+decorate(BasicMobx, {
+  pageLoading: observable,
+  showModal: observable,
+  showDownload: observable,
+  setLoading: action,
+  showLoading: action,
+  closeDownload: action,
+  setDownload: action
+})
+
+export default BasicMobx;
+
+

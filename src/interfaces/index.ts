@@ -1,4 +1,4 @@
-import { FoodDetailsMobx, FoodListMobx, LoginMobx, EditInfoMobx, ConfirmOrderMobx, CommonListViewMobx, MyOrderMobx } from '../mobx/rootStore';
+import { FoodDetailsMobx, FoodListMobx, LoginMobx, EditInfoMobx, ConfirmOrderMobx, CommonListViewMobx, MyOrderMobx,BasicMobx } from '../mobx/rootStore';
 
 /**
  * 模块页面props接口 -----------------------------------------------------
@@ -9,7 +9,8 @@ import { FoodDetailsMobx, FoodListMobx, LoginMobx, EditInfoMobx, ConfirmOrderMob
  *
  * @interface IBasic
  */
-interface IBasic {
+export interface IBasic {
+  basicMobx: BasicMobx,
   showLoading: () => void,
   hideLoading: () => void,
   showRequesting: () => void,

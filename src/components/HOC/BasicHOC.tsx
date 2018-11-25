@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { ActivityIndicator, Toast } from "antd-mobile";
-import { inject } from "mobx-react";
+import { ActivityIndicator } from "antd-mobile";
+import { inject, observer } from "mobx-react";
 //components
 import MyLoader from "../MyLoader";
 import CommonHeader from "../CommonHeader";
@@ -11,6 +11,9 @@ import "./BasicHOC.less";
 import { getDeviceInfo } from "../../utils/common";
 //router
 import { CRI } from '../../router/customRouteInterceptors';
+//interface
+import { IBasic } from '../../interfaces/index';
+
 
 const basicStyles = {
   loadingItem: {
@@ -20,37 +23,32 @@ const basicStyles = {
 
 const hasNoCommonHeader = ["/login", "/content", "/confirmorder","/editInfo"];
 
-const basicHOC = (WarppedComponent: typeof Component) =>
-  class extends Component<any, any> {
-    public state = {
-      pageLoading: false,
-      showModal: false,
-      showDownload: true,
-      error: null
-    };
+const basicHOC = (WarppedComponent: any) =>{
+
+  @inject('basicMobx')
+  @observer
+  class BasicComponent extends Component<IBasic, any> {
 
     public componentDidMount() {
+      console.log(123,this.props);
       const { pathname } = this.props.location;
+      const { setDownload, setLoading } = this.props.basicMobx;
       //自定義路由攔截器
       CRI(this.props.history);
       //--------
       this.goSchema();
-      this.setState({
-        showDownload:
-          hasNoCommonHeader.indexOf(pathname) === -1 &&
-          !sessionStorage.getItem("GFEdownload"),
-        pageLoading: hasNoCommonHeader.indexOf(pathname) === -1
-      });
+      setDownload(hasNoCommonHeader.indexOf(pathname) === -1 && !sessionStorage.getItem("GFEdownload"));
+      setLoading(hasNoCommonHeader.indexOf(pathname) === -1);
     }
 
     public componentDidCatch(error: Error, info: any) {
       this.setState({ error });
-      this.showToast("fail", "出错了...");
+      // this.showToast("fail", "出错了...");
       // console.log(123, error);
     }
 
     public render() {
-      const { pageLoading, showDownload } = this.state;
+      const { pageLoading, showDownload } = this.props.basicMobx;
       const {
         location: { pathname }
       } = this.props;
@@ -81,53 +79,16 @@ const basicHOC = (WarppedComponent: typeof Component) =>
       sessionStorage.setItem("GFEschema", "1");
     }
 
-    public showLoading = () => {
-      this.setState({
-        pageLoading: true
-      });
-    };
+    
 
-    public hidePageLoading = () => {
-      this.setState({
-        pageLoading: false
-      });
-    };
-
-    public showRequesting = () => {
-      Toast.loading("requesting", 0);
-    };
-
-    public hideReqesting = () => {
-      Toast.hide();
-    };
-
-    public showToast = (type: string = "info", content = "Goforeat") => {
-      const duration = 3;
-      Toast[type](content, duration);
-    };
-
-    public toggleModal = (status: boolean = true) => {
-      this.setState({
-        showModal: status
-      });
-    };
-
-    public closeDownload = () => {
-      this.setState(
-        {
-          showDownload: false
-        },
-        () => {
-          sessionStorage.setItem("GFEdownload", "1");
-        }
-      );
-    };
+    
 
     //render functions
     private _renderDownload() {
+      const { closeDownload } = this.props.basicMobx;
       return (
         <div className="download-container">
-          <div className="close" onClick={this.closeDownload}>
+          <div className="close" onClick={closeDownload}>
             <span className="close-img" />
           </div>
           <div className="content">
@@ -169,18 +130,19 @@ const basicHOC = (WarppedComponent: typeof Component) =>
     }
 
     private _renderEnhancePropsWarppedComponent() {
+      const { hidePageLoading, showLoading, showRequesting, hideReqesting, showToast } = this.props.basicMobx;
       return (
         <WarppedComponent
-          hideLoading={this.hidePageLoading}
-          showLoading={this.showLoading}
-          showRequesting={this.showRequesting}
-          hideRequesting={this.hideReqesting}
-          showToast={this.showToast}
-          toggleModal={this.toggleModal}
+          hideLoading={hidePageLoading}
+          showLoading={showLoading}
+          showRequesting={showRequesting}
+          hideRequesting={hideReqesting}
+          showToast={showToast}
           {...this.props}
         />
       );
     }
   };
-
+  return BasicComponent;
+}
 export default basicHOC;

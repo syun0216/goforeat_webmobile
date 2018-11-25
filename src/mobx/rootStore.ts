@@ -14,7 +14,8 @@ export {
   EditInfoMobx,
   ConfirmOrderMobx,
   CommonListViewMobx,
-  MyOrderMobx
+  MyOrderMobx,
+  BasicMobx
 }
 
 const rootStore = {
