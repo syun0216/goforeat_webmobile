@@ -162,7 +162,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
                 const { outsideRefresh } = this._commonlist.wrappedInstance;
                 if(!isEmpty(outsideRefresh)) {
                   outsideRefresh();
-                  console.log(this._commonlist);
+                  // console.log(this._commonlist);
                 } 
               } 
             }}
