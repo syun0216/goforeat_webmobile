@@ -21,7 +21,8 @@ const basicStyles = {
   }
 };
 
-const hasNoCommonHeader = ["/login", "/content", "/confirmorder","/editInfo"];
+const hasNoCommonHeader = ["/login", "/content","/editInfo"];
+const hasNoDownloadInfo = ["/login", "/content", "/confirmorder"];
 
 const basicHOC = (WarppedComponent: any) =>{
 
@@ -37,7 +38,7 @@ const basicHOC = (WarppedComponent: any) =>{
       CRI(this.props.history);
       //--------
       this.goSchema();
-      setDownload(hasNoCommonHeader.indexOf(pathname) === -1 && !sessionStorage.getItem("GFEdownload"));
+      setDownload(hasNoDownloadInfo.indexOf(pathname) === -1 && !sessionStorage.getItem("GFEdownload"));
       setLoading(hasNoCommonHeader.indexOf(pathname) === -1);
     }
 

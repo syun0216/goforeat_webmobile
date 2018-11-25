@@ -38,7 +38,7 @@ class BasicMobx {
   };
 
   public showToast = (type: string = "info", content = "Goforeat") => {
-    const duration = 3;
+    const duration = 1.2;
     Toast[type](content, duration);
   };
 

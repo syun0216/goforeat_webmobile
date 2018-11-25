@@ -26,7 +26,7 @@ const commonHeader = ({canBack, rightContent, leftContent, children, staticConte
   return (
     <div className="nav-container">
       <NavBar mode="light" className="nav-container"
-      icon={canBack?<Icon type="left"/>:leftContent}
+      icon={canBack?<Icon type="left" className="back-arrow"/>:leftContent}
       onLeftClick={_leftClick} 
       rightContent={rightContent} {...rest}>
         {children}
