@@ -61,7 +61,6 @@ const basicHOC = (WarppedComponent: any) =>{
         >
           {showDownload ? this._renderDownload() : null}
           {pageLoading ? this._renderIndicator() : null}
-
           {this._renderEnhancePropsWarppedComponent()}
         </div>
       );

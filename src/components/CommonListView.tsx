@@ -9,6 +9,7 @@ import BlankPage from "./BlankPage";
 //utils
 import { BOTTOM_LOAD_STATUS } from "../utils/global_params";
 import { isEmpty } from "../utils/common";
+import {errHandler} from "../utils/requestHandler";
 //interface
 import { ICommonListView } from "../interfaces";
 
@@ -87,9 +88,7 @@ export default class CommonListView extends React.Component<ICList, {}> {
         if (data.ro.ok) {
           successCallback(data.data.list || []);
         } else {
-          if (data.ro.respCode === "10006" || data.ro.respCode === "10007") {
-            // console.log("fail");
-          }
+          errHandler(data.ro);
         }
       },
       () => {
@@ -97,7 +96,7 @@ export default class CommonListView extends React.Component<ICList, {}> {
           failCallback();
         }
       }
-    );
+    ).catch((e: Error) => errHandler(e));
   }
 
   public outsideRefresh = () => {
