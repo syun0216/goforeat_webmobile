@@ -44,7 +44,6 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     const { getFoodPlaces, getQueryList } = this.props.foodListMobx;
     await getFoodPlaces();
     await getQueryList();
-    this.props.hideLoading();
   }
 
   public render() {
