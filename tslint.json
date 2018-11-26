@@ -20,6 +20,7 @@
     "no-var-requires": false,
     "object-shorthand": [false],
     "interface-name": [false, "never-prefix"],
-    "variable-name":[false]
+    "variable-name":[false],
+    "no-unused-expression": [false]
   }
 }
