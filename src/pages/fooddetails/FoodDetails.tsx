@@ -39,7 +39,6 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
     const { getDailyFoods } = this.props.foodDetailsMobx;
     const { dateFoodId } = this.props.match.params;
     await getDailyFoods(dateFoodId);
-    this.props.hideLoading();
   }
 
   public render() {

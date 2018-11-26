@@ -4,6 +4,7 @@ import { ListView } from 'antd-mobile';
 //utils
 import { BOTTOM_LOAD_STATUS } from '../utils/global_params';
 
+
 const { LOADING, LOAD_FAILED, NO_DATA, NO_MORE_DATA } = BOTTOM_LOAD_STATUS;
 
 class CommonListView {
