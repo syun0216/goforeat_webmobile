@@ -75,5 +75,6 @@ export interface IMyOrderItem {
   takeAddress:string,
   takeDate: string,
   status: number,
-  orderName: string
+  orderName: string,
+  mealCode: string
 }

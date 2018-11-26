@@ -27,6 +27,8 @@ interface ICList extends ICommonListView {
   renderItem: any;
   renderHeader?: any;
   isItemSeparatorShow: boolean;
+  separatorColor?: string;
+  separatorHeight?: number;
   style?: {};
 }
 
@@ -114,11 +116,11 @@ export default class CommonListView extends React.Component<ICList, {}> {
   }
 
   private _renderItemDivider = (sectionID: ReactText, rowID: ReactText): any => {
-    const { isItemSeparatorShow } = this.props;
+    const { isItemSeparatorShow, separatorColor } = this.props;
     if (!isItemSeparatorShow) {
       return null;
     }
-    return <Divider key={rowID} bgColor="transparent" height="10px" />;
+    return <Divider key={rowID} bgColor={separatorColor || "transparent"} height="10px" />;
   }
 
   private _renderCommonListItemView = (

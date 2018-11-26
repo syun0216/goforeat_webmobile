@@ -5,6 +5,11 @@ body {
   background-color: #fff !important;
 }
 
+ul, ol {
+  margin:0;
+  padding: 0;
+}
+
 .app {
   margin-top: 48px;
   background: #fff;

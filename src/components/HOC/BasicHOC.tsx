@@ -21,7 +21,7 @@ const basicStyles = {
   }
 };
 
-const hasNoCommonHeader = ["/login", "/content","/editInfo"];
+const hasNoCommonHeader = ["/login","/editInfo"];
 const hasNoDownloadInfo = ["/login", "/content", "/confirmorder"];
 
 const basicHOC = (WarppedComponent: any) =>{
@@ -114,7 +114,7 @@ const basicHOC = (WarppedComponent: any) =>{
       return (
         <div className="loader">
           <CommonHeader>
-            <ActivityIndicator size="small" />
+            <ActivityIndicator size="small" panelColor="white"/>
           </CommonHeader>
           <div style={basicStyles.loadingItem}>
             <MyLoader />
