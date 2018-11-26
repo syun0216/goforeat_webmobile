@@ -75,7 +75,8 @@ export interface IMyOrderItem {
   takeAddress:string,
   takeDate: string,
   status: number,
-  orderName: string
+  orderName: string,
+  mealCode: string
 }
 
 export interface INewOrder {
@@ -87,5 +88,6 @@ export interface INewOrder {
   takeAddress: string,
   takeDate: string,
   takeTime: string,
-  totalMoney: number
+  totalMoney: number,
+  orderName: string
 }
