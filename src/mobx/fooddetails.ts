@@ -1,9 +1,10 @@
-import { observable, action, decorate, computed } from 'mobx';
+import { observable, action, decorate, computed, runInAction } from 'mobx';
 //api
 import { getDailyFoods } from '../api/request';
 //api interface
 import { IDailyFood } from '../interfaces/server'; 
-
+//utils
+import { errHandler, successHandler } from '../utils/requestHandler';
 
 class FoodDetailsMobx {
   public foodDetails: IDailyFood;
@@ -29,10 +30,18 @@ class FoodDetailsMobx {
 
   public async getDailyFoods(dateFoodId: number) {
     try{
-      const {data} = await getDailyFoods(dateFoodId);
-      this.foodDetails = data;
-      // console.log(123, data);
+      const {data,ro}: any = await getDailyFoods(dateFoodId);
+      if(ro && ro.respCode && ro.respCode === "0000") {
+        successHandler(
+          () => runInAction(() => {
+            this.foodDetails = data;
+          })
+        );        
+      } else {
+        errHandler(ro);
+      }
     }catch(e) {
+      errHandler(e);
       // console.log(e);
     }
   }

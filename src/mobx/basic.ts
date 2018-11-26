@@ -7,6 +7,8 @@ class BasicMobx {
   public pageLoading: boolean = false;
   public showModal: boolean = false;
   public showDownload: boolean = true;
+  public isError: boolean = false;
+  public errorMessage: string = '';
 
   public setLoading = (status: boolean) => {
     this.pageLoading = status;
@@ -38,7 +40,7 @@ class BasicMobx {
   };
 
   public showToast = (type: string = "info", content = "Goforeat") => {
-    const duration = 1.2;
+    const duration = 2;
     Toast[type](content, duration);
   };
 
