@@ -53,11 +53,12 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   //logic
   private createOrder = () => {
     const { dateFoodId } = this.props.match.params;
+    const {values: {foodCount}} = this.props.foodDetailsMobx
     if(!dateFoodId) {
       this.props.showToast('fail', '無效的url參數');
       return;
     }
-    this.props.history.push('/confirmorder',{params: dateFoodId});
+    this.props.history.push('/confirmorder',{params: dateFoodId, amount:foodCount});
   }
 
   //render

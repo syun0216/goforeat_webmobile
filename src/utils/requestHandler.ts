@@ -1,4 +1,4 @@
-import { observable, set } from "mobx";
+import { set } from "mobx";
 import rootStore from "../mobx/rootStore";
 import { removeToken, removeCustomCookie } from "./auth";
 

@@ -1,45 +1,62 @@
-import { observable, action, computed } from "mobx";
+import { observable, decorate, action, computed, runInAction } from "mobx";
 
-import { getDailyFoods, createOrder } from "../api/request";
-import Basic from "./basic";
+import { confirmOrder, createOrder } from "../api/request";
 
 import { Toast } from "antd-mobile";
+import { INewOrder } from "../interfaces/server";
 
-import { IDailyFood } from "../interfaces/server";
-import { Component } from "react";
+import { errHandler, successHandler } from '../utils/requestHandler';
 
 export default class ConfirmOrderMobx {
   @observable public foodDetailValues = {
     foodCount: 1
   };
 
+  @observable public remark: any;
+
   @observable public dateFoodId: number = 0;
 
-  @observable public foodDetails: IDailyFood;
+  @observable public createdOrder: INewOrder;
 
   @action.bound
-  public async getDailyFoods(dateFoodId: number) {
-    try {
-      const { data } = await getDailyFoods(dateFoodId);
-      this.foodDetails = data;
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  public async createOrder(dateFoodId: number, amount: number, callback: any) {
+  public async createOrder(dateFoodId: number, amount: number) {
+    const that = this;
     try {
       const { data, ro }: any = await createOrder(dateFoodId, amount);
       if (ro.ok !== true) {
         Toast.info(ro.respMsg);
         if (ro.respCode === "10006") {
-          callback();
+          console.log(ro)
         }
       } else {
-        console.log(data);
+        successHandler(
+          () => runInAction(() => {
+            that.createdOrder = data;
+          })
+        );
       }
     } catch (error) {
       console.error(error);
     }
   }
+  @action.bound
+  public async confirmOrder(callback: () => void) {
+    const {orderId, totalMoney} = this.createdOrder
+    const { data, ro }: any = await confirmOrder(orderId, totalMoney, 1, '', this.remark);
+    if(ro.respCode === '0000') {
+      successHandler(
+        () => runInAction(() => {
+          callback()
+        })
+      );
+    } else {
+      errHandler(ro);
+    }
+  }
+
+  @action.bound
+  public setRemark(remark: string) {
+    this.remark = remark
+  }
+
 }
