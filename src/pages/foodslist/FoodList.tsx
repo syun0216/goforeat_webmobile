@@ -1,5 +1,5 @@
 import React from "react";
-import { Drawer, List, ListView, NoticeBar } from "antd-mobile";
+import { Drawer, List, Flex, NoticeBar } from "antd-mobile";
 import { Link } from "react-router-dom";
 //api
 import { getFoodList } from "../../api/request";
@@ -249,7 +249,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     sectionID: number,
     rowID: number
   ) {
-    const { thumbnail, name, brief, price, date, dateFoodId } = rowData;
+    const { thumbnail, name, brief, price, date, dateFoodId, originPrice, canteenName } = rowData;
     const _brief = brief && brief.split("").join(" ");
     return (
       <Link key={rowID} to={{pathname:'/foodDetails', state: {dateFoodId}}}>
@@ -258,9 +258,20 @@ export default class FoodList extends React.Component<IFoodList, {}> {
           <div className="item-details">
             <div className="item-container">
               <span className="item-foodname">{name}</span>
-              <span className="item-date">{date}</span>
             </div>
-            <p className="item-brief">{_brief}</p>
+            <div className="item-container">
+              <span className="item-label">日期</span>
+              <span className="item-value">{date}</span>
+            </div>
+            <div className="item-container">
+              <span className="item-label">餐廳</span>
+              <span className="item-value">{canteenName}</span>
+            </div>
+            <div className="item-container">
+              <span className="item-label">堂食價</span>
+              <span className="item-value">{originPrice ? parseFloat(originPrice).toFixed(2) : '暫無'}</span>
+            </div>
+            {/* <p className="item-brief">{_brief}</p> */}
             <div className="item-container">
               <span className="item-price">HKD {price}</span>
               <span className="item-btn">立即預訂</span>
@@ -273,16 +284,22 @@ export default class FoodList extends React.Component<IFoodList, {}> {
 
   private _renderFoodListView() {
     const {
-      values: { currentPlace }
+      values: { currentPlace, currentStar }, setStar
     } = this.props.foodListMobx;
     if (currentPlace.id === 1) {
       return null;
     }
     const Header = (
-      <span style={{ display: "inline-block", padding: "5px 0 10px" }}>
-        精選菜單
-      </span>
+      <Flex justify="between">
+        <span style={{ display: "inline-block", padding: "5px 0 10px" }}>
+          精選菜單
+        </span>
+        <span style={{ display: "inline-block", padding: "5px 0 10px" }}>
+          评分: {currentStar}
+        </span>
+      </Flex>
     );
+    console.log(this._commonlist);
     return (
       <CommonListView
         ref={cl => this._commonlist = cl}
@@ -291,6 +308,9 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         renderItem={this._renderFoodListItem}
         isItemSeparatorShow
         extraParams={{ placeId: currentPlace.id }}
+        getRawData={(data) => {
+          setStar(data.star)
+        }}
       />
     );
   }

@@ -23,7 +23,7 @@ export function setCustomCookie(key:string,value:string) {
   return Cookies.set(key, value);
 }
 
-export function getCustomCookie(key:string) {
+export function getCustomCookie(key:string | any) {
   return Cookies.get(key);
 }
 

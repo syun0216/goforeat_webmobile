@@ -7,7 +7,6 @@ import {
   Button,
   Carousel
 } from "antd-mobile";
-import { Link } from "react-router-dom";
 //style
 import "./FoodDetails.less";
 //mobx
@@ -170,7 +169,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
 
   private _renderBottomConfirm(data: IDailyFood) {
     const { values: {foodCount} } = this.props.foodDetailsMobx;
-    const { price } = data;
+    const { price, status } = data;
     return (
       <div className="footer">
         <div>
@@ -181,7 +180,13 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
           inline
           size="small"
           className="btn"
-          onClick={this.createOrder}
+          onClick={() => {
+            if(status !== HAS_FOODS) {
+              this.props.showToast("info", "已停止下单");
+              return;
+            }
+            this.createOrder();
+          }}
         >
           立即預訂
         </Button>
