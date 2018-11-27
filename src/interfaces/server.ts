@@ -1,3 +1,5 @@
+import { string } from "prop-types";
+
 export interface IPlaceList {
   id: number,
   name: string
@@ -14,6 +16,7 @@ export interface IDailyFood {
   like: number,
   likeCount: number,
   price: number,
+  originPrice: number,
   status: number,
   subTitle: string,
   title: string
@@ -45,7 +48,9 @@ export interface IFoodListItem {
   foodId: number,
   name: string,
   price: string,
+  originPrice: string,
   thumbnail: string,
+  canteenName: string
 }
 
 export interface IUser {

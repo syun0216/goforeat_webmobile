@@ -1,10 +1,11 @@
-import { observable, action, runInAction, decorate, configure } from 'mobx';
+import { observable, action, runInAction, decorate, configure } from "mobx";
 //api
-import { foodPlaces, queryList } from '../api/request';
+import { foodPlaces, queryList } from "../api/request";
 //api interface
-import { IPlaceList, IQueryList } from '../interfaces/server';
+import { IPlaceList, IQueryList } from "../interfaces/server";
 //utils
-import {errHandler, successHandler} from "../utils/requestHandler";
+import { errHandler, successHandler } from "../utils/requestHandler";
+import { setCustomCookie, getCustomCookie } from "../utils/auth";
 
 // configure({enforceActions: "observed"})
 class FoodListMobx {
@@ -13,40 +14,47 @@ class FoodListMobx {
   public values = {
     currentPlace: {
       id: 1,
-      name: '未选择'  
+      name: "未选择"
     },
+    currentStar: 5,
     isDrawerShow: false,
     isPlaceMenuShow: false,
     isQueryListShow: true
-  }
+  };
 
-  public toggleDrawer():void {
+  public toggleDrawer(): void {
     this.values.isDrawerShow = !this.values.isDrawerShow;
   }
 
-  public togglePlaceMenu():void {
+  public togglePlaceMenu(): void {
     this.values.isPlaceMenuShow = !this.values.isPlaceMenuShow;
   }
 
-  public closeQueryList():void {
+  public closeQueryList(): void {
     this.values.isQueryListShow = false;
+  }
+
+  public setStar(star: number): void {
+    this.values.currentStar = star;
   }
 
   //api
   public async getFoodPlaces() {
-    try{
-      const {data,ro} : any = await foodPlaces();
-      if(ro && ro.respCode && ro.respCode === "0000") {
-        successHandler(
-          () => runInAction(() => {
+    try {
+      const { data, ro }: any = await foodPlaces();
+      if (ro && ro.respCode && ro.respCode === "0000") {
+        successHandler(() =>
+          runInAction(() => {
             this.placeList = data;
-            this.values.currentPlace = data[0];
+            const foodPlace: any = sessionStorage.getItem('foodPlace');
+            sessionStorage.getItem('foodPlace') ? this.values.currentPlace =  JSON.parse(foodPlace): 
+            this.values.currentPlace = data[0]; 
           })
         );
       } else {
         errHandler(ro);
       }
-    }catch(e) {
+    } catch (e) {
       errHandler(e);
       console.log(e);
     }
@@ -54,10 +62,10 @@ class FoodListMobx {
 
   public async getQueryList() {
     try {
-      const {data, ro}: any = await queryList();
-      if(ro && ro.respCode && ro.respCode === "0000") {
-        successHandler(
-          () => runInAction(() => {
+      const { data, ro }: any = await queryList();
+      if (ro && ro.respCode && ro.respCode === "0000") {
+        successHandler(() =>
+          runInAction(() => {
             this.queryList = data;
             this.values.isQueryListShow = true;
           })
@@ -65,14 +73,15 @@ class FoodListMobx {
       } else {
         errHandler(ro);
       }
-    }catch(e) {
-      errHandler(e)
+    } catch (e) {
+      errHandler(e);
       console.log(e);
     }
   }
 
-  public changePlace(item: IPlaceList):void {
+  public changePlace(item: IPlaceList): void {
     this.values.currentPlace = item;
+    sessionStorage.setItem('foodPlace', JSON.stringify(item));
     this.togglePlaceMenu();
   }
 }
@@ -84,9 +93,10 @@ decorate(FoodListMobx, {
   toggleDrawer: action.bound,
   togglePlaceMenu: action.bound,
   closeQueryList: action.bound,
+  setStar: action.bound,
   getFoodPlaces: action.bound,
   getQueryList: action.bound,
   changePlace: action.bound
-})
+});
 
 export default FoodListMobx;

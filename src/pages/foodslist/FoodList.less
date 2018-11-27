@@ -134,6 +134,7 @@
       padding: 10px;
       flex-direction: column;
       justify-content: space-around;
+      overflow: hidden;
     }
     .item-container{
       display: flex;
@@ -142,11 +143,14 @@
         font-size: 16px;
         color: #111111;
         white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-        width: 80px; 
       }
-      .item-date {
+      .item-label {
         font-size: 13px;
         color: #666666;
+      }
+      .item-value {
+        font-size: 16px;
+        color: #111111;
       }
       .item-price {
         font-size: 14px;

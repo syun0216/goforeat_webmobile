@@ -30,6 +30,7 @@ interface ICList extends ICommonListView {
   separatorColor?: string;
   separatorHeight?: number;
   style?: {};
+  getRawData?:(data:any) => void
 }
 
 const requestParams = {
@@ -78,7 +79,7 @@ export default class CommonListView extends React.Component<ICList, {}> {
     successCallback: (val: any) => void,
     failCallback: () => void
   ) {
-    const { requestFunc, extraParams = {} } = this.props;
+    const { requestFunc, extraParams = {}, getRawData } = this.props;
     let _requestParams = {
       offset
     };
@@ -88,6 +89,7 @@ export default class CommonListView extends React.Component<ICList, {}> {
     requestFunc({..._requestParams}).then(
       (data: any) => {
         if (data.ro.ok) {
+          getRawData && getRawData(data.data);
           successCallback(data.data.list || []);
         } else {
           errHandler(data.ro);
