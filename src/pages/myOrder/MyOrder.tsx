@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Tabs, WhiteSpace, Flex } from "antd-mobile";
+import { Tabs, Modal, Flex } from "antd-mobile";
 import { StickyContainer, Sticky } from "react-sticky";
 import { inject, observer } from "mobx-react";
 //interface
@@ -27,6 +27,7 @@ const {
   ORDER_CANCEL,
   ORDER_ALL
 } = ORDER_STATUS;
+const alert = Modal.alert;
 
 @inject("myOrderMobx")
 @observer
@@ -158,14 +159,23 @@ export default class MyOrder extends Component<IMyOrder, {}> {
           <span>取餐號:{mealCode}</span>
           <button
             onClick={() => {
-              this.props.showRequesting();
-              cancelOrder(orderId, () => {
-                const cancelOrderConfirm = confirm("是否取消?");
-                cancelOrderConfirm &&
-                  this._commonlist.wrappedInstance &&
-                  this._commonlist.wrappedInstance.outsideRefresh &&
-                  this._commonlist.wrappedInstance.outsideRefresh();
-              });
+              alert("提示", "是否取消訂單?", [
+                { text: "否", onPress: () => console.log("cancel") },
+                {
+                  text: "是",
+                  onPress: () => {
+                    this.props.showRequesting();
+                    cancelOrder(orderId, () => {
+                      this._commonlist.wrappedInstance &&
+                        this._commonlist.wrappedInstance.outsideRefresh &&
+                        this._commonlist.wrappedInstance.outsideRefresh();
+                    });
+                  },
+                  style: {
+                    color: "#ff5858"
+                  }
+                }
+              ]);
             }}
             className="cancel-btn"
           >
