@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Switch, Route, BrowserRouter, Redirect, HashRouter } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  BrowserRouter,
+  Redirect,
+  HashRouter
+} from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import asyncComponent from "./asyncComponent";
 //hoc
@@ -32,7 +38,17 @@ const privateRoute = ({ PComponent, ...rest }: any) => {
   return isAuth() ? (
     <Route {...rest} component={PComponent} />
   ) : (
-    <Redirect to={{ pathname: "/login", state: { from: rest.location,params: isEmpty(rest.location.state) ? null : rest.location.state.params || null }}} />
+    <Redirect
+      to={{
+        pathname: "/login",
+        state: {
+          from: rest.location,
+          params: isEmpty(rest.location.state)
+            ? null
+            : rest.location.state.params || null
+        }
+      }}
+    />
   );
 };
 
@@ -55,6 +71,7 @@ export default class RouteConfig extends Component {
                 }}
                 mountOnEnter={true}
                 unmountOnExit={true}
+                exit={false}
               >
                 <Switch>
                   <Route path="/" exact component={BasicHOC(FOODLIST)} />
