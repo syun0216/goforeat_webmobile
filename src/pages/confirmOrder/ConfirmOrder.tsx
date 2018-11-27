@@ -1,6 +1,6 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
-import { List } from "antd-mobile";
+import { List, InputItem } from "antd-mobile";
 
 import { IConfirmOrder } from "../../interfaces";
 import "./ConfirmOrder.less";
@@ -8,6 +8,7 @@ import "./ConfirmOrder.less";
 
 import CommonHeader from "../../components/CommonHeader";
 import { isEmpty } from "../../utils/common";
+import { stat } from "fs";
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -21,20 +22,20 @@ export default class ConfirmOrder extends React.Component<IConfirmOrder, {}> {
     }
 
     public async componentWillMount() {
-        const { getDailyFoods } = this.props.ConfirmOrderMobx;
+        const { createOrder } = this.props.ConfirmOrderMobx;
         const { state } = this.props.history.location;
         if(!state.params) {
             this.props.showToast('fail', '參數有誤');
             return;
         }
         this.props.ConfirmOrderMobx.dateFoodId = state.params;
-        await getDailyFoods(state.params)
+        await createOrder(state.params, state.amount)
         this.props.hideLoading();
     }
 
     public render() {
-        const { dateFoodId, foodDetails, foodDetailValues: { foodCount } } = this.props.ConfirmOrderMobx
-        if (isEmpty(foodDetails)) {
+        const { createdOrder } = this.props.ConfirmOrderMobx
+        if (isEmpty(createdOrder)) {
             return null;
         }
         return (
@@ -43,16 +44,16 @@ export default class ConfirmOrder extends React.Component<IConfirmOrder, {}> {
                 <div className="key-info">
                     <div className="key-info-title">
                         <span>
-                            {this._textLengthFilter(foodDetails.foodName)}
+                            {this._textLengthFilter(createdOrder.foodName)}
                         </span>
-                        <span>HKD {foodCount * foodDetails.price}.00</span>
+                        <span>HKD {createdOrder.foodMoney}.00</span>
                     </div>
                     <div className="key-info-count">
                         <span>
                             數量：
                         </span>
                         <span style={{color: 'red'}}>
-                            {foodCount}
+                            {createdOrder.foodNum}
                         </span>
                     </div>
                     <div className="key-info-value">
@@ -64,7 +65,7 @@ export default class ConfirmOrder extends React.Component<IConfirmOrder, {}> {
                                 HKD&nbsp;
                             </span>
                             <span style={{color: 'red'}}>
-                                {foodDetails.price}.00
+                                {createdOrder.totalMoney}.00
                             </span>
                         </div>
                         
@@ -89,35 +90,36 @@ export default class ConfirmOrder extends React.Component<IConfirmOrder, {}> {
     }
 
     private _renderList() {
+        const { createdOrder, remark, setRemark } = this.props.ConfirmOrderMobx
         return (
             <List className="desc-list">
                 <div className="desc-list-title">
                     <span>取餐資料</span>
                 </div>
                 <Item>
-                    取餐日期<Brief>2018-11-23</Brief>
+                    取餐日期<Brief style={{color: 'red'}}>{createdOrder.takeDate}</Brief>
                 </Item>
                 <Item>
-                    取餐地點<Brief>A</Brief>
+                    取餐地點<Brief>{createdOrder.takeAddress}</Brief>
                 </Item>
                 <Item>
-                    取餐時間<Brief>12:15 - 13:15</Brief>
+                    取餐時間<Brief>{createdOrder.takeTime}</Brief>
                 </Item>
                 <Item>
                     支付方式<Brief>現金支付</Brief>
                 </Item>
-                <Item>
-                    送餐備註<Brief>例如：加飯、少辣</Brief>
-                </Item>
+                <InputItem value={remark} onChange={(name) => setRemark(name)} placeholder="例如：加飯、少辣">
+                    送餐備註
+                </InputItem>
             </List>    
         )
     }
 
     private _renderButton() {
-        const {createOrder, dateFoodId, foodDetailValues: {foodCount}} = this.props.ConfirmOrderMobx
+        const {confirmOrder} = this.props.ConfirmOrderMobx
         return (
-            <div className="button" onClick={() => createOrder(dateFoodId, foodCount, () => {
-                this.props.history.push('/login')
+            <div className="button" onClick={() => confirmOrder(() => {
+                this.props.history.push('/myorder')
             })}>
                 <span>立即下單</span>
             </div>

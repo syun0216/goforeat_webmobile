@@ -78,3 +78,16 @@ export interface IMyOrderItem {
   orderName: string,
   mealCode: string
 }
+
+export interface INewOrder {
+  defaultPayment: number,
+  foodMoney: number,
+  foodName: string,
+  foodNum: number,
+  orderId: number,
+  takeAddress: string,
+  takeDate: string,
+  takeTime: string,
+  totalMoney: number,
+  orderName: string
+}
