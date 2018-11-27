@@ -36,9 +36,10 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   }
 
   public async componentDidMount() {
-    const { getDailyFoods } = this.props.foodDetailsMobx;
-    const { dateFoodId } = this.props.match.params;
-    await getDailyFoods(dateFoodId);
+    const { getDailyFoods,values: {foodCount}, setCount } = this.props.foodDetailsMobx;
+    const { state } = this.props.history.location;
+    await getDailyFoods(state.dateFoodId);
+    foodCount > 1 && setCount(1);
   }
 
   public render() {
@@ -52,7 +53,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
 
   //logic
   private createOrder = () => {
-    const { dateFoodId } = this.props.match.params;
+    const { dateFoodId } = this.props.history.location.state;
     const {values: {foodCount}} = this.props.foodDetailsMobx
     if(!dateFoodId) {
       this.props.showToast('fail', '無效的url參數');

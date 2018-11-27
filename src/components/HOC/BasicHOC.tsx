@@ -31,7 +31,6 @@ const basicHOC = (WarppedComponent: any) =>{
   class BasicComponent extends Component<IBasic, any> {
 
     public componentDidMount() {
-      console.log(123,this.props);
       const { pathname } = this.props.location;
       const { setDownload, setLoading } = this.props.basicMobx;
       //自定義路由攔截器

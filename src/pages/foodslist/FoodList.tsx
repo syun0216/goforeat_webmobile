@@ -252,7 +252,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     const { thumbnail, name, brief, price, date, dateFoodId } = rowData;
     const _brief = brief && brief.split("").join(" ");
     return (
-      <Link key={rowID} to={`/foodDetails/${dateFoodId}`}>
+      <Link key={rowID} to={{pathname:'/foodDetails', state: {dateFoodId}}}>
         <div className="food-list-item">
           {GenerateIcon(thumbnail, "thumbnail", "item-thumbnail")}
           <div className="item-details">
