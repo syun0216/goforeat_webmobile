@@ -24,10 +24,7 @@ export default class ConfirmOrderMobx {
     try {
       const { data, ro }: any = await createOrder(dateFoodId, amount);
       if (ro.ok !== true) {
-        Toast.info(ro.respMsg);
-        if (ro.respCode === "10006") {
-          console.log(ro)
-        }
+        errHandler(ro);
       } else {
         successHandler(
           () => runInAction(() => {
@@ -36,7 +33,7 @@ export default class ConfirmOrderMobx {
         );
       }
     } catch (error) {
-      console.error(error);
+      errHandler(error);
     }
   }
   @action.bound

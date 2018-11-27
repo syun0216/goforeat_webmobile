@@ -157,13 +157,13 @@ export default class FoodList extends React.Component<IFoodList, {}> {
             key={i}
             onClick={() => {
               changePlace(v);
-              if(this._commonlist){
+              if (this._commonlist) {
                 const { outsideRefresh } = this._commonlist.wrappedInstance;
-                if(!isEmpty(outsideRefresh)) {
+                if (!isEmpty(outsideRefresh)) {
                   outsideRefresh();
                   // console.log(this._commonlist);
-                } 
-              } 
+                }
+              }
             }}
           >
             {v.name}
@@ -249,10 +249,22 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     sectionID: number,
     rowID: number
   ) {
-    const { thumbnail, name, brief, price, date, dateFoodId, originPrice, canteenName } = rowData;
+    const {
+      thumbnail,
+      name,
+      brief,
+      price,
+      date,
+      dateFoodId,
+      originPrice,
+      canteenName
+    } = rowData;
     const _brief = brief && brief.split("").join(" ");
     return (
-      <Link key={rowID} to={{pathname:'/foodDetails', state: {dateFoodId}}}>
+      <Link
+        key={rowID}
+        to={{ pathname: "/foodDetails", state: { dateFoodId } }}
+      >
         <div className="food-list-item">
           {GenerateIcon(thumbnail, "thumbnail", "item-thumbnail")}
           <div className="item-details">
@@ -269,11 +281,16 @@ export default class FoodList extends React.Component<IFoodList, {}> {
             </div>
             <div className="item-container">
               <span className="item-label">堂食價</span>
-              <span className="item-value">{originPrice ? parseFloat(originPrice).toFixed(2) : '暫無'}</span>
+              <span className="item-value">
+                {originPrice ? parseFloat(originPrice).toFixed(2) : "暫無"}
+              </span>
             </div>
             {/* <p className="item-brief">{_brief}</p> */}
             <div className="item-container">
-              <span className="item-price">HKD {price}</span>
+              <span className="item-price">
+                HKD
+                <span style={{color: '#ff5858', fontSize: '16px',display:'inline-block',marginLeft: '5px'}}>{price}</span>
+              </span>
               <span className="item-btn">立即預訂</span>
             </div>
           </div>
@@ -284,7 +301,8 @@ export default class FoodList extends React.Component<IFoodList, {}> {
 
   private _renderFoodListView() {
     const {
-      values: { currentPlace, currentStar }, setStar
+      values: { currentPlace, currentStar },
+      setStar
     } = this.props.foodListMobx;
     if (currentPlace.id === 1) {
       return null;
@@ -302,14 +320,14 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     console.log(this._commonlist);
     return (
       <CommonListView
-        ref={cl => this._commonlist = cl}
+        ref={cl => (this._commonlist = cl)}
         requestFunc={getFoodList}
         renderHeader={() => Header}
         renderItem={this._renderFoodListItem}
         isItemSeparatorShow
         extraParams={{ placeId: currentPlace.id }}
-        getRawData={(data) => {
-          setStar(data.star)
+        getRawData={data => {
+          setStar(data.star);
         }}
       />
     );
