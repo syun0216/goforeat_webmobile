@@ -59,7 +59,7 @@ export default class RouteConfig extends Component {
                 <Switch>
                   <Route path="/" exact component={BasicHOC(FOODLIST)} />
                   <Route
-                    path="/foodDetails/:dateFoodId"
+                    path="/foodDetails"
                     component={BasicHOC(FOODDETAILS)}
                   />
                   <Route path="/content" component={BasicHOC(CONTENT)} />

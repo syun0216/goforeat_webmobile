@@ -119,7 +119,7 @@ export default class ConfirmOrder extends React.Component<IConfirmOrder, {}> {
         const {confirmOrder} = this.props.ConfirmOrderMobx
         return (
             <div className="button" onClick={() => confirmOrder(() => {
-                this.props.history.push('/myorder')
+                this.props.history.replace('/myorder')
             })}>
                 <span>立即下單</span>
             </div>

@@ -42,7 +42,7 @@ export default class ConfirmOrderMobx {
   @action.bound
   public async confirmOrder(callback: () => void) {
     const {orderId, totalMoney} = this.createdOrder
-    const { data, ro }: any = await confirmOrder(orderId, totalMoney, 1, '', this.remark);
+    const { data, ro }: any = await confirmOrder(orderId, totalMoney, 1, '', this.remark,null);
     if(ro.respCode === '0000') {
       successHandler(
         () => runInAction(() => {
