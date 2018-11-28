@@ -69,7 +69,7 @@ export default class Login extends React.Component<ILogin, {}> {
               </div>
               <div className="main-container-input">
                 {GenerateIcon(password, 'phone', 'main-container-icon')}
-                <input type="text" placeholder="請輸入驗證碼" className="main-container-transparent" defaultValue={code} onChange={e => {setCode(e.target.value)}}/>
+                <input type="password" placeholder="請輸入驗證碼"  className="main-container-transparent" defaultValue={code} onChange={e => {setCode(e.target.value)}}/>
                 <div className="validate-code" onClick={() => getCode()}>
                   <span>
                     {sendCode}
@@ -81,6 +81,7 @@ export default class Login extends React.Component<ILogin, {}> {
           <div className="main-button-area">
               <div className="main-button">
                 <span className="main-button-text" onClick={() => {
+                  this.props.showRequesting();
                   login(() => {
                     const { history,history: {location: {state}} } = this.props;
                     state.from ? history.replace(state.from.pathname,{params: isEmpty(state.from.state) ? null : state.from.state.params || null}) :
