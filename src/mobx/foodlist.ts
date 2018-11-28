@@ -1,4 +1,4 @@
-import { observable, action, runInAction, decorate, configure } from "mobx";
+import { observable, action, runInAction, decorate, observe, autorun, reaction } from "mobx";
 //api
 import { foodPlaces, queryList } from "../api/request";
 //api interface
@@ -79,10 +79,16 @@ class FoodListMobx {
     }
   }
 
-  public changePlace(item: IPlaceList): void {
+  public changePlace(item: IPlaceList, callback?:() => void): void {
     this.values.currentPlace = item;
     sessionStorage.setItem('foodPlace', JSON.stringify(item));
     this.togglePlaceMenu();
+    // reaction(() => this.values.currentPlace, arr => {
+    //   console.log(arr.id);
+    // });
+    autorun(() => {
+      callback&&callback();
+    })
   }
 }
 

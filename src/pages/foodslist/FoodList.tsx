@@ -41,9 +41,13 @@ export default class FoodList extends React.Component<IFoodList, {}> {
   }
 
   public async componentDidMount() {
-    const { getFoodPlaces, getQueryList } = this.props.foodListMobx;
+    const { getFoodPlaces, getQueryList, values: { currentPlace } } = this.props.foodListMobx;
     await getFoodPlaces();
     await getQueryList();
+  }
+
+  public componentDidUpdate() {
+    console.log('did update');
   }
 
   public render() {
@@ -156,14 +160,15 @@ export default class FoodList extends React.Component<IFoodList, {}> {
             className="dropdown-item"
             key={i}
             onClick={() => {
-              changePlace(v);
-              if (this._commonlist) {
-                const { outsideRefresh } = this._commonlist.wrappedInstance;
-                if (!isEmpty(outsideRefresh)) {
-                  outsideRefresh();
-                  // console.log(this._commonlist);
+              changePlace(v, () => {
+                if (this._commonlist) {
+                  const { outsideRefresh } = this._commonlist.wrappedInstance;
+                  if (!isEmpty(outsideRefresh)) {
+                    outsideRefresh();
+                    // console.log(this._commonlist);
+                  }
                 }
-              }
+              });
             }}
           >
             {v.name}
@@ -317,7 +322,6 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         </span>
       </Flex>
     );
-    console.log(this._commonlist);
     return (
       <CommonListView
         ref={cl => (this._commonlist = cl)}

@@ -27,6 +27,10 @@ private interval: any;
 
 @action.bound
 public async getCode() {
+    if(this.n !== 60) {
+        Toast.info(`${this.n}秒后再試...`);
+        return;
+    }
     try {
         const result = await getCode(this.mobile, this.type + 1);
         if(result.data!.token) {

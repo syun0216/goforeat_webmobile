@@ -17,7 +17,8 @@ import { IBasic } from '../../interfaces/index';
 
 const basicStyles = {
   loadingItem: {
-    padding: "10px"
+    padding: "10px",
+    marginTop: "4em"
   }
 };
 
