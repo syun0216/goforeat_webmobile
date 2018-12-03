@@ -10,10 +10,9 @@ import "./BasicHOC.less";
 //utils
 import { getDeviceInfo } from "../../utils/common";
 //router
-import { CRI } from '../../router/customRouteInterceptors';
+import { CRI } from "../../router/customRouteInterceptors";
 //interface
-import { IBasic } from '../../interfaces/index';
-
+import { IBasic } from "../../interfaces/index";
 
 const basicStyles = {
   loadingItem: {
@@ -22,15 +21,13 @@ const basicStyles = {
   }
 };
 
-const hasNoCommonHeader = ["/login","/editInfo"];
+const hasNoCommonHeader = ["/login", "/editInfo"];
 const hasNoDownloadInfo = ["/login", "/content", "/confirmorder"];
 
-const basicHOC = (WarppedComponent: any) =>{
-
-  @inject('basicMobx')
+const basicHOC = (WarppedComponent: any) => {
+  @inject("basicMobx")
   @observer
   class BasicComponent extends Component<IBasic, any> {
-
     public componentDidMount() {
       const { pathname } = this.props.location;
       const { setDownload, setLoading } = this.props.basicMobx;
@@ -38,7 +35,10 @@ const basicHOC = (WarppedComponent: any) =>{
       CRI(this.props.history);
       //--------
       this.goSchema();
-      setDownload(hasNoDownloadInfo.indexOf(pathname) === -1 && !sessionStorage.getItem("GFEdownload"));
+      setDownload(
+        hasNoDownloadInfo.indexOf(pathname) === -1 &&
+          !sessionStorage.getItem("GFEdownload")
+      );
       setLoading(hasNoCommonHeader.indexOf(pathname) === -1);
     }
 
@@ -68,20 +68,16 @@ const basicHOC = (WarppedComponent: any) =>{
 
     //logic functions
     public goSchema = () => {
-      if(sessionStorage.getItem('GFEschema')) {
+      if (sessionStorage.getItem("GFEschema")) {
         return;
       }
-      if(getDeviceInfo() === 'ios') {
+      if (getDeviceInfo() === "ios") {
         window.location.href = "fb2036279879923166://" || "goforeat://";
-      } else if(getDeviceInfo() === 'android') {
-        return ;
+      } else if (getDeviceInfo() === "android") {
+        return;
       }
       sessionStorage.setItem("GFEschema", "1");
-    }
-
-    
-
-    
+    };
 
     //render functions
     private _renderDownload() {
@@ -99,9 +95,20 @@ const basicHOC = (WarppedComponent: any) =>{
             </section>
             <div
               className="btn"
-              onClick={() =>
-                window.open("http://api.goforeat.hk/guide/download", "_blank")
-              }
+              onClick={() => {
+                const _device = getDeviceInfo();
+                if (_device === "ios") {
+                  window.open(
+                    "https://itunes.apple.com/cn/app/goforeat/id1343559475?mt=8",
+                    "_blank"
+                  );
+                } else if (_device === "android") {
+                  window.open(
+                    "https://play.google.com/store/apps/details?id=com.goforeat_app",
+                    "_blank"
+                  );
+                }
+              }}
             >
               立即下載
             </div>
@@ -114,7 +121,7 @@ const basicHOC = (WarppedComponent: any) =>{
       return (
         <div className="loader">
           <CommonHeader>
-            <ActivityIndicator size="small" panelColor="white"/>
+            <ActivityIndicator size="small" panelColor="white" />
           </CommonHeader>
           <div style={basicStyles.loadingItem}>
             <MyLoader />
@@ -130,7 +137,13 @@ const basicHOC = (WarppedComponent: any) =>{
     }
 
     private _renderEnhancePropsWarppedComponent() {
-      const { hidePageLoading, showLoading, showRequesting, hideReqesting, showToast } = this.props.basicMobx;
+      const {
+        hidePageLoading,
+        showLoading,
+        showRequesting,
+        hideReqesting,
+        showToast
+      } = this.props.basicMobx;
       return (
         <WarppedComponent
           hideLoading={hidePageLoading}
@@ -142,7 +155,7 @@ const basicHOC = (WarppedComponent: any) =>{
         />
       );
     }
-  };
+  }
   return BasicComponent;
-}
+};
 export default basicHOC;

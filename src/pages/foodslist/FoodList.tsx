@@ -16,10 +16,11 @@ import GenerateIcon from "../../components/GenerateIcon";
 import CommonListView from "../../components/CommonListView";
 import CommonModal from "../../components/CommonModal";
 //utils
-import { isEmpty } from "../../utils/common";
+import { isEmpty, getDeviceInfo } from "../../utils/common";
 import { getCustomCookie } from "../../utils/auth";
 //header
 const menuIcon = require("@/assets/menu.png");
+const locationIcon = require("@/assets/location_white.png");
 const checkedIcon = require("@/assets/checked.png");
 const uncheckedIcon = require("@/assets/unchecked.png");
 //sidebar
@@ -41,13 +42,17 @@ export default class FoodList extends React.Component<IFoodList, {}> {
   }
 
   public async componentDidMount() {
-    const { getFoodPlaces, getQueryList, values: { currentPlace } } = this.props.foodListMobx;
+    const {
+      getFoodPlaces,
+      getQueryList,
+      values: { currentPlace }
+    } = this.props.foodListMobx;
     await getFoodPlaces();
     await getQueryList();
   }
 
   public componentDidUpdate() {
-    console.log('did update');
+    console.log("did update");
   }
 
   public render() {
@@ -129,16 +134,34 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     } = this.props.foodListMobx;
     return (
       <CommonHeader
-        leftContent={GenerateIcon(menuIcon, "meni", "menu-icon")}
+        leftContent={GenerateIcon(menuIcon, "menu", "menu-icon")}
         onLeftClick={toggleDrawer}
+        rightContent={
+          <img
+            className="location-icon"
+            alt="location"
+            src={locationIcon}
+            onClick={() => {
+              const url =
+                getDeviceInfo() === "ios"
+                  ? `'http://maps.apple.com/?q=${currentPlace.name}&ll=${currentPlace.lon},${currentPlace.lat}`
+                  : getDeviceInfo() === "android"
+                  ? `http://maps.google.com/maps?q=${currentPlace.name}`
+                  : "";
+              url !== ""
+                ? window.open(url, "_blank")
+                : this.props.showToast("fail", "請在手機打開");
+            }}
+          />
+        }
       >
-        <span onClick={togglePlaceMenu}>{currentPlace.name}</span>
+        <span className="common_title" onClick={togglePlaceMenu}>{currentPlace.name}</span>
         {isPlaceMenuShow ? (
-          <i className="fas fa-angle-up icon-arrow" />
+          <i className="fas fa-angle-up icon-arrow arrow-icon" />
         ) : (
-          <i className="fas fa-angle-down icon-arrow" />
+          <i className="fas fa-angle-down icon-arrow arrow-icon" />
         )}
-        <div className="placeInputBg" />
+        {/* <div className="placeInputBg" /> */}
       </CommonHeader>
     );
   }
@@ -238,10 +261,10 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         // mode="closable"
         icon={<i className="fas fa-bell" />}
         onClick={() =>
-          this.props.history.push("/content", {
+          this.props.history.push({pathname:"/content", state:{
             url: queryList[0].url,
             title: queryList[0].title
-          })
+          }})
         }
       >
         {queryList[0].title}
@@ -264,11 +287,10 @@ export default class FoodList extends React.Component<IFoodList, {}> {
       originPrice,
       canteenName
     } = rowData;
-    const _brief = brief && brief.split("").join(" ");
     return (
       <Link
         key={rowID}
-        to={{ pathname: "/foodDetails", state: { dateFoodId } }}
+        to={`/foodDetails/${dateFoodId}`}
       >
         <div className="food-list-item">
           {GenerateIcon(thumbnail, "thumbnail", "item-thumbnail")}
@@ -285,16 +307,25 @@ export default class FoodList extends React.Component<IFoodList, {}> {
               <span className="item-value">{canteenName}</span>
             </div>
             <div className="item-container">
-              <span className="item-label">堂食價</span>
-              <span className="item-value">
-                {originPrice ? parseFloat(originPrice).toFixed(2) : "暫無"}
+              <span className="item-label">堂食</span>
+              <span className="item-value" style={originPrice ? {textDecoration: 'line-through',textDecorationColor: '#666'} : {}}>
+                {originPrice ? `$${parseFloat(originPrice).toFixed(2)}` : "暫無"}
               </span>
             </div>
             {/* <p className="item-brief">{_brief}</p> */}
             <div className="item-container">
               <span className="item-price">
                 HKD
-                <span style={{color: '#ff5858', fontSize: '16px',display:'inline-block',marginLeft: '5px'}}>{price}</span>
+                <span
+                  style={{
+                    color: "#ff5858",
+                    fontSize: "16px",
+                    display: "inline-block",
+                    marginLeft: "5px"
+                  }}
+                >
+                  {price}
+                </span>
               </span>
               <span className="item-btn">立即預訂</span>
             </div>

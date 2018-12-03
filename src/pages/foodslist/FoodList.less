@@ -2,8 +2,12 @@
 .placeInputBg{
   background: #fff;
   opacity: 0.2;
-  flex: 1;
   border-radius: 100px;
+  position: absolute;
+  width: 200px;
+  height: 35px;
+  top: 6px;
+  z-index: 0;
 }
 .tab-icon {
   width: 1.5em;
@@ -16,8 +20,16 @@
 .food-list-container {
   background: @bg_white;
   .menu-icon{
-    width: 2em;
-    height: 1em;
+    width: 1.5em;
+    height: .8em;
+  }
+  .location-icon {
+    width: auto;
+    height: 1.3em;
+    margin-top: 5px;
+  }
+  .arrow-icon {
+    margin-top: 5px;
   }
   .sidebar-container {
     position: fixed;
@@ -149,7 +161,7 @@
         color: #666666;
       }
       .item-value {
-        font-size: 16px;
+        font-size: 13px;
         color: #111111;
       }
       .item-price {

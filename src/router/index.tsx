@@ -27,6 +27,7 @@ const CONFIRMORDER = asyncComponent(() =>
   import("../pages/confirmOrder/ConfirmOrder")
 );
 const CONTENT = asyncComponent(() => import("../pages/content/content"));
+const NOTFOUND = asyncComponent(() => import("../pages/404"));
 
 interface Props {
   Component: typeof Component;
@@ -52,16 +53,16 @@ const privateRoute = ({ PComponent, ...rest }: any) => {
   );
 };
 
-export default class RouteConfig extends Component {
+export default class RouteConfig extends Component<any,{}> {
   public render() {
     const PRoute = privateRoute;
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Route
           render={props => (
             <TransitionGroup>
               <CSSTransition
-                key={props.location.key}
+                key={props.location.pathname}
                 timeout={1000}
                 classNames={{
                   enter: "animated",
@@ -76,7 +77,7 @@ export default class RouteConfig extends Component {
                 <Switch>
                   <Route path="/" exact component={BasicHOC(FOODLIST)} />
                   <Route
-                    path="/foodDetails"
+                    path="/foodDetails/:dateFoodId"
                     component={BasicHOC(FOODDETAILS)}
                   />
                   <Route path="/content" component={BasicHOC(CONTENT)} />
@@ -86,19 +87,19 @@ export default class RouteConfig extends Component {
                     PComponent={BasicHOC(MYORDER)}
                     {...props}
                   />
-                  <Route path="/editInfo" component={BasicHOC(EDITINFO)} />
+                  <PRoute path="/editInfo" PComponent={BasicHOC(EDITINFO)} {...props}/>
                   <PRoute
                     path="/confirmOrder"
                     PComponent={BasicHOC(CONFIRMORDER)}
                     {...props}
                   />
-                  {/* <Route path="/confirmOrder/:dateFoodId" component={BasicHOC(CONFIRMORDER)}/> */}
+                  <Route path="*" component={BasicHOC(NOTFOUND)}/>
                 </Switch>
               </CSSTransition>
             </TransitionGroup>
           )}
         />
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
