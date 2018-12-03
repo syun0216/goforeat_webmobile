@@ -79,15 +79,15 @@ export default class Login extends React.Component<ILogin, {}> {
             </div>
           </div>
           <div className="main-button-area">
-              <div className="main-button">
-                <span className="main-button-text" onClick={() => {
+              <div className="main-button"  onClick={() => {
                   this.props.showRequesting();
                   login(() => {
                     const { history,history: {location: {state}} } = this.props;
-                    state.from ? history.replace(state.from.pathname,{params: isEmpty(state.from.state) ? null : state.from.state.params || null}) :
-                    history.push('/'); // 回调函数，返回到首页
+                    state.from ? history.replace({pathname:state.from.pathname,state:{params: isEmpty(state.from.state) ? null : state.from.state.params || null}}) :
+                    history.push({pathname: '/'}); // 回调函数，返回到首页
                   })
-                }}>登入/註冊</span>
+                }}>
+                <span className="main-button-text">登入/註冊</span>
               </div>
           </div>
         </div>

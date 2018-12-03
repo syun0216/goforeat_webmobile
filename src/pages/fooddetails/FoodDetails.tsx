@@ -36,8 +36,8 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
 
   public async componentDidMount() {
     const { getDailyFoods,values: {foodCount}, setCount } = this.props.foodDetailsMobx;
-    const { state } = this.props.history.location;
-    await getDailyFoods(state.dateFoodId);
+    const { dateFoodId } = this.props.match.params;
+    await getDailyFoods(dateFoodId);
     foodCount > 1 && setCount(1);
   }
 
@@ -52,13 +52,13 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
 
   //logic
   private createOrder = () => {
-    const { dateFoodId } = this.props.history.location.state;
+    const { dateFoodId } = this.props.match.params;
     const {values: {foodCount}} = this.props.foodDetailsMobx
     if(!dateFoodId) {
       this.props.showToast('fail', '無效的url參數');
       return;
     }
-    this.props.history.push('/confirmorder',{params: dateFoodId, amount:foodCount});
+    this.props.history.push({pathname:'/confirmorder',state:{params: dateFoodId, amount:foodCount}});
   }
 
   //render
@@ -111,7 +111,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
     return (
       <div className="carousel-container">
         <Carousel
-          autoplay={false}
+          autoplay={true}
           infinite
         >
           {extralImage.map((val, idx) => (
