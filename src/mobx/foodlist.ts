@@ -14,7 +14,9 @@ class FoodListMobx {
   public values = {
     currentPlace: {
       id: 1,
-      name: "未选择"
+      name: "未选择",
+      lat: 22.3646267388,
+      lon: 114.1948886251
     },
     currentStar: 5,
     isDrawerShow: false,
