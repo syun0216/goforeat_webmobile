@@ -9,6 +9,7 @@ import { isEmpty } from '../../utils/common';
 const ContentPage = (props: any) => {
   // console.log(data);
   const {url, title} = props.location.state;
+  props.hideLoading();
   return (
     <div className="content-container">
       <CommonHeader canBack><span>{title}</span></CommonHeader>

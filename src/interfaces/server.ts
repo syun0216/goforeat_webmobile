@@ -2,7 +2,9 @@ import { string } from "prop-types";
 
 export interface IPlaceList {
   id: number,
-  name: string
+  name: string,
+  lon: number,
+  lat: number
 }
 
 export interface IDailyFood {
