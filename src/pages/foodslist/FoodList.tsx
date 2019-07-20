@@ -19,8 +19,6 @@ import CommonModal from "../../components/CommonModal";
 import { isEmpty, getDeviceInfo } from "../../utils/common";
 import { getCustomCookie } from "../../utils/auth";
 //header
-const menuIcon = require("@/assets/menu.png");
-const locationIcon = require("@/assets/location_white.png");
 const checkedIcon = require("@/assets/checked.png");
 const uncheckedIcon = require("@/assets/unchecked.png");
 //sidebar
@@ -28,7 +26,7 @@ const order = require("@/assets/order.png");
 const paytype = require("@/assets/payment.png");
 const setting = require("@/assets/setting.png");
 const topLogo = require("@/assets/logoTop.png");
-const avatar = require("@/assets/avatar.png");
+const avatar = require("@/assets/notlogged.png");
 
 const COMPONENT_HEIGHT: number = document.documentElement!.clientHeight;
 
@@ -134,33 +132,37 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     } = this.props.foodListMobx;
     return (
       <CommonHeader
-        leftContent={GenerateIcon(menuIcon, "menu", "menu-icon")}
+        leftContent={<i className="icon iconfont icon-indent menu-icon" />}
         onLeftClick={toggleDrawer}
         rightContent={
-          <img
-            className="location-icon"
-            alt="location"
-            src={locationIcon}
-            onClick={() => {
-              const url =
-                getDeviceInfo() === "ios"
-                  ? `'http://maps.apple.com/?q=${currentPlace.name}&ll=${currentPlace.lon},${currentPlace.lat}`
-                  : getDeviceInfo() === "android"
-                  ? `http://maps.google.com/maps?q=${currentPlace.name}`
-                  : "";
-              url !== ""
-                ? window.open(url, "_blank")
-                : this.props.showToast("fail", "請在手機打開");
-            }}
-          />
+          <i className="icon iconfont icon-appstore location-icon" />
+          // <img
+          //   className="location-icon"
+          //   alt="location"
+          //   src={locationIcon}
+          //   onClick={() => {
+          //     const url =
+          //       getDeviceInfo() === "ios"
+          //         ? `'http://maps.apple.com/?q=${currentPlace.name}&ll=${currentPlace.lon},${currentPlace.lat}`
+          //         : getDeviceInfo() === "android"
+          //         ? `http://maps.google.com/maps?q=${currentPlace.name}`
+          //         : "";
+          //     url !== ""
+          //       ? window.open(url, "_blank")
+          //       : this.props.showToast("fail", "請在手機打開");
+          //   }}
+          // />
         }
       >
-        <span className="common_title" onClick={togglePlaceMenu}>{currentPlace.name}</span>
-        {isPlaceMenuShow ? (
+        <span className="common_title search-bar" onClick={togglePlaceMenu}>
+          {currentPlace.name}
+          <i className="icon iconfont icon-search"/>
+        </span>
+        {/* {isPlaceMenuShow ? (
           <i className="fas fa-angle-up icon-arrow arrow-icon" />
         ) : (
           <i className="fas fa-angle-down icon-arrow arrow-icon" />
-        )}
+        )} */}
         {/* <div className="placeInputBg" /> */}
       </CommonHeader>
     );

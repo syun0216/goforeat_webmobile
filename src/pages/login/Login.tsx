@@ -48,9 +48,9 @@ export default class Login extends React.Component<ILogin, {}> {
     return (
       <div>
         <div className="title" style={styles.title}>
-          <Link to="/">
+          {/* <Link to="/">
             <i className="fas fa-angle-left title-top-left fa-2x" />
-          </Link>
+          </Link> */}
           {GenerateIcon(logoTop, 'logoTop', 'title-logo-top')}
         </div>
         <div className="main">
@@ -100,6 +100,9 @@ export default class Login extends React.Component<ILogin, {}> {
             {GenerateIcon(logoTop, 'wechat', 'share-logo')}
           </div>
         </div> */}
+        <Link to="/">
+          <i className="icon iconfont icon-close-circle close-btn" />
+        </Link>
       </div>
     )
   }
