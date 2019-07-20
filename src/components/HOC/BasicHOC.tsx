@@ -91,7 +91,7 @@ const basicHOC = (WarppedComponent: any) => {
             <i className="icon" />
             <section className="section">
               <div className="titletips">下載有得食app</div>
-              <div className="subtitle">新人立享$20優惠券</div>
+              <div className="subtitle">新人立享$30優惠券</div>
             </section>
             <div
               className="btn"

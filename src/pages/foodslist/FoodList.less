@@ -15,21 +15,34 @@
 }
 
 .sidebar-icon {
-  &:extend(.tab-icon);
+  width: 0.6rem;
 }
 .food-list-container {
   background: @bg_white;
   .menu-icon{
-    width: 1.5em;
-    height: .8em;
+    font-size: 0.7rem;
   }
   .location-icon {
-    width: auto;
-    height: 1.3em;
-    margin-top: 5px;
+    font-size: 0.75rem;
+    // width: auto;
+    // height: 1.3em;
+    // margin-top: 5px;
   }
-  .arrow-icon {
-    margin-top: 5px;
+  .search-bar {
+    position: relative;
+    margin-left: 0.15rem;
+    padding-left: 0.45rem;
+    > i{
+      position: absolute;
+      font-size: 0.5rem;
+      right: 0.3rem;
+      top: 0.02rem;
+      z-index: 2;
+      display: inline-block;
+      width: 0.5rem;
+      height: 0.5rem;
+      color: @font_gray;
+    }
   }
   .sidebar-container {
     position: fixed;
@@ -48,14 +61,14 @@
   }
   .sidebar-top {
     background: @linear;
-    height: 8em;
+    height: 3rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 1em;
+    padding: 0.5rem;
     .sidebar-top-img{
-      width: 4em;
+      width: 1.5rem;
     }
     .sidebar-top-img-round{
       width: 4em;
@@ -79,7 +92,7 @@
         color: #FFFFFF;
         display: block;
         &.biggerFont {
-          font-size: 1.5em;
+          font-size: 0.6rem;
         }
         &.yellow {
           color: yellow

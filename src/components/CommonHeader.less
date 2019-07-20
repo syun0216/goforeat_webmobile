@@ -11,17 +11,22 @@
   z-index: 2;
   span {
     font-size: 1em;
-    color: #fff;
+    color: @font_gray;
     margin-top: 5px;
     z-index: 1;
   }
   .common_title {
     overflow: hidden;
+    -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
-    width: 140px;
+    width: 7rem;
+    height: 0.7rem;
+    line-height: 0.7rem;
     white-space: nowrap;
-    margin-top: 5px;
     z-index: 2;
+    background: @bg_white;
+    border-radius: 0.35rem;
+    font-size: 0.4rem;
   }
   i {
     color: @bg_white;

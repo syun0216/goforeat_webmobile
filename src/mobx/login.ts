@@ -10,7 +10,7 @@ import { setToken,setCustomCookie } from '../utils/auth';
 
 export default class LoginMobx {
 
-@observable public BUTTONS = ['HK +852', 'CHN +86'];
+@observable public BUTTONS = ['HK +852', 'CHN +86', '取消'];
 
 @observable public type: number = this.BUTTONS.indexOf('HK +852')
 // type 手机类型 HK: 1 CHN: 2
@@ -84,6 +84,9 @@ public showActionSheet = () => {
         message: '選擇電話類型',
         maskClosable: true,
     }, buttonIndex => {
+        if(buttonIndex === this.BUTTONS.length - 1) { // 取消按鈕
+            return;
+        }
         this.type = buttonIndex
     })
 }
