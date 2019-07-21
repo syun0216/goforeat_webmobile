@@ -84,7 +84,7 @@ export default class ConfirmOrder extends React.Component<IConfirmOrder, {}> {
     private _renderHeader() {
         return (
           <CommonHeader canBack>
-            <span>訂單確認頁</span>
+            <span className="title">訂單確認頁</span>
           </CommonHeader>
         );
     }

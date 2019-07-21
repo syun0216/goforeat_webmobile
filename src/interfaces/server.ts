@@ -4,7 +4,9 @@ export interface IPlaceList {
   id: number,
   name: string,
   lon: number,
-  lat: number
+  lat: number,
+  length: number,
+  picture: string
 }
 
 export interface IDailyFood {

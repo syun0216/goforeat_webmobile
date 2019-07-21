@@ -1,13 +1,16 @@
+import React from 'react';
 import { observable, action, runInAction, decorate, observe, autorun, reaction } from "mobx";
+import { isNil } from 'lodash';
 //api
 import { foodPlaces, queryList } from "../api/request";
 //api interface
 import { IPlaceList, IQueryList } from "../interfaces/server";
 //utils
 import { errHandler, successHandler } from "../utils/requestHandler";
-import { setCustomCookie, getCustomCookie } from "../utils/auth";
 
 // configure({enforceActions: "observed"})
+let rawPlaceList: IPlaceList[] = [];
+let _searchTimer: any = null;
 class FoodListMobx {
   public placeList: IPlaceList[];
   public queryList: IQueryList[];
@@ -40,14 +43,30 @@ class FoodListMobx {
     this.values.currentStar = star;
   }
 
+  public searchForAddress(e: React.ChangeEvent<HTMLInputElement>): void {
+    const value = e.target.value;
+    if(_searchTimer) {
+      clearTimeout(_searchTimer);
+    }
+    _searchTimer = setTimeout(() => {
+      if(value === "" || isNil(value)) {
+        this.placeList = rawPlaceList.slice(0);
+        return;
+      } 
+      this.placeList = rawPlaceList.filter(v => v.name.indexOf(value) > -1);
+      clearTimeout(_searchTimer);
+    }, 300);
+  }
+
   //api
-  public async getFoodPlaces() {
+  public async getFoodPlaces(lat: any, lon: any) {
     try {
-      const { data, ro }: any = await foodPlaces();
+      const { data, ro }: any = await foodPlaces(lat, lon);
       if (ro && ro.respCode && ro.respCode === "0000") {
         successHandler(() =>
           runInAction(() => {
             this.placeList = data;
+            rawPlaceList = data;
             const foodPlace: any = sessionStorage.getItem('foodPlace');
             sessionStorage.getItem('foodPlace') ? this.values.currentPlace =  JSON.parse(foodPlace): 
             this.values.currentPlace = data[0]; 
@@ -102,6 +121,7 @@ decorate(FoodListMobx, {
   togglePlaceMenu: action.bound,
   closeQueryList: action.bound,
   setStar: action.bound,
+  searchForAddress: action.bound,
   getFoodPlaces: action.bound,
   getQueryList: action.bound,
   changePlace: action.bound

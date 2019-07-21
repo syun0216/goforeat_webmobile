@@ -45,8 +45,15 @@ export default class FoodList extends React.Component<IFoodList, {}> {
       getQueryList,
       values: { currentPlace }
     } = this.props.foodListMobx;
-    await getFoodPlaces();
     await getQueryList();
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(async (position: Position) => {
+        await getFoodPlaces(position.coords.latitude, position.coords.longitude);
+      })
+    }
+    else {
+      await getFoodPlaces(null, null);
+    }
   }
 
   public componentDidUpdate() {
@@ -56,30 +63,27 @@ export default class FoodList extends React.Component<IFoodList, {}> {
   public render() {
     const {
       values: { isDrawerShow, isPlaceMenuShow, isQueryListShow },
+      placeList,
       toggleDrawer,
-      togglePlaceMenu
     } = this.props.foodListMobx;
-    const _showModal = isPlaceMenuShow || isDrawerShow;
     return (
       <div
         className={`food-list-container ${
-          _showModal ? "noScroll" : "canScroll"
+          isDrawerShow || isPlaceMenuShow ? "noScroll" : "canScroll"
         }`}
       >
         <CommonModal
-          isShow={_showModal}
+          isShow={isDrawerShow || isPlaceMenuShow}
           clickOutSide={() =>
             isDrawerShow
               ? toggleDrawer()
-              : isPlaceMenuShow
-              ? togglePlaceMenu()
               : {}
           }
         />
         {this._renderHeader()}
         {this._renderSidebarView()}
         {isQueryListShow ? this._renderQueryListView() : null}
-        {isPlaceMenuShow ? this._renderMenuView() : null}
+        {placeList != null ? this._renderMenuView() : null}
         {this._renderFoodListView()}
       </div>
     );
@@ -155,7 +159,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         }
       >
         <span className="common_title search-bar" onClick={togglePlaceMenu}>
-          {currentPlace.name}
+          <span>{currentPlace.name}</span>
           <i className="icon iconfont icon-search"/>
         </span>
         {/* {isPlaceMenuShow ? (
@@ -173,36 +177,44 @@ export default class FoodList extends React.Component<IFoodList, {}> {
       placeList,
       changePlace,
       togglePlaceMenu,
-      values: { currentPlace }
+      searchForAddress,
+      values: { currentPlace, isPlaceMenuShow }
     } = this.props.foodListMobx;
-    if (placeList.length === 0) {
-      return null;
-    }
     return (
-      <ul className="dropdown-menu">
-        {placeList.map((v, i) => (
-          <li
-            className="dropdown-item"
-            key={i}
-            onClick={() => {
-              changePlace(v, () => {
-                if (this._commonlist) {
-                  const { outsideRefresh } = this._commonlist.wrappedInstance;
-                  if (!isEmpty(outsideRefresh)) {
-                    outsideRefresh();
-                    // console.log(this._commonlist);
+      <div className={["menu-container", isPlaceMenuShow ? 'active-menu' : ''].join(" ")}>
+        <div className={["menu-top", isPlaceMenuShow ? 'active-menu-top' : ''].join(" ")}>
+          <input onChange={e => searchForAddress(e)} type="text" placeholder="輸入要搜索的地點"/>
+          <button onClick={togglePlaceMenu}>取消</button>
+        </div>
+        <ul className="dropdown-menu">
+          {placeList.map((v, i) => (
+            <li
+              className="dropdown-item"
+              key={i}
+              onClick={() => {
+                changePlace(v, () => {
+                  if (this._commonlist) {
+                    const { outsideRefresh } = this._commonlist.wrappedInstance;
+                    if (!isEmpty(outsideRefresh)) {
+                      outsideRefresh();
+                      // console.log(this._commonlist);
+                    }
                   }
-                }
-              });
-            }}
-          >
-            {v.name}
-            {v.name === currentPlace.name
-              ? GenerateIcon(checkedIcon, "check", "check-icon")
-              : GenerateIcon(uncheckedIcon, "uncheck", "uncheck-icon")}
-          </li>
-        ))}
-      </ul>
+                });
+              }}
+            >
+              {v.name}
+              <span>
+                {v.length}km 
+                {" "}
+                {v.name === currentPlace.name
+                  ? GenerateIcon(checkedIcon, "check", "check-icon")
+                  : GenerateIcon(uncheckedIcon, "uncheck", "uncheck-icon")}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
     );
   }
 
