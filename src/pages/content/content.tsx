@@ -12,7 +12,7 @@ const ContentPage = (props: any) => {
   props.hideLoading();
   return (
     <div className="content-container">
-      <CommonHeader canBack><span>{title}</span></CommonHeader>
+      <CommonHeader canBack><span className="title">{title}</span></CommonHeader>
       { !isEmpty(url) ? <iframe src={url} title="content"/> : null }
     </div>
   )

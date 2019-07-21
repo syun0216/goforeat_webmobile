@@ -65,7 +65,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   private _renderHeader() {
     return (
       <CommonHeader canBack>
-        <span>每日推薦</span>
+        <span className="title">每日推薦</span>
       </CommonHeader>
     );
   }
