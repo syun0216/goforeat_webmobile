@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
+    "@types/lodash": "^4.14.136",
     "animate.css": "^3.7.0",
     "antd-mobile": "^2.2.5",
     "autoprefixer": "7.1.6",

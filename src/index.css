@@ -11,14 +11,13 @@ ul, ol {
 }
 
 .app {
-  margin-top: 48px;
+  margin-top: 1.6rem;
   background: #fff;
-  font-size: 16px;
 }
 
 .noScroll {
   overflow: hidden;
-  height: 92vh;
+  height: 80vh;
 }
 
 .canScroll {
