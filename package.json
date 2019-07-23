@@ -25,6 +25,7 @@
     "jest": "22.4.2",
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.15",
+    "lottie-web": "^5.5.7",
     "mobx": "^5.5.0",
     "mobx-react": "^5.2.8",
     "object-assign": "4.1.1",
