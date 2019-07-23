@@ -36,7 +36,11 @@ export interface IDailyFoodItem {
   foodName: string,
   originPrice: null | number,
   price: number,
-  star: number
+  star: number,
+  like: number,
+  likeCount: number,
+  addName: string,
+  addCount: string
 }
 
 export interface IQueryList {

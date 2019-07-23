@@ -22,24 +22,65 @@
 .homepage-container {
   background: @bg_white;
   margin-bottom: 48px;
-  .common-title-container{
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+  }
+  .top-title-container{
     text-align: left;
-    h3{
+    > h3{
       padding: 0;
       margin: 0;
-      font-size: 1.3em;
-      color: @default_font;
+      font-size: .5rem;
       overflow: hidden;
       text-overflow: ellipsis;
+      color: @bg_white;
     }
-    span {
-      color: @default_font;
+    > span {
+      font-size: 0.3rem;
+      color: @bg_white;
     }
-    p{
+  }
+  .common-title-container {
+    .food-name {
+      >span {
+        &:first-child{
+          color: @default_font;
+          font-size: .5rem;
+        }
+        &:last-child {
+          color: @font_gray;
+          font-size: .4rem;
+        }
+      }
+      .heart{ 
+        margin-right: 0.1rem;
+        vertical-align: -0.03rem;
+      }
+    }
+    .food-canteen {
+      >span {
+        font-size: .4rem;
+        &:first-child {
+          color: @font_gray;
+          .food-img {
+            width: .5rem;
+            margin-right: 0.1rem;
+            vertical-align: -0.05rem;
+          }
+        }
+        &:last-child{
+          color: @font_red;
+          
+        }
+      }
+    }
+    > p{
       text-align: justify;
       line-height: 1.5em;
       padding: 0;
       margin: 0;
+      color: @font_gray;
     }
   }
   .carousel-container {
@@ -55,13 +96,13 @@
     align-items: center;
     justify-content: space-between;
     .unit {
-      color: @focus_font;
+      color: @default_font;
       display: inline-block;
       margin-right: 0.5em;
     }
     .price{
       font-size: 1.5em;
-      color: @default_font;
+      color: @focus_font;
     }
     .removeicon {
       width: 1.5em;
@@ -100,11 +141,17 @@
     }
     .btn {
       color: @bg_white;
-      background-color: @font_red;
-      padding: 0 3em;
+      background-color: @main_orange;
+      padding: 0 .5rem;
       font-size: 1.2em;
-      height: 36px;
-      line-height: 36px;
+      height: 1.1rem;
+      line-height: 1.1rem;
+      border-radius: 0.55rem;
+      .double-arrow{
+        width: 0.5rem;
+        margin-left: 0.1rem;
+        vertical-align: -0.06rem;
+      }
     }
   }
 }
