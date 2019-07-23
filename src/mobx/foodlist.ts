@@ -102,6 +102,15 @@ class FoodListMobx {
 
   public changePlace(item: IPlaceList, callback?:() => void): void {
     this.values.currentPlace = item;
+      this.placeList.forEach((v, i) => {
+        if(this.placeList[i].id === item.id) {
+          this.placeList.splice(i, 1);
+        }
+      })
+      // if(this.placeList[+i].id === item.id) {
+      //   this.placeList.splice(+i, 1);
+      // }
+    this.placeList.unshift(item);
     sessionStorage.setItem('foodPlace', JSON.stringify(item));
     this.togglePlaceMenu();
     // reaction(() => this.values.currentPlace, arr => {
