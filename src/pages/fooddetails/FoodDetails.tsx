@@ -63,9 +63,12 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
 
   //render
   private _renderHeader() {
+    
     return (
       <CommonHeader canBack>
-        <span className="title">每日推薦</span>
+        <span className="title">
+          {this._renderTopTimeView()}
+        </span>
       </CommonHeader>
     );
   }
@@ -79,7 +82,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
       <WingBlank>
         <div>
           <WhiteSpace />
-          {this._renderTopTimeView(foodDetails)}
+          {/* {this._renderTopTimeView(foodDetails)} */}
           <WhiteSpace />
           {this._renderCarouselView(foodDetails)}
           <WhiteSpace />
@@ -94,13 +97,17 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
     );
   }
 
-  private _renderTopTimeView(data: IDailyFood) {
+  private _renderTopTimeView() {
+    const { foodDetails } = this.props.foodDetailsMobx;
+    if (isEmpty(foodDetails)) {
+      return null;
+    }
     return (
-      <div className="common-title-container">
+      <div className="top-title-container">
         <WhiteSpace />
-        <h3>{data.title}</h3>
-        <WhiteSpace />
-        <span>{data.subTitle}</span>
+        <h3>{foodDetails.title}</h3>
+        {/* <WhiteSpace /> */}
+        <span>{foodDetails.subTitle}</span>
         <WhiteSpace />
       </div>
     );
@@ -128,10 +135,24 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   }
 
   private _renderIntroduceView(data: IDailyFood) {
-    const { foodName, foodBrief } = data;
+    const { foodName, foodBrief, canteenName } = data;
     return (
       <div className="common-title-container">
-        <h3>{foodName}</h3>
+        <div className="flex-between food-name">
+          <span>{foodName}</span>
+          <span>
+            <i className="icon iconfont icon-heart heart"/>
+            {data.likeCount}次赞
+          </span>
+        </div>
+        <WhiteSpace />
+        <div className="flex-between food-canteen">
+          <span>
+            {GenerateIcon(require('@/assets/food.png'), 'food', 'food-img')}
+            {canteenName}
+          </span>
+          <span>評論詳情</span>
+        </div>
         <WhiteSpace />
         <p>{foodBrief}</p>
       </div>
@@ -174,7 +195,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
       <div className="footer">
         <div>
           <span>HKD</span>
-          <span className="price">{price*foodCount}</span>
+          <span className="price">{(price*foodCount).toFixed(2)}</span>
         </div>
         <Button
           inline
@@ -189,6 +210,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
           }}
         >
           立即預訂
+          {GenerateIcon(require('@/assets/double-arrow.png'), 'double-arrow', 'double-arrow')}
         </Button>
       </div>
     );

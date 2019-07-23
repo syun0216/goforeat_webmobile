@@ -22,8 +22,12 @@ import { getCustomCookie } from "../../utils/auth";
 const checkedIcon = require("@/assets/checked.png");
 const uncheckedIcon = require("@/assets/unchecked.png");
 //sidebar
+const home = require("@/assets/food.png");
 const order = require("@/assets/order.png");
+const location = require("@/assets/location.png");
 const paytype = require("@/assets/payment.png");
+const monthticket = require("@/assets/monthticket.png");
+const coupon = require("@/assets/coupon.png");
 const setting = require("@/assets/setting.png");
 const topLogo = require("@/assets/logoTop.png");
 const avatar = require("@/assets/notlogged.png");
@@ -35,6 +39,7 @@ const COMPONENT_HEIGHT: number = document.documentElement!.clientHeight;
 @observer
 export default class FoodList extends React.Component<IFoodList, {}> {
   public _commonlist: any;
+  private _searchInput: any;
   constructor(props: IFoodList) {
     super(props);
   }
@@ -158,7 +163,10 @@ export default class FoodList extends React.Component<IFoodList, {}> {
           // />
         }
       >
-        <span className="common_title search-bar" onClick={togglePlaceMenu}>
+        <span className="common_title search-bar" onClick={() => {
+          togglePlaceMenu();
+          this._searchInput.focus();
+        }}>
           <span>{currentPlace.name}</span>
           <i className="icon iconfont icon-search"/>
         </span>
@@ -183,7 +191,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     return (
       <div className={["menu-container", isPlaceMenuShow ? 'active-menu' : ''].join(" ")}>
         <div className={["menu-top", isPlaceMenuShow ? 'active-menu-top' : ''].join(" ")}>
-          <input onChange={e => searchForAddress(e)} type="text" placeholder="輸入要搜索的地點"/>
+          <input ref={i => this._searchInput = i} onChange={e => searchForAddress(e)} type="text" placeholder="輸入要搜索的地點"/>
           <button onClick={togglePlaceMenu}>取消</button>
         </div>
         <ul className="dropdown-menu">
@@ -203,7 +211,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
                 });
               }}
             >
-              {v.name}
+              <small>{v.name}</small>
               <span>
                 {v.length}km 
                 {" "}
@@ -225,20 +233,40 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     } = this.props.foodListMobx;
     const _drawerList = [
       {
+        name: "每日推薦",
+        icon: GenerateIcon(home, "home", "sidebar-icon"),
+        path: "/myorder"
+      },
+      {
         name: "我的訂單",
         icon: GenerateIcon(order, "order", "sidebar-icon"),
         path: "/myorder"
+      },
+      {
+        name: "取 餐 點",
+        icon: GenerateIcon(location, "location", "sidebar-icon"),
+        path: "/myorder"
+      },
+      {
+        name: "支付方式",
+        icon: GenerateIcon(paytype, "paytype", "sidebar-icon"),
+        path: "/myorder"
+      },
+      {
+        name: "我的月票",
+        icon: GenerateIcon(monthticket, "monthticket", "sidebar-icon"),
+        path: "/myorder"
+      },
+      {
+        name: "優 惠 券",
+        icon: GenerateIcon(coupon, "coupon", "sidebar-icon"),
+        path: "/myorder"
+      },
+      {
+        name: "系統設置",
+        icon: GenerateIcon(setting, "setting", "sidebar-icon"),
+        path: "/myorder"
       }
-      // {
-      //   name: "支付方式",
-      //   icon: GenerateIcon(paytype, "paytype", "sidebar-icon"),
-      //   path: "/myorder"
-      // },
-      // {
-      //   name: "系統設置",
-      //   icon: GenerateIcon(setting, "setting", "sidebar-icon"),
-      //   path: "/myorder"
-      // }
     ];
     return (
       <div
@@ -363,7 +391,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
           精選菜單
         </span>
         <span style={{ display: "inline-block", padding: "5px 0 10px" }}>
-          评分: {currentStar}
+          互動評分: {currentStar}/5
         </span>
       </Flex>
     );
