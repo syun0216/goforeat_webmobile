@@ -6,8 +6,8 @@ interface IGIcon{
   imgClassName: string
 }
 
-const generateIcon = (icon: any,imgName: string,imgClassName: string="tab-icon") => {
-  return <img className={imgClassName} src={icon} alt={imgName}/>
+const generateIcon = (icon: any,imgName: string,imgClassName: string="tab-icon", style={}) => {
+  return <img style={style} className={imgClassName} src={icon} alt={imgName}/>
 }
 
 export default generateIcon;
