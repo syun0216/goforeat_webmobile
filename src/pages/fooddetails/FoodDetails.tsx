@@ -135,14 +135,14 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   }
 
   private _renderIntroduceView(data: IDailyFood) {
-    const { foodName, foodBrief, canteenName } = data;
+    const { foodName, foodBrief, canteenName, commentAmount } = data;
     return (
       <div className="common-title-container">
         <div className="flex-between food-name">
           <span>{foodName}</span>
           <span>
-            <i className="icon iconfont icon-heart heart"/>
-            {data.likeCount}次赞
+            <i className="heart"/>
+            {data.likeCount}次贊
           </span>
         </div>
         <WhiteSpace />
@@ -151,7 +151,10 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
             {GenerateIcon(require('@/assets/food.png'), 'food', 'food-img')}
             {canteenName}
           </span>
-          <span>評論詳情</span>
+          <span>
+            <i className="comment"/>
+            {commentAmount} 條
+          </span>
         </div>
         <WhiteSpace />
         <p>{foodBrief}</p>

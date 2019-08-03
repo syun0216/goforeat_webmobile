@@ -23,7 +23,8 @@ export interface IDailyFood {
   originPrice: number,
   status: number,
   subTitle: string,
-  title: string
+  title: string,
+  commentAmount: number | string
 }
 
 export interface IDailyFoodItem {
@@ -103,4 +104,11 @@ export interface INewOrder {
   takeTime: string,
   totalMoney: number,
   orderName: string
+}
+
+//广告位
+export interface IAdSpace {
+  image: string,
+  title: string,
+  url: string
 }
