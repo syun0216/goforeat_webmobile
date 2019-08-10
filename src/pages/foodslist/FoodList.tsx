@@ -2,12 +2,12 @@ import React from "react";
 import { Drawer, List, Flex, NoticeBar } from "antd-mobile";
 import { Link } from "react-router-dom";
 //api
-import { getFoodList } from "../../api/request";
+import { getFoodList, adSpace } from "../../api/request";
 //style
 import "./FoodList.less";
 //interface
 import { IFoodList } from "../../interfaces";
-import { IFoodListItem } from "../../interfaces/server";
+import { IFoodListItem, IAdSpace } from "../../interfaces/server";
 //mobx
 import { observer, inject } from "mobx-react";
 //components
@@ -15,6 +15,7 @@ import CommonHeader from "../../components/CommonHeader";
 import GenerateIcon from "../../components/GenerateIcon";
 import CommonListView from "../../components/CommonListView";
 import CommonModal from "../../components/CommonModal";
+import FixedMenu from "../../components/FixedMenu";
 //utils
 import { isEmpty, getDeviceInfo } from "../../utils/common";
 import { getCustomCookie } from "../../utils/auth";
@@ -33,6 +34,7 @@ const topLogo = require("@/assets/logoTop.png");
 const avatar = require("@/assets/notlogged.png");
 
 const COMPONENT_HEIGHT: number = document.documentElement!.clientHeight;
+const adSpaceType: number = 2;
 
 @inject("foodListMobx")
 // @inject("commonListViewMobx")
@@ -40,17 +42,22 @@ const COMPONENT_HEIGHT: number = document.documentElement!.clientHeight;
 export default class FoodList extends React.Component<IFoodList, {}> {
   public _commonlist: any;
   private _searchInput: any;
+  private _menuPosition: {};
   constructor(props: IFoodList) {
     super(props);
+    this._menuPosition = {x: 0, y: 0};
+    console.log('props', props);
   }
 
   public async componentDidMount() {
     const {
       getFoodPlaces,
       getQueryList,
+      getAdSpace,
       values: { currentPlace }
     } = this.props.foodListMobx;
     await getQueryList();
+    await getAdSpace(adSpaceType);
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(async (position: Position) => {
         await getFoodPlaces(position.coords.latitude, position.coords.longitude);
@@ -63,11 +70,12 @@ export default class FoodList extends React.Component<IFoodList, {}> {
 
   public componentDidUpdate() {
     console.log("did update");
-  }
+  }  
+  
 
   public render() {
     const {
-      values: { isDrawerShow, isPlaceMenuShow, isQueryListShow },
+      values: { isDrawerShow, isPlaceMenuShow, isQueryListShow, isFixedMenuListShow },
       placeList,
       toggleDrawer,
     } = this.props.foodListMobx;
@@ -86,6 +94,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
           }
         />
         {this._renderHeader()}
+        {isFixedMenuListShow && this._renderFixedMenu()}
         {this._renderSidebarView()}
         {isQueryListShow ? this._renderQueryListView() : null}
         {placeList != null ? this._renderMenuView() : null}
@@ -137,30 +146,22 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     const {
       toggleDrawer,
       togglePlaceMenu,
-      values: { currentPlace, isPlaceMenuShow }
+      toggleFixedMenu,
+      values: { currentPlace }
     } = this.props.foodListMobx;
     return (
       <CommonHeader
         leftContent={<i className="icon iconfont icon-indent menu-icon" />}
         onLeftClick={toggleDrawer}
         rightContent={
-          <i className="icon iconfont icon-appstore location-icon" />
-          // <img
-          //   className="location-icon"
-          //   alt="location"
-          //   src={locationIcon}
-          //   onClick={() => {
-          //     const url =
-          //       getDeviceInfo() === "ios"
-          //         ? `'http://maps.apple.com/?q=${currentPlace.name}&ll=${currentPlace.lon},${currentPlace.lat}`
-          //         : getDeviceInfo() === "android"
-          //         ? `http://maps.google.com/maps?q=${currentPlace.name}`
-          //         : "";
-          //     url !== ""
-          //       ? window.open(url, "_blank")
-          //       : this.props.showToast("fail", "請在手機打開");
-          //   }}
-          // />
+          <i onClick={e => {
+            this._menuPosition = {
+              x: e.clientX,
+              y: e.clientY
+            };
+            toggleFixedMenu();
+            console.log(e.clientX, e.clientY);
+          }} className="icon iconfont icon-appstore location-icon" />
         }
       >
         <span className="common_title search-bar" onClick={() => {
@@ -178,6 +179,20 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         {/* <div className="placeInputBg" /> */}
       </CommonHeader>
     );
+  }
+
+  private _renderFixedMenu() {
+    const { toggleFixedMenu } = this.props.foodListMobx;
+    const menuList = [
+      {type: 'pickPlace', name: '查看配送點', clickFunc: () => {this.props.history.push('/pickPlace')}},
+      {type: 'coupon', name: '兌換優惠碼', clickFunc: () => {console.log(123)}},
+      {type: 'feedback', name: '反饋', clickFunc: () => {console.log(123)}},
+    ];
+    return (
+      <FixedMenu list={menuList} position={this._menuPosition} closeFunc={() => {
+        toggleFixedMenu()
+      }}/>
+    )
   }
 
   private _renderMenuView() {
@@ -245,7 +260,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
       {
         name: "取 餐 點",
         icon: GenerateIcon(location, "location", "sidebar-icon"),
-        path: "/myorder"
+        path: "/pickPlace"
       },
       {
         name: "支付方式",
