@@ -186,7 +186,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
     const menuList = [
       {type: 'pickPlace', name: '查看配送點', clickFunc: () => {this.props.history.push('/pickPlace')}},
       {type: 'coupon', name: '兌換優惠碼', clickFunc: () => {console.log(123)}},
-      {type: 'feedback', name: '反饋', clickFunc: () => {console.log(123)}},
+      {type: 'feedback', name: '反饋', clickFunc: () => {this.props.history.push('/feedback')}},
     ];
     return (
       <FixedMenu list={menuList} position={this._menuPosition} closeFunc={() => {
