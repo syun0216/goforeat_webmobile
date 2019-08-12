@@ -31,8 +31,8 @@ class BasicMobx {
     sessionStorage.setItem("GFEdownload", "1");
   };
 
-  public showRequesting = () => {
-    Toast.loading("requesting", 0);
+  public showRequesting = (text='requesting', duration=0) => {
+    Toast.loading(text, duration);
   };
 
   public hideReqesting = () => {
