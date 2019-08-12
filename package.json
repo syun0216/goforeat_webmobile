@@ -138,7 +138,7 @@
   },
   "proxy": {
     "/api": {
-      "target": "http://api.goforeat.hk",
+      "target": "https://api.goforeat.hk",
       "changeOrigin": true,
       "pathRewrite": {
         "^/api": "/"

@@ -27,6 +27,8 @@ const CONFIRMORDER = asyncComponent(() =>
   import("../pages/confirmOrder/ConfirmOrder")
 );
 const CONTENT = asyncComponent(() => import("../pages/content/content"));
+const PICKPLACE = asyncComponent(() => import("../pages/pickPlace/PickPlace"));
+const FEEDBACK = asyncComponent(() => import("../pages/feedback/feedback"))
 const NOTFOUND = asyncComponent(() => import("../pages/404"));
 
 interface Props {
@@ -82,6 +84,8 @@ export default class RouteConfig extends Component<any,{}> {
                   />
                   <Route path="/content" component={BasicHOC(CONTENT)} />
                   <Route path="/login" component={BasicHOC(LOGIN)} />
+                  <Route path="/pickplace" component={PICKPLACE}/>
+                  <Route path="/feedback" component={FEEDBACK}/>
                   <PRoute
                     path="/myOrder"
                     PComponent={BasicHOC(MYORDER)}

@@ -53,7 +53,7 @@ export default class MyOrder extends Component<IMyOrder, {}> {
   private _renderHeader() {
     return (
       <CommonHeader canBack>
-        <span>我的订单(待配送)</span>
+        <span className="title">我的订单(待配送)</span>
       </CommonHeader>
     );
   }
