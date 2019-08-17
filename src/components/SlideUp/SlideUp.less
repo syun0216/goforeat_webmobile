@@ -1,0 +1,30 @@
+.slide-up-container{
+  box-shadow: 0 -1px 2px #e8e9eb;
+  .mask{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    opacity: 0.7;
+    z-index: 90;
+    transition: opacity .3s ease-in-out;
+  }
+  .slide-up-content{
+    position: fixed;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 100;
+    transition: bottom .3s ease-in-out;
+    >p{
+      text-align: center;
+      font-size: 0.45rem;
+      padding: .3rem .5rem;
+      margin: 0;
+      color: #34393f;
+      border-bottom: 1px solid #e8e9eb;
+    }
+  }
+}
