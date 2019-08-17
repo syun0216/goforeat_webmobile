@@ -170,7 +170,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
               key={idx}
               src={val}
               alt="food"
-              style={{ width: '100%',height: '230px', verticalAlign: "top",objectFit:'cover' }}
+              style={{ width: '100%',height: '10rem', verticalAlign: "top",objectFit:'cover' }}
             />
           ))}
         </Carousel>
@@ -179,15 +179,15 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
   }
 
   private _renderIntroduceView(data: IDailyFood) {
-    const { foodName, foodBrief, canteenName, commentAmount } = data;
-    const { toggleCommentView } = this.props.foodDetailsMobx;
+    const { foodName, foodBrief, canteenName, commentAmount, foodId } = data;
+    const { toggleCommentView, values: {isFavorite, favorCount}, addFavorite } = this.props.foodDetailsMobx;
     return (
       <div className="common-title-container">
         <div className="flex-between food-name">
           <span>{foodName}</span>
-          <span>
-            <i className="heart"/>
-            {data.likeCount}次贊
+          <span onClick={() => addFavorite(foodId, isFavorite ? 0 : 1)}>
+            <i className={`heart ${isFavorite ? 'active' : ''}`}/>
+            {favorCount}次贊
           </span>
         </div>
         <WhiteSpace />

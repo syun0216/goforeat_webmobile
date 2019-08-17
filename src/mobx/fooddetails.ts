@@ -1,6 +1,6 @@
 import { observable, action, decorate, computed, runInAction } from "mobx";
 //api
-import { getDailyFoods } from "../api/request";
+import { getDailyFoods, myFavorite } from "../api/request";
 //api interface
 import { IDailyFood } from "../interfaces/server";
 //utils
@@ -11,7 +11,9 @@ class FoodDetailsMobx {
   public values = {
     selectedTab: "Daily",
     foodCount: 1,
+    favorCount: 0,
     isCommentViewShow: false,
+    isFavorite: false
   };
 
   public setTab(tab: string) {
@@ -45,6 +47,7 @@ class FoodDetailsMobx {
         successHandler(() =>
           runInAction(() => {
             this.foodDetails = data;
+            this.values.favorCount = data.likeCount || 0;
           })
         );
       } else {
@@ -53,6 +56,26 @@ class FoodDetailsMobx {
     } catch (e) {
       errHandler(e);
       // console.log(e);
+    }
+  }
+
+  public async addFavorite(foodId: number, status: number) {
+    try {
+
+      this.values.isFavorite = !this.values.isFavorite;
+      this.values.isFavorite ? (this.values.favorCount ++) : (this.values.favorCount--);
+      const { data, ro }: any = await myFavorite(foodId, status);
+    //   if (ro && ro.respCode && ro.respCode === "0000") {
+    //     successHandler(() =>
+    //       runInAction(() => {
+
+    //       })
+    //     );
+    // } else {
+    //   errHandler(ro)
+    // }
+    }catch(e) {
+      errHandler(e);
     }
   }
 }
@@ -64,7 +87,8 @@ decorate(FoodDetailsMobx, {
   addOrRemove: action.bound,
   getDailyFoods: action.bound,
   setCount: action.bound,
-  toggleCommentView: action.bound
+  toggleCommentView: action.bound,
+  addFavorite: action.bound
 });
 
 export default FoodDetailsMobx;

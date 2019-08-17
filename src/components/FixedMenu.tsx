@@ -21,7 +21,6 @@ interface IPosition {
 
 const FixedMenu = (props: IMenu) => {
   const { list, position, closeFunc } = props;
-  console.log(position);
   const _screenWidth: number = document.querySelector('body')!.offsetWidth;
   const _screenHeight: number = document.querySelector('body')!.offsetHeight;
   const _formatX: any = position.x > _screenWidth / 2 ? {right: _screenWidth - position.x} : {left: position.x};
