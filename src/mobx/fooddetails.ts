@@ -10,7 +10,8 @@ class FoodDetailsMobx {
   public foodDetails: IDailyFood;
   public values = {
     selectedTab: "Daily",
-    foodCount: 1
+    foodCount: 1,
+    isCommentViewShow: false,
   };
 
   public setTab(tab: string) {
@@ -19,6 +20,11 @@ class FoodDetailsMobx {
 
   public setCount(count: number) {
     this.values.foodCount = count;
+  }
+
+  public toggleCommentView() {
+    console.log('123', 123)
+    this.values.isCommentViewShow = !this.values.isCommentViewShow;
   }
 
   public addOrRemove(status: string): void {
@@ -57,7 +63,8 @@ decorate(FoodDetailsMobx, {
   setTab: action.bound,
   addOrRemove: action.bound,
   getDailyFoods: action.bound,
-  setCount: action.bound
+  setCount: action.bound,
+  toggleCommentView: action.bound
 });
 
 export default FoodDetailsMobx;

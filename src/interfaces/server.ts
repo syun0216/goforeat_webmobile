@@ -112,3 +112,16 @@ export interface IAdSpace {
   title: string,
   url: string
 }
+
+export interface ICommentList {
+  totalAmount: string,
+  totalStart: string,
+  list: ICommentListItem[]
+}
+
+export interface ICommentListItem {
+  star: number,
+  nickName: string,
+  comment: string,
+  profileImg: string
+}

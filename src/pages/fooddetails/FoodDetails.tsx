@@ -9,14 +9,18 @@ import {
 } from "antd-mobile";
 //style
 import "./FoodDetails.less";
+//api
+import {getCommentList} from "../../api/request";
 //mobx
 import { observer, inject } from "mobx-react";
 //interface
 import { IFoodDetails } from "../../interfaces";
-import { IDailyFood } from "../../interfaces/server";
+import { IDailyFood, ICommentListItem } from "../../interfaces/server";
 //components
 import CommonHeader from "../../components/CommonHeader";
 import GenerateIcon from "../../components/GenerateIcon";
+import SlideUp from "../../components/SlideUp/SlideUp";
+import CommonListView from "../../components/CommonListView";
 //utils
 import { isEmpty } from "../../utils/common";
 
@@ -30,6 +34,9 @@ const remove_png = require('@/assets/remove.png');
 @inject("foodDetailsMobx")
 @observer
 export default class FoodDetails extends React.Component<IFoodDetails, {}> {
+
+  public _commonList : any;
+
   constructor(props: IFoodDetails) {
     super(props);
   }
@@ -45,6 +52,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
     return (
       <div className="homepage-container">
         {this._renderHeader()}
+        {this._renderCommentView()}
         {this._renderContentView()}
       </div>
     );
@@ -71,6 +79,42 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
         </span>
       </CommonHeader>
     );
+  }
+
+  private _renderCommentView() {
+    const { values: {isCommentViewShow}, toggleCommentView, foodDetails } = this.props.foodDetailsMobx;
+    if (isEmpty(foodDetails)) {
+      return null;
+    }
+    return (
+      <SlideUp isShow={isCommentViewShow} closeFunc={toggleCommentView} title="評論詳情" height={10}>
+        <CommonListView 
+          ref={cl => (this._commonList = cl)}
+          requestFunc={getCommentList}
+          renderItem={this._renderCommentItemView}
+          isItemSeparatorShow
+          extraParams={{foodId: foodDetails.foodId}}
+        />
+      </SlideUp>
+    )
+  }
+
+  private _renderCommentItemView(
+    rowData: ICommentListItem,
+    sectionID: number,
+    rowID: number
+  ) {
+    const { profileImg, nickName, comment, star } = rowData;
+    return (
+      <div className="comment-container" key={rowID}>
+        <img src={profileImg || require('../../assets/defaultAvatar.png')} alt="avatar"/>
+        <ul>
+          <li>{nickName}</li>
+          <li>評分:{star}星</li>
+          <li>{comment}</li>
+        </ul>
+      </div>
+    )
   }
 
   private _renderContentView() {
@@ -136,6 +180,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
 
   private _renderIntroduceView(data: IDailyFood) {
     const { foodName, foodBrief, canteenName, commentAmount } = data;
+    const { toggleCommentView } = this.props.foodDetailsMobx;
     return (
       <div className="common-title-container">
         <div className="flex-between food-name">
@@ -151,7 +196,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
             {GenerateIcon(require('@/assets/food.png'), 'food', 'food-img')}
             {canteenName}
           </span>
-          <span>
+          <span onClick={toggleCommentView}>
             <i className="comment"/>
             {commentAmount} 條
           </span>
