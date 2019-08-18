@@ -1,6 +1,7 @@
 import React from "react";
-import { Drawer, List, Flex, NoticeBar } from "antd-mobile";
+import { Drawer, List, Flex, NoticeBar, ActivityIndicator } from "antd-mobile";
 import { Link } from "react-router-dom";
+import Lazyload from "react-lazyload";
 //api
 import { getFoodList, adSpace } from "../../api/request";
 //style
@@ -166,7 +167,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
       >
         <span className="common_title search-bar" onClick={() => {
           togglePlaceMenu();
-          this._searchInput.focus();
+          this._searchInput && this._searchInput.focus();
         }}>
           <span>{currentPlace.name}</span>
           <i className="icon iconfont icon-search"/>
@@ -258,7 +259,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         path: "/myorder"
       },
       {
-        name: "取 餐 點",
+        name: "取餐點",
         icon: GenerateIcon(location, "location", "sidebar-icon"),
         path: "/pickPlace"
       },
@@ -273,14 +274,14 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         path: "/myorder"
       },
       {
-        name: "優 惠 券",
+        name: "優惠券",
         icon: GenerateIcon(coupon, "coupon", "sidebar-icon"),
-        path: "/myorder"
+        path: "/coupon"
       },
       {
         name: "系統設置",
         icon: GenerateIcon(setting, "setting", "sidebar-icon"),
-        path: "/myorder"
+        path: "/setting"
       }
     ];
     return (
@@ -295,7 +296,7 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         {_drawerList.map((item, key) => (
           <Link to={item.path} key={key}>
             <List.Item key={key} multipleLine thumb={item.icon}>
-              {item.name}
+              <span style={{textAlignLast: 'justify', width: '2rem', display: 'inline-block'}}>{item.name}</span>
             </List.Item>
           </Link>
         ))}
@@ -350,7 +351,13 @@ export default class FoodList extends React.Component<IFoodList, {}> {
         to={`/foodDetails/${dateFoodId}`}
       >
         <div className="food-list-item">
-          {GenerateIcon(thumbnail, "thumbnail", "item-thumbnail")}
+          <Lazyload throttle={200} height={140} placeholder={
+            <div className="item-placeholder">
+              <ActivityIndicator animating/>
+            </div>
+          }>
+            {GenerateIcon(thumbnail, "thumbnail", "item-thumbnail")}
+          </Lazyload>
           <div className="item-details">
             <div className="item-container">
               <span className="item-foodname">{name}</span>

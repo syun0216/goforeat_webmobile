@@ -28,7 +28,9 @@ const CONFIRMORDER = asyncComponent(() =>
 );
 const CONTENT = asyncComponent(() => import("../pages/content/content"));
 const PICKPLACE = asyncComponent(() => import("../pages/pickPlace/PickPlace"));
-const FEEDBACK = asyncComponent(() => import("../pages/feedback/feedback"))
+const FEEDBACK = asyncComponent(() => import("../pages/feedback/feedback"));
+const COUPON = asyncComponent(() => import("../pages/coupon/Coupon"))
+const SETTING = asyncComponent(() => import("../pages/setting/Setting"));
 const NOTFOUND = asyncComponent(() => import("../pages/404"));
 
 interface Props {
@@ -86,11 +88,13 @@ export default class RouteConfig extends Component<any,{}> {
                   <Route path="/login" component={BasicHOC(LOGIN)} />
                   <Route path="/pickplace" component={PICKPLACE}/>
                   <Route path="/feedback" component={FEEDBACK}/>
+                  <Route path="/setting" component={SETTING}/>
                   <PRoute
                     path="/myOrder"
                     PComponent={BasicHOC(MYORDER)}
                     {...props}
                   />
+                  <PRoute path="/coupon" PComponent={COUPON} {...props}/>
                   <PRoute path="/editInfo" PComponent={BasicHOC(EDITINFO)} {...props}/>
                   <PRoute
                     path="/confirmOrder"
