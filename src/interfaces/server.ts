@@ -125,3 +125,12 @@ export interface ICommentListItem {
   comment: string,
   profileImg: string
 }
+
+export interface ICouponItem {
+  condition: string, 
+  discount: number | string,
+  endTime: string, 
+  deductionId:number | string, 
+  type: number | string, 
+  useStatus: number | string
+}
