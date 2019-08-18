@@ -26,7 +26,7 @@ interface ICList extends ICommonListView {
   extraParams?: any;
   renderItem: any;
   renderHeader?: any;
-  isItemSeparatorShow: boolean;
+  isItemSeparatorShow?: boolean;
   separatorColor?: string;
   separatorHeight?: number;
   style?: {};
