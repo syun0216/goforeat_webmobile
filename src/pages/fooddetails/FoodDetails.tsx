@@ -170,7 +170,7 @@ export default class FoodDetails extends React.Component<IFoodDetails, {}> {
               key={idx}
               src={val}
               alt="food"
-              style={{ width: '100%',height: '10rem', verticalAlign: "top",objectFit:'cover' }}
+              style={{ width: '100%',height: '5rem', verticalAlign: "top",objectFit:'cover' }}
             />
           ))}
         </Carousel>
